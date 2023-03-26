@@ -1,0 +1,1045 @@
+Examples of Ruby :::::::::::::::
+
+
+............................
+1.Rspec
+
+Class for which Rspec Write :: 
+  class HelloWorld
+     def say_hello 
+        "Hello World!"
+     end
+  end
+Rspec Test Case for this Class :: 
+  describe HelloWorld do 
+   context “When testing the HelloWorld class” do 
+      it "should say 'Hello World' when we call the say_hello method" do 
+         hw = HelloWorld.new 
+         message = hw.say_hello 
+         expect(message).to eq "Hello World!"
+      end
+   end
+  end
+
+............................
+2.Meta programming ::
+  # before meataprogramming 
+class MyClass
+  def red
+    'red'
+  end
+  def blue
+    'blue'
+  end
+  def green
+    'green'
+  end
+  def yellow
+    'yellow'
+  end
+end
+
+# after metaprogramming 
+class MyClass
+  COLORS = ['red', 'blue', 'green', 'yellow']
+  COLORS.each do |color|
+    define_method color do
+      color
+    end
+  end
+end
+..............................
+
+3. Monkey Patching ::
+
+  class String 
+  def reverse 
+    puts "Reversing has Stopped Manually by Monkey Patching Technique"
+  end 
+  end 
+"Reverse me?".reverse
+..............................
+
+4. Single table inheritance Example :: 
+
+rails generate model Expert name gender salary type
+rails db:create db:migrate
+
+# app/models/beard_dresser.rb
+class BeardDresser < Expert
+end
+# app/models/hair_dresser.rb
+class HairDresser < Expert
+end
+HairDresser.create(name: "John", gender: "male", salary: "10000")
+BeardDresser.create(name: "Mike", gender: "male", salary: "9000")
+HairDresser.count   => 1
+BeardDresser.count  => 1
+Expert.count  => 2
+..............................
+
+5.Callback ::
+
+class Subscription < ActiveRecord::Base
+   before_create :record_signup
+   private
+   def record_signup
+      self.signed_up_on = Date.today
+   end
+end
+...............................
+
+6.Example of Singleton Method ::
+
+class Stm
+  def print
+    puts 'Hello'
+  end
+end 
+o1= Stm.new
+o2= Stm.new
+o1.print # => 'Hello'
+o2.print # => 'Hello'
+
+def o2.print
+  puts 'Sto'
+end 
+o1.print
+o2.print
+...............................
+
+7. Example of class_eval ::
+
+class_eval can be used to create an instance method
+Developer.class_eval do
+  p "class_eval - self is: " + self.to_s
+  def frontend
+    p "inside a method self is: " + self.to_s
+  end
+end
+# "class_eval - self is: Developer"
+
+p developer = Developer.new
+# #<Developer:0x2c5d640>
+
+developer.frontend
+# "inside a method self is: #<Developer:0x2c5d640>"
+...............................
+
+8. Example of instance_eval ::
+There’s one more way to create a class method, and that is by using instance_eval:
+class Developer
+end
+Developer.instance_eval do
+  p "instance_eval - self is: " + self.to_s
+  def backend
+    p "inside a method self is: " + self.to_s
+  end
+end
+# "instance_eval - self is: Developer"
+
+Developer.backend
+# "inside a method self is: Developer"
+...............................
+
+9.Delegation :: Delegate Method ::
+
+Link :: https://medium.com/@pk60905/using-delegate-in-rails-527332da7f96
+Example :: 
+For example I have a QueueItem and aVideo model.
+QueueItem < ActiveRecord::Base
+  belongs_to :video
+end
+Video < ActiveRecord::Base
+  has_many :queue_items
+  belongs_to :category
+end
+...........
+If I want to get the category object of the video in first queue_item, I may write
+queue_item = QueueItem.first
+queue_item.video.category.name
+#=> "Action"
+............
+It is kind of cumbersome. Instead of getting the object via model association, we can use delegate to help us.
+class QueueItem < ActiveRecord::Base
+  belongs_to :video
+  delegate :category, to: :video
+end
+Then we can get the category by
+
+queue_item = QueueItem.first
+queue_item.category.name
+#=> "Action"
+Or even you can set a category_name method in the QueueItem model.
+...........
+class QueueItem < ActiveRecord::Base
+  belongs_to :video
+  delegate :category, to: :video
+  def category_name
+    category.name
+  end
+end
+queue_item = QueueItem.first
+queue_item.category_name
+#=> "Action"
+You can set one or more method names (specified as symbols or strings) if you want. And the name of the target object via the :to option(also a symbol or string).
+
+There are some options you can use in delegation
+:to — Specifies the target object
+:prefix — Prefixes the new method with the target name or a custom prefix
+:allow_nil — if set to true, prevents a NoMethodError to be raised
+You can use the prefix option to make the method more readable.
+class QueueItem < ActiveRecord::Base
+  belongs_to :video
+  delegate :category, to: :video
+  delegate :title, to: :video, prefix: :video
+end
+queue_item = QueueItem.first
+queue_item.video_title == queue_item.video.title
+# => true
+...............................
+
+10. Example of observer 
+
+A. simple email method to send email but our model job is not to send the emails so it breaks the single responsibility principle 
+class User < Activerecord::Base
+  after_save :send_email_notification
+  private
+  def send_email_notification
+    if status_changed?
+      UserNotificationMailer.account_open_email(self).deliver if status=='created'
+      UserNotificationMailer.account_activated_email(self).deliver if status == 'active'
+      UserNotificationMailer.account_deactivation_email(self).deliver if status =='deactive'
+    end
+  end
+end
+B. 
+class UserObserver < ActiveRecord::Observer
+  def after_save(record)
+    if record.status_changed?
+      UserNotificationMailer.account_open_email(record).deliver if record.status=='created'
+      UserNotificationMailer.account_activated_email(record).deliver if record.status == 'active'
+      UserNotificationMailer.account_deactivation_email(record).deliver if record.status =='deactive'
+    end
+  end
+end
+...............................
+
+11. Example of Private,Public and Protected Method :: 
+
+Public methods enforce no access control -- they can be called in any scope.
+Protected methods are only accessible to other objects of the same class.
+Private methods are only accessible within the context of the current object.
+class AccessLevel
+  def something_interesting
+    another = AccessLevel.new
+    another.public_method
+    another.protected_method
+    another.private_method
+  end
+  def public_method
+    puts "Public method. Nice to meet you."
+  end
+  protected
+  def protected_method
+    puts "Protected method. Sweet!"
+  end
+  private 
+  def private_method
+    puts "Incoming exception!"
+  end
+end
+AccessLevel.new.something_interesting
+ #=> Public method.  Nice to meet you.
+ #=> Protected method.  Sweet!
+ #=> NoMethodError: private method ‘private_method’ called for
+ #=>  #<AccessLevel:0x898c8>
+ ...............................
+
+12.Example of Method Overloading ::
+
+class MethodOverloadingExample
+  def display_message(message)
+    puts message
+  end 
+  def display_message(message,user)
+    puts "Hello #{user},#{message}"
+  end 
+end 
+obj1 = MethodOverloadingExample.new
+obj1.display_message('Welcome to the Ruby World')
+$ ruby method_overloading_example.rb
+#Output :: Wrong Number of Arguments (given1,expected2)-Arguments Error
+......................
+Ex: 2 
+class MethodOverloadingExample
+  def display_message(message)
+    puts message
+  end 
+  def display_message(message,user)
+    puts "Hello #{user},#{message}"
+  end 
+  def display_message
+    puts "Welcome to the Ruby World"
+  end 
+end 
+obj1 = MethodOverloadingExample.new
+obj1.display_message('Welcome to the Ruby World')
+$ ruby method_overloading_example.rb
+#Output :: Wrong Number of Arguments (given1,expected0)-Arguments Error
+.....................
+Ex: 3
+class MethodOverloadingExample
+  def display_message(message)
+    puts message
+  end 
+  def display_message(message,user)
+    puts "Hello #{user},#{message}"
+  end 
+  def display_message
+    puts "Welcome to the Ruby World"
+  end 
+end 
+obj1 = MethodOverloadingExample.new
+obj1.display_message('Welcome to the Ruby World','Chetan Singh')
+$ ruby method_overloading_example.rb
+#Output :: Wrong Number of Arguments (given1,expected0)-Arguments Error
+......................
+Ex: 4
+class MethodOverloadingExample
+  def display_message(message)
+    puts message
+  end 
+  def display_message(message,user)
+    puts "Hello #{user},#{message}"
+  end 
+end 
+obj1 = MethodOverloadingExample.new
+obj1.display_message('Welcome to the Ruby World','Chetan Singh')
+$ ruby method_overloading_example.rb
+#Output :: 'Welcome to the Ruby World','Chetan Singh'
+......................
+Ex: 5 :: Can support the variable no of arguments by * ,we take these variable no of arguments in the array list but this will be 
+class MethodOverloadingExample
+  def display_message(*message)
+    puts message
+  end 
+  def display_message(message,user)
+    puts "Hello #{user},#{message}"
+  end 
+  def display_message
+    puts "Welcome to the Ruby World"
+  end 
+end 
+obj1 = MethodOverloadingExample.new
+obj1.display_message('Welcome to the Ruby World','Chetan Singh')
+$ ruby method_overloading_example.rb
+#Output :: 'Welcome to the Ruby World','Chetan Singh'
+......................
+
+13.Example of Method Overriding::
+
+The below example is for the method overriding 
+..........................
+Ex.
+method_overriding_example.rb 
+....
+class MethodOverridingExample
+def display_message 
+  message = "Welcome to the Ruby Progamming World"
+  puts message
+end 
+def display_message
+  user = 'Chetan Singh'
+  message = 'Welcome to the Ruby World'
+  puts "Hello #{user} #{message}"
+end
+def display_message
+  puts "Welcome to the Ruby World"
+end 
+end 
+....
+
+14. 
+
+Example of has_and_belongs_to_many and has_many_through association ::
+has_many_through :
+class Physician < ApplicationRecord
+  has_many :appointments
+  has_many :patients, through: :appointments
+end
+class Appointment < ApplicationRecord
+  belongs_to :physician
+  belongs_to :patient
+end
+class Patient < ApplicationRecord
+  has_many :appointments
+  has_many :physicians, through: :appointments
+end
+................................
+has_and_belongs_to_many :: 
+class Assembly < ApplicationRecord
+  has_and_belongs_to_many :parts
+end
+class Part < ApplicationRecord
+  has_and_belongs_to_many :assemblies
+end
+........................
+Execute :: 
+ruby method_overriding_example.rb 
+obj1 = MethodOverridingExample.new
+obj1.display_message
+Output :: Last method will be used because ruby is the interpretd language so it execute the code line by line .
+...
+
+15.Example of Helper Method in Rails :: 
+
+module UsersHelper
+  def full_name(user)
+    user.first_name + user.last_name
+  end
+end
+class UsersController < ApplicationController
+  def update
+    @user = User.find params[:id]
+    if @user.update_attributes(user_params)
+      notice = "#{helpers.full_name(@user) is successfully updated}"
+      redirect_to user_path(@user), notice: notice
+    else
+      render :edit
+    end
+  end
+end
+................................
+
+16.Example of Duck Typing in Rails ::
+
+This is the definition from a great author Sandi Metz book POODR.
+
+Before touching this concept, I will give you 1 simple analogy to explain the concept.
+
+Suppose we have a bird duck who can swim and quack, so these are features of duck. Now suppose there is another species of bird who is capable of swim and quack is also comes under that category of duck, so we will call that bird a duck. This is called duck typing.
+
+If we want to put a concept of duck typing in terms of Ruby,
+
+Consider an object who can do swim and quack is a duck. Let's continue with Duck's example.
+
+class Duck
+  def quack
+    puts 'Duck quack'
+  end
+  def swim
+    puts 'Duck swim'
+  end
+end
+class Goose
+  def quack 
+    puts 'Goose quack'
+  end
+  def swim
+    puts 'Goose swim'
+  end
+end 
+class BirdActions
+attr_reader :birds
+def initialize
+  @birds = []
+  duck = Duck.new()
+  goose = Goose.new()
+  @birds.push(duck)
+  @birds.push(goose)
+end
+def quack
+  birds.each do | bird |
+    bird.quack
+  end
+end
+def swim
+  birds.each do | bird |
+    bird.swim
+  end
+end
+
+end
+
+action = BirdActions.new()
+action.quack
+action.swim
+
+
+In the above example, we have 2 objects of birds, 1st is Duck and another one is Goose and 3rd class which is just a class which is an aggregating bird and performing actions on them.
+
+Both the bird classes have 2 methods which are quack and swim.
+
+Now the most interesting part, In BirdActions class we are creating an instance of Duck and Goose class and saving in a `birds` array.
+
+action = BirdActions.new()
+action.quack
+action.swim
+When we called method quack and swim from the BirdAction method, we will get the following output.
+
+Duck quack
+Goose quack
+Duck swim
+Goose swim
+We achieve the duck typing model here.
+........................................................
+
+17. Example of Getter Method :: 
+
+What is a getter method?
+Getter methods help you retrieve the value of an instance variable. If you don’t have a getter method, trying to retrieve a variable is going to result in an error.
+
+class Company
+  def initialize(name)
+    @name = name
+  end
+end
+
+company = Company.new("The Bluth Company")
+
+p company.name
+# => undefined method `name' for #<Company:0x00007fe25f021b30> (NoMethodError)
+Let’s include a getter method
+
+class Company
+  # ...
+
+  # Getter
+  def name
+    @name
+  end
+end
+
+company = Company.new("The Bluth Company")
+p company.name
+# => "The Bluth Company"
+
+........................................................
+
+18. Example of Setter Method :: 
+
+What is a setter method?
+Setter methods help us assign new values to our instance variables. Let see what happens if you don’t have a setter method and you try to assign a new value to your instance variable
+
+class Company
+  def initialize(name)
+    @name = name
+  end
+
+  # Getter
+  def name
+    @name
+  end
+end
+
+company = Company.new("The Bluth Company")
+p company.name
+# => "The Bluth Company"
+
+company.name = "Dunder Mifflin"
+# => undefined method `name=' for #<Company:0x00007fdd680f50f8 @name="The Bluth Company"> (NoMethodError)
+So let’s create a setter method
+
+class Company
+  # ...
+
+  # Setter
+  def name=(name)
+    @name = name
+  end
+end
+
+# ...
+company.name = "Dunder Mifflin"
+# => "Dunder Mifflin"
+
+............................................................
+
+19. What is a Ruby attribute accessor?
+
+You can see how classes can become quite big with having to define 2 methods for every instance variable. That’s why we have access to 3 build-in Ruby methods:
+
+attr_reader - generates a getter method
+attr_writer - generates a setter method
+attr_accessor - generates both getter and setter methods
+
+class Company
+  attr_reader :name
+  attr_writer :name
+
+  def initialize(name)
+    @name = name
+  end
+end
+
+company = Company.new("The Bluth Company")
+p company.name
+# => "The Bluth Company"
+
+company.name = "Dunder Mifflin"
+p company.name
+# =>"Dunder Mifflin"
+When you want both attr_reader and attr_writer, just use:
+
+attr_accessor :name
+You can define multiple attributes on the same line, which will generate the relevant methods
+
+attr_accessor :name, :email, :address
+By the way, you can get a list of your instance variables using the built-in #instance_variables method and a list of your class methods using #public_methods method.
+
+class User
+  attr_accessor :name
+  attr_accessor :age
+
+  def initialize(name, age)
+    @name = name
+    @age = age
+  end
+end
+
+user = User.new("Kris", 24)
+
+p user.instance_variables
+# => [:@name, :@age]
+
+p user.public_methods
+# => [:age, :age=, :name, :name=]
+
+Combination of attribute accessor
+Sometimes you might want to combine your attribute accessor methods depending on your variables. For example, you might want to read and write the email variable but only read the id variable.
+
+attr_accessor :name
+attr_reader :id
+
+
+...................................................
+
+20.Example of attr_accessor method :: 
+
+What is attr_accessor?
+Basically attr_accessor is a shortcut for when you need both attr_reader and attr_writer. It squashes down those two lines into one. Like so.
+
+class Person
+  attr_accessor :name, :age, :sex, :email
+
+  def initialize(name)
+    @name = name
+  end
+end
+
+That is the idiomatic way of doing it. But you don’t have to do it like that. Here’s another one way you could acomplish the same thing.
+
+...................................................
+
+21. Example of Defined Method :: 
+
+The define_method method is used to define methods dynamically in Ruby. It takes the name of the method you want to define as its first argument, and a block for the body of the method.
+
+
+class Person
+  def initialize(name)
+    @name = name
+  end
+
+  def self.define_attr(attr)
+    define_method(attr) do
+      instance_variable_get("@#{attr}")
+    end
+
+    define_method("#{attr}=") do |val|
+      instance_variable_set("@#{attr}", val)
+    end
+  end
+end
+
+john = Person.new("John")
+Person.define_attr(:name)
+john.name = "Jim"
+puts john.name # => Jim
+
+Ruby has many ways of achieving the same goal but it’s a good idea to follow the idiomatic way.
+
+There is also a significant performance advantage to using the attr_reader, attr_writer, and attr_accessor methods. Check out Aaron Patterson’s talk to see why.
+
+...................................................
+
+
+22. Example of Operator Overloading :: 
+
+Ruby operator overloading
+Operator overloading is a situation where different operators have different implementations depending on their arguments.
+
+In Ruby there is only a slight distinction between an operator and a method.
+
+operator_overloading.rb
+#!/usr/bin/ruby
+
+class Circle
+
+    attr_accessor :radius
+
+    def initialize r
+        @radius = r
+    end
+
+    def +(other)
+        Circle.new @radius + other.radius
+    end
+
+    def to_s
+        "Circle with radius: #{@radius}"
+    end
+end
+
+
+c1 = Circle.new 5
+c2 = Circle.new 6
+c3 = c1 + c2
+
+puts c3
+
+In the example, we have a Circle class. We overload the + operator in the class. We use it to add two circle objects.
+
+def +(other)
+    Circle.new @radius + other.radius
+end
+We define a method with a + name. The method adds the radiuses of two circle objects.
+
+c1 = Circle.new 5
+c2 = Circle.new 6
+c3 = c1 + c2
+We create two circle objects. In the third line, we add these two objects to create a new one.
+
+$ ./operator_overloading.rb
+Circle with radius: 11
+Adding these two circle objects creates a third with a radius of 11.
+
+...................................................
+
+23. Example of Class and Instance Methods :: 
+
+In Ruby, a method provides functionality to an Object. A class method provides functionality to a class itself, while an instance method provides functionality to one instance of a class.
+
+Consider the following Ruby class:
+class SayHello
+  def self.from_the_class
+    "Hello, from a class method"
+  end
+
+  def from_an_instance
+    "Hello, from an instance method"
+  end
+end
+
+This would yield the following:
+>> SayHello.from_the_class
+=> "Hello, from a class method"
+
+>> SayHello.from_an_instance
+=> undefined method `from_an_instance' for SayHello:Class
+
+
+>> hello = SayHello.new
+>> hello.from_the_class
+=> undefined method `from_the_class' for #<SayHello:0x0000557920dac930>
+
+>> hello.from_an_instance
+=> "Hello, from an instance method"
+We cannot call an instance method on the class itself, and we cannot directly call a class method on an instance.
+
+...................................................
+
+24.  Example of Example of Attributes :: attr_accessor,attr_getter,attr_accessor  in Rails ::
+
+Link ::  https://medium.com/rubycademy/a-matter-of-attributes-668bdd29ad29
+
+1. attr ::
+module Attr
+  attr :attr1, 'attr2'
+end
+irb> Attr.instance_methods
+ => [:attr1, :attr2]
+
+Exp : The attr method creates an instance variable and a getter method for each attribute name passed as argument.An argument can be a Symbol or a String that will be converted to Symbol.In the above example, the Attr module includes 2 instance methods that allow to read the value of attr1 and attr2.
+
+
+
+2. attr_reader ::
+module Attr
+  attr_reader :attr1, 'attr2'
+end
+irb> Attr.instance_methods
+ => [:attr1, :attr2]
+
+ Exp : The attr_reader method is similar to the attr one
+
+
+
+ 3. attr_writer ::
+module Attr
+  attr_writer :attr1, 'attr2'
+end
+irb> Attr.instance_methods
+ => [:attr1=, :attr2=]
+
+Exp :  The attr_writer method creates an instance variable and a setter method for each attribute name passed as argument.
+
+An argument can be a Symbol or a String that will be converted to Symbol
+
+4. attr_accessor ::
+module Attr
+  attr_accessor :attr1, 'attr2'
+end
+irb> Attr.instance_methods.sort
+ => [:attr1, :attr1=, :attr2, :attr2=]
+
+Exp : The attr_accessor method creates an instance variable, a getter and a setter method for each attribute name passed as argument.An argument can be a Symbol or a String that will be converted to Symbol.In the above example, the Attr module includes 4 instance methods that allow to read and modify the value of attr1 and attr2.
+
+5. Lazy Initialization ::
+class Website
+  attr_accessor :link, :title
+  def initialize
+    @title = "The best Ruby newsletter"
+  end
+end
+irb> website = Website.new
+ => #<Website:0x00777 @title="The best Ruby newsletter">
+irb> website.instance_variables
+ => [:@title]
+irb> website.link = "http://ruby.devscoop.fr"
+ => "http://ruby.devscoop.fr"
+irb> website.instance_variables
+[:@title, :@link]
+
+Exp :  In the previous examples, I told you that the attr_* methods create instance variables. It’s almost true.In effect, the instance variables created by the attr_* methods use thelazy initialization mechanism.This means that the instance variables are only initialized when the setter method is invoked — or when the instance variable is explicitly set within an instance method.In the above example, the @title instance variable is explicitly created in the Website#initialize method.
+So, this instance variable is available in the array returned by the first call to instance_variables.Notice that the @link instance variable is not yet created, despite the call to attr_accessor. This instance variable is only created after the call to the Website#link= method.So, by using the attr_* methods, the instance variable associated to each argument name will only be created when we set a value to it (by using the setter method or by explicitly assign a value to it).
+
+...................................................
+
+25. Example of Encapsulation :: 
+
+Encapsulation is defined as the wrapping up of data under a single unit. It is the mechanism that binds together code and the data it manipulates. In a different way, encapsulation is a protective shield that prevents the data from being accessed by the code outside this shield.
+
+Technically in encapsulation, the variables or data of a class are hidden from any other class and can be accessed only through any member function of own class in which they are declared.
+Encapsulation can be achieved by declaring all the variables in the class as private and writing public methods in the class to set and get the values of variables.
+
+# Ruby program to illustrate encapsulation
+#!/usr/bin/ruby 
+    
+class Demoencapsulation 
+        
+def initialize(id, name, addr) 
+         
+ # Instance Variables      
+ @cust_id = id 
+ @cust_name = name 
+ @cust_addr = addr 
+ end
+     
+ # displaying result 
+ def display_details() 
+ puts "Customer id: #@cust_id"
+ puts "Customer name: #@cust_name"
+ puts "Customer address: #@cust_addr"
+ end
+end
+    
+# Create Objects 
+cust1 = Demoencapsulation .new("1", "Mike", 
+              "Wisdom Apartments, Ludhiya") 
+  
+cust2 = Demoencapsulation .new("2", "Jackey", 
+                "New Empire road, Khandala") 
+    
+# Call Methods 
+cust1.display_details() 
+cust2.display_details() 
+
+Output:
+
+Customer id: 1
+Customer name: Mike
+Customer address: Wisdom Apartments, Ludhiya
+Customer id: 2
+Customer name: Jackey
+Customer address: New Empire road, Khandala
+
+Explanation: In the above program, the class Demoencapsulation encapsulate the methods of the class. You can only access these methods with the help of objects of the Demoencapsulation class i.e. cust1 and cust2.
+
+Advantages of Encapsulation:
+
+Data Hiding:The user will have no idea about the inner implementation of the class. It will not be visible to the user that how the class is storing values in the variables. He only knows that we are passing the values to a setter method and variables are getting initialized with that value.
+Reusability: Encapsulation also improves the re-usability and easy to change with new requirements.
+Testing code is easy:Encapsulated code is easy to test for unit testing.
+
+........................................................................
+
+26. Example of Abstraction :: 
+
+Abstraction is an object-oriented programming concept, where the essential attributes of something are shown and all the unnecessary ones are hidden. With this approach, one can hide the implementation details and provide only the important interface.
+
+A very good example of abstraction is your car. It's a great example of abstraction. When you start the car by turning the key or pressing the start button, you don't necessarily need to know how the engine works or how it gets started, also what components are present in that car or what else is there. These details that are irrelevant to the driver are simply hidden from the user as there's no need to add complexity, hence the data abstraction works just like that in Ruby.
+
+Data Abstraction in Classes
+One can use different access specifiers to control information and perform data abstraction in Ruby.
+
+Data Abstraction Using Actress Control
+In Ruby, we can use access specifiers like private, public and protected to achieve data abstraction.
+When we declare a member as public in a class, then that member can be accessed from anywhere in the program. If we declare a member as private, then that member can only be accessed from within the class.
+
+
+Example 1
+Consider the code shown below
+
+
+class Coders
+
+   # defining the public Method
+   public
+   def publicMethod
+      puts "In Public Method!"
+   end
+
+   # defining the private Method
+   private
+   def privateMethod
+      puts "In Private Method!"
+   end
+
+end
+
+# creating an object of class Coders
+object1 = Coders.new
+
+# calling the public method of class Coders
+object1.publicMethod
+
+Output
+When we execute this code, it will produce the following output −
+
+In Public Method!
+
+Example 2
+In this example, we will try to call the method that was declared private from another class and see what happens.
+
+
+class Coders
+   # defining the public Method
+   public
+   def publicMethod
+      puts "In Public Method!"
+   end
+
+   # defining privateMethod
+   private
+   def privateMethod
+      puts "In Private Method!"
+   end
+end
+
+class Sample
+   private
+   def privateMethod
+      puts "Trying..."
+   end
+end
+
+# creating an object of class Coders
+obj1 = Coders.new
+obj2 = Sample.new
+obj1.publicMethod
+obj2.privateMethod
+
+Output
+If we write the following code on any Ruby IDE, then we will get the following output in the terminal.
+
+In Public Method!
+Traceback (most recent call last):
+main.rb:34:in `<main>': private method `privateMethod' called for #<Sample:0x00005573b8da04e0> (NoMethodError)
+
+.......................................................................
+
+27.Example of has_and_belongs_to_many and has_many_through association ::
+
+
+has_many_through :
+
+class Physician < ApplicationRecord
+  has_many :appointments
+  has_many :patients, through: :appointments
+end
+
+class Appointment < ApplicationRecord
+  belongs_to :physician
+  belongs_to :patient
+end
+
+class Patient < ApplicationRecord
+  has_many :appointments
+  has_many :physicians, through: :appointments
+end
+
+................................
+
+has_and_belongs_to_many :: 
+
+class Assembly < ApplicationRecord
+  has_and_belongs_to_many :parts
+end
+
+class Part < ApplicationRecord
+  has_and_belongs_to_many :assemblies
+end
+
+
+......................................................................
+
+28. Understanding of Exception handling through raise-rescue-ensure method ?
+
+begin
+ # exception raise
+ rescue
+ # exception rescue
+ else
+ # only executes when an exception is not raised 
+ ensure
+ # this block always xecutes
+end 
+
+begin
+ # using raise to create an exception
+ raise 'Exception Created!'
+  puts 'no exception method'
+  rescue 
+  puts 'Finally Saved!'
+ # Using else statement
+ else
+  puts 'else block executes because of no execution raise'
+ ensure
+ puts 'ensure block execute'
+end 
+
+......................................................................
+
+29. Understanding of Exception handling through throw-catch method ?
+
+throw :label_name
+    catch :label_name do
+end 
+
+throw :label_name
+  # this block will be executed
+  catch :label_name do
+  # matching catch will be executed when throw block encountered
+end 
+
+......................................................................
+
+30. 
+
+
+
+
+
+

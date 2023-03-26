@@ -1,0 +1,562 @@
+upgrade_rails.txt ::
+
+..............................
+
+
+Upgrade :: From Rails 6 to Rails 7 :: 
+
+Step1:: Install jsbuilding rails 
+Step2:: Switch pack tag to include tag
+Step3:: Import Stimulus Controllers 
+Step4:: Move the JavaScript entry point
+Step 5: Remove Webpack from the application
+Step 6: Migrate from Webpacker to importmaps
+ A. Step 1: Install Importmap
+ B. Step 2: Migrating Dependencies
+ C. Step 3: Migrating from turbolinks to Turbo
+ D. Step 3: Migrating Stimulus
+
+Step 8:  Update rails in gemfile
+Step 9:  Run the update rails tasks
+Step 10: Verify framework defaults
+Step 11: Add Sprockets
+Step 12: Verify depreciated methods
+
+..............................
+
+Upgrade :: From Rails 5 to Rails 6 :: 
+..............................
+
+Upgrade :: From Rails 5 to Rails 6 ::
+Step :: 1. Update to Ruby version 2.5 or higher :: Rails 6 requires Ruby 2.5 or newer. 
+Step :: 2. Upgrade your Rails version to 5.2.3 - the latest version of the 5.2 series
+Step :: 3. Update to Rails 6 :: gem 'rails', '~> 6.0' + bundle update rails
+Step :: 4. Fix the Gems :: Diff gems with versions that are comparable to Rails-6
+Step :: 5. Removing gems if required 
+Step :: 5. Update the Bundle :: Bundle updated!
+Step :: 6. Run rails app:update :: rails app:update
+Step :: 7. Uncomment defaults in new_framework_defaults_6_0.rb
+Step :: 8. Check out Rails 6 release notes
+Step :: 9. Start testing your app :: After you fix your tests and everything is running well locally, push to staging and go around the website to see if something is broken.
+Step :: 11. Final issues: manifest.js, deprecation warning
+Step :: 10. Update Migrations.
+
+..............................
+
+Upgrade :: From Rails 4 to Rails 5 :: 
+1. Update Ruby and bundle install 
+2. Remove some files and create some files in application.rb
+3. Change route application file name 
+4. Create config/initializers/assets.rb
+5. Model will inherit from the ApplicationRecord so inherit it from that not ActiveRecord
+6. Attributes Changes :: 
+7. Halt callback chain - throw(abort)
+8. Parameters does not inherit from Hash anymore 
+9. Test http request method 
+..............................
+..............................
+Upgrade :: From Rails 4 to Rails 5 :: 
+1. Update Ruby
+2. Update your gem dependencies with Rails 5
+3. Update Rails binaries and configrations 
+4. Generate the db/schema.rb file again
+5. Application Classes :: ApplicationRecord,ApplicationHelper,ApplicationJob : create all
+6. Validations changes on Belongs to relations 
+7. Halt callback chain - throw(abort)
+8. Parameters does not inherit from Hash anymore 
+9. Test http request method 
+..............................
+
+
+Upgrade :: From Rails 4 to Rails 5 :: 
+
+Step :: 1. Upgrading ruby and bundle install
+
+A. Install the required ruby version : 
+rvm install ruby 2.x.x   ::   for rvm 
+rbenv install 2.x.x :: for rbenv 
+B.Change the ruby version in .ruby-version, .rvmrc or Gemfile
+C.Install the bundler - gem install bundler
+D.Change the rails version -  # Gemfile   gem 'rails', '4.2.0' # To   gem 'rails', '5.2.4'
+E.Run bundle install 
+F.If you don’t need specific versions of the gems locked it is better to remove the specified version.
+G. Add Ruby Versions :: Add the following gems to your gemfile 
+gem 'e2mmap'   gem 'scanf'    gem 'thwait'
+
+Step :: 2. Config Changes ::  At this point you should be able to install all the dependencies. But, in order to start the application we need to do some config changes.
+
+A. Remove:# config/application.rb -config.active_record.raise_in_transactional_callbacks = true
+B. Change
+# config/application.rb - 
+config.serve_static_assets = true   # or -  config.serve_static_files = true
+# to  - config.public_file_server.enabled
+C. Change 
+# config/application.rb
+config.static_cache_control = 'public, max-age=3600'   -   #to - 
+config.public_file_server.headers = { 'Cache-Control' => 'public, max-age=3600' }
+
+D. Routes Changes   # routes.rb
+ProjectName::Application.routes.draw do  # to  Rails.application.routes.draw do
+
+E. Create config/initializers/assets.rb
+config/initializers/assets.rb
+Rails.application.config.assets.version = '1.0'
+Rails.application.config.assets.precompile += [
+  'application.css', 'application.js'
+]
+
+
+Step :: 3. Model and Controller Changes :::::::::::::::::::::::::::::::::::::::::
+
+A.Controller Changes::
+A1. Replace all *_filter callbacks in favor of *_action
+before_filter & skip_before_filter # to before_action & skip_before_action
+A2. redirect_to(:back) # to  redirect_back(fallback_location: root_path)
+
+B.Model Changes:: 
+
+B1.Create this line : 
+# app/models/application_record.rb
+class ApplicationRecord < ActiveRecord::Base
+  self.abstract_class = true
+end
+
+B2. Change the following in all models :
+class User < ActiveRecord::Base # to class User < ApplicationRecord
+
+B3. belongs_to is compulsory now.
+Use optional: true if the association is ever going to be nil
+class Post < ActiveRecord::Base
+  belongs_to :user, optional: true
+  #....
+
+B4.  In a huge application you might want to keep the old behavior. You can change the settings globally in application.rb
+# config/application.rb
+config.active_record.belongs_to_required_by_default = false
+after_destroy :send_confirmation, if: 'user&.notifications_enabled?'
+after_destroy :send_confirmation, if: Proc.new { user&.notifications_enabled? }
+
+B5. attribute_changed?
+is deprecated in after_save callback
+Deprecated: _changed? doesn't work as expected in after_save & after_update
+Use saved_change_to_?
+# Old  ::    after_save :send_email, if: :email_changed?
+# New  ::    after_save :send_email, if: -> { saved_change_to_email? }
+
+B6. Deprecated: _was doesn't work as expected in after_save & after_update
+Use _before_last_save
+#Old :: archived_record.assign_attributes(email: email_was)
+#New :: archived_record.assign_attributes(email: email_before_last_save)
+
+B7.Mailers :: 
+Mailers now inherit from ApplicationMailer ::
+
+B7.1 # app/mailers/application_mailer.rb
+class ApplicationMailer < ActionMailer::Base
+  default from: "sample@#{ActionMailer::Base.smtp_settings[:domain]}"
+end
+B7.2 # 
+class UserMailer < ActionMailer::Base # to class UserMailer < ApplicationMailer
+
+Step :: 4. Migration Changes ::
+
+Directly inheriting from ActiveRecord::Migration is not supported.
+Please specify the Rails release the migration was written for:
+Change the following: class CreateUsers < ActiveRecord::Migration
+# to  class CreateUsers < ActiveRecord::Migration[4.2]
+..............................
+Easy Fix : grep -rl "ActiveRecord::Migration$" db | xargs sed -i "s/ActiveRecord::Migration/ActiveRecord::Migration[4.2]/g"
+
+
+
+Step :: 5. Necessary Changes in RSpecs ::
+!. Upgrading FactoryBot to 5 ::  DEPRECATION WARNING: Static attributes will be removed in FactoryBot 5.0. ::  Please use dynamic attributes instead by wrapping the attribute value in a block: 
+
+FactoryBot.define do
+  factory :user do
+    name 'John'         # Bad & will throw error
+    # To
+    name { 'John' }     # Good
+
+.................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+
+
+
+Upgrade from Rails6 to Rails7 ::
+
+
+
+Upgrade :: From Rails 4 to Rails 5 :: 
+
+https://deepakmahakale.in/blog/2020/07/04/guide-to-upgrade-rails-application.html
+
+..............................
+
+
+
+
+
+
+
+
+
+How to upgrade rails 5 to rails 6 ::
+
+Link ::  https://railsfactory.com/upgrade-rails-6
+
+1. Things to consider before upgrading - Before making any Rails upgrade, you need to ensure that the current code is stable and is well tested. Any major upgrade comes with the likelihood of breaking changes, and Rails 6 is no exception!
+
+2. Update your Ruby version to minimum 2.5 version :::
+
+2.1 Upgrading from Rails 3.0 to Rails 3.1
+2.2 Upgrading from Rails 3.1 to Rails 3.2
+2.3 Upgrading from Rails 3.2 to Rails 4.0
+2.4 Upgrading from Rails 4.0 to Rails 4.1
+2.5 Upgrading from Rails 4.1 to Rails 4.2
+2.6 Upgrading from Rails 4.2 to Rails 5.0
+2.7 Upgrading from Rails 5.0 to Rails 5.1
+2.8 Upgrading from Rails 5.1 to Rails 5.2
+2.9 Upgrading from Rails 5.2 to Rails 6.0
+
+........................................................
+
+2.1 Upgrading from Rails 3.0 to Rails 3.1
+If your app is presently under any older versions than 3.0.x, then you need to upgrade to Rails 3.0 before upgrading to Rails 3.1. Following changes are required for upgrading your application to Rails 3.1.12.
+Gemfile: Make some changes to the Gemfile.
+config/application.rb: Make some additions to the asset pipeline. If your app is using an “/assets” route for a resource, you can change the prefix used for assets in order to avoid conflict.
+config/environments/development.rb: Remove the RJS setting config.action_view.debug_rjs = true. Plus, you can add few settings for enabling the asset pipeline.
+config/environments/test.rb: Test the performance by including few additions to your test environment.
+config/initializers/wrap_parameters.rb: Add file with command contents if you want to wrap parameters into a nested hash. For more information, you can refer to the document.
+config/initializers/session_store.rb: You need to change the session key to something new, or you can remove all sessions.
+Remove :cache and :concat options in asset helpers references in views: As the Asset Pipeline the :cache and :concat options are not much used now, you can delete these options from your views.
+
+...
+
+
+2.2 Upgrading from Rails 3.1 to Rails 3.2
+If your app is currently on any other Rails versions older than 3.1.x, you need to upgrade to Rails 3.1 before trying to upgrade to Rails 3.2. Following changes are required for upgrading your application to Rails 3.2.x,
+Gemfile: Make few changes to the Gemfile.
+config/environments/development.rb: There are few new configuration settings you need to add to the development environment.
+config/environments/test.rb: Add the mass_assignment_sanitizer configuration setting to the config/environments/test.rb:
+Vendor/plugins: Rails 3.2 doesn’t support vendor/plugins. Though it isn’t strictly necessary for upgrading, you can start replacing the plugins by extracting them to gems and add them to the Gemfile. But, if you want not to make them gems, you can move them into lib/my_plugin/* and add appropriate initializer in config/initializers/my_plugin.rb.
+Active Record: If you want to avoid deleting object or associated objects, you can set dependent => :destroy and return false after checking for existence of association from any of the associated object’s destroy callbacks.
+
+
+...
+
+2.3 Upgrading from Rails 3.2 to Rails 4.0
+If your app is currently on any other Rails versions older than 3.2.x, you need to upgrade to Rails 3.2 before trying to upgrade to Rails 4.0. Following changes are required for upgrading your application to Rails 4.0,
+HTTP PATCH: Rails 4 uses PATCH as primary HTTP verb for getting updates when a RESTful resource is found in config/routes.rb. The update action is still used, and PUT requests are used to rout to the update action. In case, you are using only the standard RESTful routes, no changes need to be done. If you are using form_for to update a resource in conjunction, make a change using the PUT HTTP method.
+Gemfile: Rails 4.0 has removed asset group from the Gemfile. You need to remove the line from your Gemfile while upgrading. You can upgrade your app file (in config/application.rb).
+Vendor/plugins: As Rails 4.0 do not support loading plugins from vendor/plugins, you need to replace the plugins by extracting them to gems and putting them to the Gemfile. If you don’t want to make them gems, you can move them into lib/my_plugin/* and put an appropriate initializer in config/initializers/my_plugin.rb.
+Active Record: Rails 4.0 has removed identity map from the Active Record because of variations with associations. If you have manually put it in your app, you need to remove the config which has no effect.For more information, you can refer to the document.
+Active Resource: Rails 4.0 can extract Active Resources to its own gem. If you need the feature, you can add the Active Resource gem in your Gemfile.
+Active Model: Rails 4.0 has changed the way errors are attached with the ActiveModel::Validations::ConfirmationValidator. If the confirmation validations fail, the errors can be attached to: #{attribute}_confirmation instead of attribute.Rails 4.0 has changed ActiveModel::Serializers::JSON.include_root_in_json default value to false. Now, Active Model Serializers and Active Record objects have similar default behaviour, which means that you can comment and remove the option in the config/ initializers/wrap_parameters.rb file.
+Action Pack: Rails 4.0 announces ActiveSupport::KeyGenerator and practices this as a base from which one can  generate and authenticate signed cookies (among other things). Present signed cookies produced with Rails 3.x will be clearly upgraded if you leave your existing secret_token in place and put the new secret_key_base. For more information, you can refer to the document.
+Active Support: Rails 4.0 takes out the j alias for ERB::Util#json_escape since j is previously used for ActionView::Helpers::JavaScriptHelper#escape_javascript.
+Active Record Observer and Action Controller Sweeper: ActiveRecord::Observer and ActionController::Caching::Sweeper can be pulled out to the rails-observers gem. If you want more features, you need to add rails-observers gem
+sprockets-rails: As assets:precompile:primary and assets:precompile:all are removed, you can use assets:precompile. Change config.assets.compress option to config.assets.js_compressor.
+sass-rails: asset-url with two arguments is deplored. For example: asset-url(“rails.png”, image) has become asset-url(“rails.png”).
+
+...
+
+2.4 Upgrading from Rails 4.0 to Rails 4.1
+CSRF protection from remote <script> tags: Cross-site request forgery (CSRF) protection can cover GET requests with JavaScript responses. This does not allow third party site to remotely reference your JS with a <script> tag to derive sensitive data.
+Spring: For using Spring as your app preloader, you need to follow the following steps:
+Add gem ‘spring’, group: :development to your Gemfile.
+Connect spring using bundle install.
+Springify your binstubs with bundle exec spring binstub –all
+
+
+...
+
+2.5 Upgrading from Rails 4.1 to Rails 4.2
+Web Console: At first, you can add gem ‘web-console’, ‘~> 2.0’ to the :development group in the Gemfile. Run bundle and install. After installation, you can drop a reference to the console helper (i.e., <%= console %>) into any view you want to enable for. A console can be provided on any error page you view in the development environment.
+Responders: The respond_with and the class-level respond_to methods have been pulled out to the responders’ gem. For using them, just add gem ‘responders’, ‘~> 2.0’ to the Gemfile. Calls to respond_with and respond_to (at class level) will not work without having included the responders gem in the dependencies.
+ Error handling in transaction callbacks: Now, Currently, Active Record overwhelms errors elevated within after_rollback or after_commit callbacks and prints them to the logs. In the next version, these errors will not be suppressed. As an alternative, the errors will proliferate normally just like in other Active Record callbacks.After you define an after_rollback or after_commit callback, you will get a deprecation warning about this imminent change. After you are ready, you can go into the new behaviour and take out the deprecation warning by adding configuration to the config/application.rb.
+
+
+...
+
+2.6 Upgrading from Rails 4.2 to Rails 5.0
+Ruby 2.2.2+ required: You need to install minimum Ruby 2.2.2 version for upgrading to Ruby 5.0 onwards.
+Active Record Models Now Inherit from ApplicationRecord by Default: In the Rails 4.2, an Active model inherits from the ActiveRecord::Base. In the Rails 5.0 version, all the models inherit from ApplicationRecord. For more information, you can refer to the document.
+
+
+...
+
+2.7 Upgrading from Rails 5.0 to Rails 5.1
+Top-level HashWithIndifferentAccess is soft-deprecated: If the app utilises top level HashWithIndifferentAccess class, you can move your code to use ActiveSupport::HashWithIndifferentAccess. It is a bit soft deprecated and it means that the code won’t break at the moment and no disapproval warning will be shown, but this constant will be removed in the future.
+application.secrets now loaded with all keys as symbols: If the app stores similar configuration in config/secrets.yml, then all the keys are loaded as symbols, therefore, you need to change the access using the strings. For more information, you can refer to the document.
+
+...
+
+2.8 Upgrading from Rails 5.1 to Rails 5.2
+Bootsnap: Rails 5.2 brings bootsnap gem in the newly generated app Gemfile. The app:update command sets it up in the boot.rb. For using it, you need to add it to the Gemfile or change the boot.rb not to use the bootsnap.
+Expiry in signed or encrypted cookie is now embedded in the cookies values: For more security, Rails is now embedding the expiry data both in encrypted and signed cookies value. This new embedded data makes those cookies incompatible with Tails version older than 5.2. For more information, you can refer to the document.
+2.9 Upgrading from Rails 5.2 to Rails 6.0
+Using Webpacker: Webpacker is default JS compiler for Rails 6. But, without upgradation, the app is not activated by default. For using Webpacker, you need to include it in your Gemfile and install it.
+Force SSL: force_ssl method for controllers has been deprecated and will not be part of Rails 6.1. Users can enable config.force_ssl for enforcing HTTPS connections in the app. For exempting few endpoints from redirection, use config.ssl_options for configuring that behavior.
+All npm packages is now moved to the @rails scope: If you were previously loading any of the actioncable, activestorage, or rails-ujs packages using npm/yarn, you need to update the names of these dependencies before you start upgrading them to 6.0.0. For more information, you can refer to the document.
+
+...
+
+
+.................................................................
+
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+.................................................................
+
+
+
+
+..............................
+Upgrade :: From Rails 5 to Rails 6 ::
+Step :: 1. Update to Ruby version 2.5 or higher :: Rails 6 requires Ruby 2.5 or newer. 
+Step :: 2. Upgrade your Rails version to 5.2.3 - the latest version of the 5.2 series
+Step :: 3. Update to Rails 6 :: gem 'rails', '~> 6.0' + bundle update rails
+Step :: 4. Fix the Gems :: Diff gems with versions that are comparable to Rails-6
+Step :: 5. Removing gems if required 
+Step :: 5. Update the Bundle :: Bundle updated!
+Step :: 6. Run rails app:update :: rails app:update
+Step :: 7. Uncomment defaults in new_framework_defaults_6_0.rb
+Step :: 8. Check out Rails 6 release notes
+Step :: 9. Start testing your app :: After you fix your tests and everything is running well locally, push to staging and go around the website to see if something is broken.
+Step :: 11. Final issues: manifest.js, deprecation warning
+Step :: 10. Update Migrations.
+
+
+Upgrade :: From Rails 5 to Rails 6 :: 
+
+Step :: 1. Update to Ruby version 2.5 or higher :: Rails 6 requires Ruby 2.5 or newer. 
+Step :: 2. Upgrade your Rails version to 5.2.3 - the latest version of the 5.2 series
+Step :: 3. Update to Rails 6 :: gem 'rails', '~> 6.0' + bundle update rails
+Step :: 4. Fix the Gems :: Diff gems with versions that are comparable to Rails-6
+
+Bundler could not find compatible versions for gem "activesupport":
+  In Gemfile:
+    delayed_job_active_record was resolved to 4.1.3, which depends on
+      delayed_job (>= 3.0, < 5) was resolved to 4.1.7, which depends on
+        activesupport (>= 3.0, < 5.3)
+    jbuilder (~> 2.5) was resolved to 2.9.1, which depends on
+      activesupport (>= 4.2.0)
+    kaminari (~> 1.1) was resolved to 1.1.1, which depends on
+      activesupport (>= 4.1.0)
+    lograge (~> 0.11.2) was resolved to 0.11.2, which depends on
+      activesupport (>= 4)
+    rails (~> 6.0) was resolved to 6.0.0, which depends on
+      activesupport (= 6.0.0)
+    rspec-rails (~> 3.5) was resolved to 3.8.2, which depends on
+      activesupport (>= 3.0)
+    Bundler could not find compatible versions for gem "railties":
+  In Gemfile:
+    devise was resolved to 4.6.2, which depends on
+      railties (>= 4.1.0, < 6.0)
+    font-awesome-rails (~> 4.7.0) was resolved to 4.7.0.5, which depends on
+      railties (>= 3.2, < 6.1)
+    jquery-rails was resolved to 4.3.5, which depends on
+      railties (>= 4.2.0)
+    fae-rails (~> 2.1) was resolved to 2.1.0, which depends on
+      jquery-ui-rails (~> 6.0.1) was resolved to 6.0.1, which depends on
+        railties (>= 3.2.16)
+    lograge (~> 0.11.2) was resolved to 0.11.2, which depends on
+      railties (>= 4)
+    money-rails (~> 1.10) was resolved to 1.13.2, which depends on
+      railties (>= 3.0)
+    rails (~> 6.0) was resolved to 6.0.0, which depends on
+      railties (= 6.0.0)
+    rails-ujs was resolved to 0.1.0, which depends on
+      railties (>= 3.1)
+    react-rails (~> 2.4) was resolved to 2.5.0, which depends on
+      railties (>= 3.2)
+    sass-rails (~> 5.0.0) was resolved to 5.0.7, which depends on
+      railties (>= 4.0.0, < 6)
+    web-console (>= 3.3.0) was resolved to 3.7.0, which depends on
+      railties (>= 5.0)
+      ...................................................................
+
+Step :: 5. Removing gems if required 
+Step :: 5. Update the Bundle :: Bundle updated!
+Step :: 6. Run rails app:update :: rails app:update
+Step :: 7. Uncomment defaults in new_framework_defaults_6_0.rb
+Step :: 8. Check out Rails 6 release notes
+Step :: 9. Start testing your app :: After you fix your tests and everything is running well locally, push to staging and go around the website to see if something is broken.
+Step :: 11. Final issues: manifest.js, deprecation warning
+Step :: 10. Update Migrations.
+
+......................................
+
+link ::  https://fullstackheroes.com/tutorials/rails/upgrade-to-rails-6/
+         https://selleo.com/blog/how-to-upgrade-to-rails-6
+         https://prograils.com/real-life-examples-updating-rails-52-to-rails-6
+
+
+......................................
+
+Rails Upgrade ::  Link :: https://medium.com/williamdesk/upgrade-ruby-on-rails-project-101-f4c1b44ec254
+
+Upgrade Ruby on Rails :: Rails 5.2 to 6.0 ::
+
+Our Goal:
+
+Ruby: 2.6.6 => 3.0.2
+Rails: 5.2.6.4 => 6.0.4.1
+
+
+.........................
+
+Step 01 ::  Create another new project by your target version.
+
+Use rvm to install the ruby 3.0.2  ::  ruby '3.0.2'
+Use gem install rails 6.0.4.1 :: gem 'rails', '~> 6.0.4', '>= 6.0.4.1'
+$ rails _6.0.4.1_ new {{my_project_name}} --skip-javascript
+....................
+
+Step 02 ::  Copy and compare the config file to your original project.
+
+Update .ruby_version to 3.0.2 (For rvm set the project version)
+Each config/environments/*.rb add the active_storage config setting.
+# Use the production.rb for example
+# Add the active storage config setting.
+Rails.application.configure do
+  # Store uploaded files on the local file system (see config/storage.yml for options).
+  config.active_storage.service = :local
+end
+
+....................
+
+....................
+
+
+Step 03 :: Add config/initializers‎/content_security_policy.rb file
+....................
+
+Step 04 :: Update config/application.rb load_defaults to 6.0
+....................
+
+
+Step 05 ::  Update the config/boot.rb
+
+Spring.watch(
+  ".ruby-version",
+  ".rbenv-vars",
+  "tmp/restart.txt",
+  "tmp/caching-dev.txt"
+)
+....................
+
+
+Step 06 :: Add the new file at config/storage.yml for active storage setting.
+....................
+
+Step 07 :: Copy and compare the bin file to your original project.
+
+Overwrite the bin/bundle file.
+Add the begin..rescue condition section at the bin/rails and bin/rake files.
+
+3. Update the bin/setup file for “APP_ROOT” and “db:prepare section”
+
+4. Add the new bin/spring file.
+
+5. Delete the bin/update file.
+....................
+
+Step 08 :: Try to start up your rails application
+....................
+
+The important step of all, try to start the application to check is alive or dead by using the commands below:
+
+$ bin/rails s
+$ bin/rails s -e production
+$ rails c
+
+Step 09 :: Fix warnings and errors at the project
+....................
+
+Error 1: rspec-rails test error
+Error 2: File typo error
+Error 3: Our custom-made gem needs to update.
+Error 4: Overwrite to Rails 6 new methods.
+Error 5: ActiveRecord callback error
+Error 6: URI.decode method is deprecate.
+....................
+
+Step 10 ::Update Dockerfile and .gitlab-ci.yml
+
+..............................................................................
+......................                                ........................
+..............................................................................
+.......                                                              .........
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+000000000000000000000000000000000000000000000000000000000000000000000000000000
+
+..............................................................................
+......................                                ........................
+..............................................................................
+.......                                                              .........
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+000000000000000000000000000000000000000000000000000000000000000000000000000000
+
+Link ::   https://www.linkedin.com/pulse/ruby-rails-lets-upgrade-from-61-701-innovation-feel/?trk=organization-update-content_share-article
+
+Step 01 :: Update rails in gemfile and upgrade rails packages
+#old  :: gem “rails”, “~> 6.1.4”  #new   gem “rails”, “~> 7.0.1”+ bundle update 
+
+.............
+Step 02 :: Upgrade all of rails packages one by one so run commands below in package.json: 
+yarn upgrade @rails/actioncable –latest  
+yarn upgrade @rails/activestorage –latest 
+yarn upgrade @rails/request.js –latest 
+ 
+.............
+Step 03 :: Sprockets to gemfile
+If you are running rails commands assets related errors can show up because of using the asset pipeline. Example: 
+# - don’t know how to build task ‘assets:precompile'
+# - ‘method_missing’: undefined method ‘assets’
+So in this case you can add sprockets to the gemfile: 
+
+gem “sprockets-rails” + bundle 
+
+.............
+
+Step 04 :: Run updating rails task and check frameworks defaults 
+$ bin/rails app:update
+...
+
+After you enter the bin/rails app:update Rails will create a new_framework_dafaults_7.0.rb file in config/initializers. This file is needed because it makes a big upgrade much easier by flipping on the new default settings one-by-one in multiple deployments. Now you can utilize the default configuration settings from rails 6 while rails 7 is running for the reason that the application.rb file is already setting load_defaults specifies exactly which Rails version settings to load. 
+
+# initialize configuration defaults for originally generated Rails
+
+config.load_defaults 6.1
+After you can remove the new_framework_defaults_7.0.rb and flip the load_defaults version in application.rb to 7.0.1
+
+...
+
+
+
+Upgrade from Rails 6 to Rails 7 :: 
+
+Link ::  https://www.learnenough.com/blog/migrating-away-from-rails-webpacker

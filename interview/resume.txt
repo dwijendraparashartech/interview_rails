@@ -1,0 +1,75 @@
+resume.txt ::
+
+
+Resume Gems ::
+
+OmniAuth :: Standardize multi Provider Authentication
+Users happier by allowing them to access your application without creating a new account. They could simply log in using their existing Facebook, Twitter, Amazon, or DigitalOcean accounts. In fact, you could support authentication with any popular OAuth service provider. OAuth support is provided by the OmniAuth gem.OmniAuth was intentionally built not to automatically associate with a User model or make assumptions about how many authentication methods you might want to use or what you might want to do with the data once a user has authenticated. This makes OmniAuth incredibly flexible.
+
+
+
+Twitter:
+
+
+Letter-Opener:
+Letter Opener uses Launchy to open sent mail in the browser. This assumes the Ruby process is running on the local development machine. If you are using a separate staging server or VM this will not work. In that case consider using Mailtrap or MailCatcher.
+
+
+Chart-kick:
+Chartkick is a charting library for Ruby on Rails that allows you to easily create nice looking charts. Chartkick is compatible with all major browsers and can easily be used to give your Ruby on Rails application some additional flair. In this article we will cover the basics of using Chartkick.
+
+
+Act_as_Tenant:
+acts_as_tenant adds the ability to scope models to a tenant. Tenants are represented by a tenant model, such as Account . acts_as_tenant will help you set the current tenant on each request and ensures all 'tenant models' are always properly scoped to the current tenant: when viewing, searching and creating.
+
+
+Prawn: 
+Prawn is a pure Ruby PDF generation library that provides a lot of great functionality while trying to remain simple and reasonably performant.
+
+Auto Complete:
+It is a common feature of modern applications to provide autocomplete or typeahead-style suggestions on search inputs to improve the user experience. In this tutorial, we will implement this feature in a Ruby on Rails application using Webpack as the JavaScript bundler.
+
+
+ActionMailer:
+Action Mailer allows you to send emails from your application using a mailer model and views. So, in Rails, emails are used by creating mailers that inherit from ActionMailer::Base and live in app/mailers. Those mailers have associated views that appear alongside controller views in app/views.
+
+
+Will Paginate:
+The will_paginate Gem Paginates the Database
+There's a couple of ways to say how many items you want a page to hold. The per_page method of will_paginate does just that: It establishes how many items should be returned per page. You can define this in the controller or the model.
+
+Devise:
+
+
+CanCanCan :  
+CanCan is a simple authorization strategy for Rails that is decoupled from user roles. All the permissions are stored in one single location. It is a popular authorization library for Ruby on Rails that restricts user access to specific resources.
+
+WillPaginate
+
+heroku
+
+Active Merchant
+
+Delayed Jobs
+
+Rails Best Practices
+
+Liquid : gem 'liquid-rails'
+It allows you to render .liquid templates with layout and partial support. It also provides filters, tags, drops class to be used inside your liquid template.
+
+Liquid:
+Liquid is an open-source template language created by Shopify and written in Ruby. It is the backbone of Shopify themes and is used to load dynamic content on storefronts.
+
+Redis:
+Redis is an open source, in-memory, key-value data store most commonly used as a primary database, cache, message broker, and queue. Redis cache delivers sub-millisecond response times, enabling fast and powerful real-time applications in industries such as gaming, fintech, ad-tech, social media, healthcare, and IoT.
+
+RSpec:
+RSpec is a testing framework written in Ruby to test Ruby code. To get started using RSpec with Rails, add it to the Gemfile. group :development, :test do gem 'rspec-rails' end. 
+
+Capybara: Capybara is an acceptance test framework for web applications. It's a common choice for end-to-end, acceptance, or integration testing in Rails applications. It allows developers to simulate a user on a web page and make assertions based on the content and environment of the page.
+
+
+Carrierwave:  This gem provides a simple and extremely flexible way to upload files from Ruby applications. It works well with Rack based web applications, such as Ruby on Rails.
+
+
+Minimagic

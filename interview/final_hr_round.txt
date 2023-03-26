@@ -1,0 +1,10 @@
+final_hr_round.txt
+
+
+Hello Mam
+
+1. Tell me about yourself ?
+Myself Dwijendra Parashar working as the Software developer with Ruby on Rails in Bittern Technologies from around past 4 years.I belongs from Bulandshahr , live and work in Noida.
+
+
+2. 

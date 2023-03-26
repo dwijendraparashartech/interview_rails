@@ -1,0 +1,9 @@
+garbage_collection.txt
+.............................
+
+https://blog.appsignal.com/2021/11/17/practical-garbage-collection-tuning-in-ruby.html
+
+
+.............................
+
+

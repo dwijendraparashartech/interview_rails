@@ -1,0 +1,156 @@
+cron_job.txt
+
+
+Link ::  https://www.hostinger.in/tutorials/cron-job
+
+cron job special strings  : 
+
+Cron Job Special Strings
+@hourly. The job will run once an hour.
+@daily or @midnight. These strings will run the task every day at midnight.
+@weekly. Use this to run jobs once a week at midnight on Sunday.
+@monthly. This special string runs a command once on the first day of every month.
+@yearly. ...
+@reboot.
+
+
+cron jobs are great for computers that work 24/7, such as servers.
+
+ Like any other program, cron has limitations you should consider before using it:
+ 
+ The shortest interval between jobs is 60 seconds. With cron, you won’t be able to repeat a job every 59 seconds or less.
+
+ Centralized on one computer. Cron jobs can’t be distributed to multiple computers on a network. So if the computer running cron crashes, the scheduled tasks won’t be executed, and the missed jobs will only be able to be run manually.
+
+ No auto-retry mechanism. Cron is designed to run at strictly specified times. If a task fails, it won’t run again until the next scheduled time. This makes cron unsuitable for incremental tasks.
+
+..................................................
+
+
+there are two types of configration files for cron Job :
+
+The system crontab. Use it to schedule system-wide, essential jobs that can only be changed with root privileges.
+
+The user crontab. This file lets users create and edit cron jobs that only apply at the user level.
+
+..................................................
+
+
+Cron tab syntax ::
+
+The crontab syntax consists of five fields with the following possible values:
+
+Minute. The minute of the hour the command will run on, ranging from 0-59.
+
+Hour. The hour the command will run at, ranging from 0-23 in the 24-hour notation.
+
+Day of the month. The day of the month the user wants the command to run on, ranging from 1-31.
+Month. The month that the user wants the command to run in, ranging from 1-12, thus representing January-December.
+
+Day of the week. The day of the week for a command to run on, ranging from 0-6, representing Sunday-Saturday. In some systems, the value 7 represents Sunday.
+
+
+
+.....................................................
+
+To set the correct time for your cron command, knowledge of cron job operators is essential. They allow you to specify which values you want to enter in each field. You need to use proper operators in all crontab files.
+
+
+
+To set the correct time for your cron command, knowledge of cron job operators is essential. They allow you to specify which values you want to enter in each field. You need to use proper operators in all crontab files.
+
+Asterisk (*). Use this operator to signify all possible values in a field. For example, if you want your cron job to run every minute, write an asterisk in the Minute field.
+Comma (,). Use this operator to list multiple values. For example, writing 1,5 in the Day of the week field will schedule the task to be performed every Monday and Friday.
+Hyphen (-). Use this operator to determine a range of values. For example, if you want to set up a cron job from June to September, writing 6-9 in the Month field will do the job.
+Separator (/). Use this operator to divide a value. For example, if you want to make a script run every twelve hours, write */12 in the Hour field.
+Last (L). This operator can be used in the day-of-month and day-of-week fields. For example, writing 3L in the day-of-week field means the last Wednesday of a month.
+Weekday (W). Use this operator to determine the closest weekday from a given time. For example, if the 1st of a month is a Saturday, writing 1W in the day-of-month field will run the command on the following Monday (the 3rd).
+Hash (#). Use this operator to determine the day of the week, followed by a number ranging from 1 to 5. For example, 1#2 means the second Monday of the month.
+Question mark (?). Use this operator to input “no specific value” for the “day of the month” and “day of the week” fields.
+
+.........................................................
+
+
+
+Cron Job Special Strings
+Special strings are used to schedule cron jobs at time intervals without the user having to figure out the logical set of numbers to input. To use them, write an @ followed by a simple phrase.
+
+Here are some useful special strings that you can use in commands:
+
+
+
+
+@hourly. The job will run once an hour.
+@daily or @midnight. These strings will run the task every day at midnight.
+@weekly. Use this to run jobs once a week at midnight on Sunday.
+@monthly. This special string runs a command once on the first day of every month.
+@yearly. Use this to run a task once a year at midnight on January 1st.
+@reboot. With this string, the job will run only once at startup.
+
+
+.........................................................
+
+
+Cron Permissions
+The following two files can be created or edited to allow or restrict users from using the system’s cron file:
+
+/etc/cron.allow – if cron.allow exists, it should contain a user’s name to permit them to use cron jobs.
+/etc/cron.deny – if cron.allow doesn’t exist but cron.deny does, the user who wants to use cron jobs must not be listed within the file.
+
+
+.........................................................
+
+
+
+Take a look at the following sample commands to get a better understanding of the cron syntax:
+
+
+Example	Explanation
+
+0 0 * * 0 /root/backup.sh	Perform a backup every Sunday at midnight.
+
+0 * * * 1 /root/clearcache.sh	Clear the cache every hour on Mondays.
+
+0 6,18 * * * /root/backup.sh	Backup data twice a day at 6am and 6pm.
+
+*/10 * * * * /scripts/monitor.sh	Perform monitoring every 10 minutes.
+
+*/15 * * * * /root/backup.sh	Perform a backup every 15 minutes.
+
+* * 20 7 * /root/backup.sh	Perform a backup every minute on July 20.
+
+0 22 * * 1-5 /root/clearcache.sh	Clear the cache every weekday (Monday to Friday) at 10pm.
+
+0 0 * * 2 * /root/backup.sh	Perform a backup at midnight every Tuesday.
+* * * 1,2,5 * /scripts/monitor.sh	Perform monitoring every minute during January, February, and May.
+10-59/10 5 * * * /root/clearcache.sh	Clear the cache every 10 minutes at 5am, starting from 5:10am.
+0 8 1 */3 * /home/user/script.sh	Make the task run quarterly on the first day of the month at 8am.
+0 * * * * /root/backup.sh	Create a backup every hour.
+* * * * * /scripts/script.sh; /scripts/scrit2.sh	Include multiple tasks on a single cron job. Useful for scheduling multiple tasks to run at the same time.
+@reboot /root/clearcache.sh	Clear cache every time you turn on the system.
+0 8 1-7 * 1 /scripts/script.sh	Run a script on the first Monday of each month, at 8 am.
+5 4 * * 0 /root/backup.sh	Create a backup every Sunday at 4:05 am.
+15 9 1,20 * * /scripts/monitor.sh	Perform monitoring at 9:15 pm on the 1st and 20th of every month.
+@hourly /scripts/monitor.sh	Perform monitoring every hour.
+0 0 1,15 * 3 /scripts/script.sh	Run a script at midnight every Wednesday between the 1st and 15th of every month.
+15 14 1 * * /root/clearcache.sh	Clear the cache on the first day of every month at 2:15 pm.
+00 08-17 * * 1-5 bin/check-db-status	Check database status every day from Monday to Friday every hour from 8 to 5 pm.
+15 6 1 1 * /root/backup.sh	Perform a backup every January 1st at 6:15am.
+0 0 * * * /scripts/monitor.sh	Run the monitoring script once a day at midnight.
+0 0 15 * * /root/clearcache.sh	Clear the cache at midnight on the 15th of every month.
+* * * * 1,5 /scripts/monitor.sh	Performing monitoring every Monday and Friday.
+
+
+
+
+...............................................................
+
+
+
+https://dev.to/risafj/cron-jobs-in-rails-a-simple-guide-to-actually-using-the-whenever-gem-now-with-tasks-2omi
+
+
+https://dev.to/brayvasq/ruby-on-rails-cron-jobs-using-whenever-590b
+
+https://cryptextechnologies.medium.com/cron-job-in-ruby-on-rails-application-a-complete-tutorial-for-beginners-8222429c8aa2
+

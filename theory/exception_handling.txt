@@ -1,0 +1,186 @@
+exception_handling.txt
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+Q0.0.1 Very Basic syntax of exception handling ?
+
+begin
+    # raise exception here
+
+rescue
+    # raised exception handled here
+
+retry
+    # retrying the code in the begin block
+
+
+ensure
+    # Always executed
+
+end
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+Q0.0.2 Some common errors in Exception Handling in Rails ?
+
+IndexError
+NameError
+RangeError
+TypeError
+ZeroDivisionError
+RuntimeError
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q1 .  Build in Sublcasses of Exceptions ?
+
+Built-in subclasses of exception are as follows:
+
+NoMemoryError
+ScriptError
+SecurityError
+SignalException
+StandardError
+SystenExit
+SystemStackError
+fatal - impossible to rescue
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q2. Write down different syntaxes of Exceptions ??
+
+    begin  
+code..  
+rescue OneTypeOfException  
+code..  
+rescue AnotherTypeOfException  
+ code..  
+else  
+  # Other exceptions  
+end  
+
+................................
+
+begin  
+   code....  
+rescue  
+    # capture exceptions  
+    retry  # program will run from the begin block  
+end  
+
+................................
+
+begin   
+  code..  
+   #..raise exception  
+rescue   
+   #.. exception is rescued  
+ensure   
+   #.. This code will always execute.  
+end  
+
+
+................................
+
+
+begin   
+   code..   
+   #..raise exception  
+rescue   
+   # .. exception is rescued  
+else  
+   #.. executes if there is no exception  
+ensure   
+   #..  This code will always execute.  
+end  
+
+................................
+
+begin   
+ # raise 'A test exception.'   
+ puts "no exception is raised"   
+rescue Exception => e   
+  puts e.message   
+  puts e.backtrace.inspect   
+else   
+   puts "else code will be executed as no exception is raised."   
+ensure   
+  puts "ensure code will run"   
+end 
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q3. Give the Syntax of throw and exception ?
+
+throw :lablename  
+#.. this  code will not be executed  
+catch :lablename do  
+#.. matching catch will be executed after a throw is encountered.  
+end  
+Or,
+
+throw :lablename condition  
+#.. this code will not be executed  
+catch :lablename do  
+#.. matching catch will be executed after a throw is encountered.  
+end  
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q4. How many types of errors are there in Ruby for the exception Handling ?
+
+Ruby has a predefined Exception class, with quite a few subclasses that can be used for basic error handling. The hierarchy of these subclasses is as follows (with commentary):
+
+Fatal: used internally by Ruby when it must exit due to a fatal error. Errors of this class can't be rescued.
+NoMemoryError: raised when memory allocation fails.
+ScriptError: used when a script is unable to be executed. This can be due to errors in any of the subclasses of ScriptError.
+LoadError: raised if a required file doesn't load.
+NotImplementedError: raised when a feature isn't implemented on the current platform (i.e., trying to call a method that isn't supported by the operating system).
+SyntaxError: occurs when trying to execute code with invalid syntax.
+SecurityError: raised when a potentially unsafe operation is attempted.
+SignalException: used when a signal is received on a process.
+Interrupt: raised if the interrupt signal is received (i.e., a user pressed Ctrl-C).
+StandardError: used for the most common types of exceptions. Usually the subclasses will be raised rather than StandardError itself. However, when a rescue clause without a specific StandardError subclass is executed, StandardError will be raised.
+ArgumentError: occurs when arguments are incorrect (i.e., the wrong number of arguments).
+FiberError: raised if an invalid operation is being attempted on a Fiber (i.e., trying to call a dead Fiber).
+IndexError: used when the index is invalid.
+KeyError: occurs if a specified key is not found.
+StopIteration: raised to stop the iteration.
+IOError: raised during an input/output operation failure.
+EOFError: occurs when reaching the end of the file by some IO operations.
+LocalJumpError: raised if Ruby cannot yield as requested in the code.
+NameError: raised if a name is undefined or invalid.
+NoMethodError: used when a method is called on a receiver that doesn't have the method defined, and the receiver doesn't respond with method_missing.
+RangeError: raised if a numerical value is out of range.
+FloatDomainError: occurs when attempting to convert certain float values to unsupported classes.
+RegexpError: raised if a given regular expression is invalid.
+RuntimeError: used when given an invalid operation. This is a generic error class.
+SystemCallError: raised for low-level, platform-dependent errors. These exceptions look like Errno:xxx.
+ThreadError: occurs if an invalid operation is being attempted on a Thread.
+TypeError: raised when an object is not of the expected type.
+ZeroDivisionError: used if attempting to divide an integer by 0.
+SystemExit: raised if the exit method is called to terminate the script.
+SystemStackError: occurs during a stack overflow (i.e., in the case of an accidental infinite loop).
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q Error in Exceptions ?
+
+begin  
+  # error raised here 
+rescue IndexError  
+  # dealing in one way
+rescue RangeError  
+  # dealing in another way  
+end 
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+

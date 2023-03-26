@@ -1,0 +1,381 @@
+synatx.txt ::
+..............................
+..............................
+..............................
+
+0. Syntax of Block :: 
+
+
+
+
+
+
+
+
+
+
+
+.............
+
+
+1. Syntax of SingleTon Method ::
+
+def Obj.GFG
+# Method body 
+end
+
+Here, the GFG is a singleton method and Obj is an object.
+
+..............
+
+2. Syntax of Proc Method ::
+
+square = Proc.new { |x| x ** 2 } #> proc is defined by calling Proc.new followed by a block
+puts  [2, 4, 6].collect!(&square)  # => [4, 16, 36]  , passing a proc to a method, an & is used to convert the proc into a bloc
+
+proc = Proc.new { puts "I am the proc method!" }
+proc.call # => I am the proc method!
+
+..............
+
+3.Syntax of Lambda Method ::
+
+lambda = lambda { puts "I am the lambda method!"}
+lambda.call  # => I am the lambda method!
+
+..............
+
+
+4. Syntax of Yield Keyword ::
+
+def yield
+  yield
+end
+
+yield { puts "yield"}
+
+#Output     # yield
+
+..............
+
+
+5. Syntax of Form With  ::
+<%= form_with model: product do |f| %>
+<div>
+  <%= f.label :name %>
+  <%= f.text_field :name %><br>
+  <% product.errors.full_messages_for(:name).each do |message| %>
+  <div><%= message %></div>
+  <% end %>
+</div>
+
+<div>
+  <%= f.label :price %>
+  <%= f.text_field :price %><br>
+  <% product.errors.full_messages_for(:price).each do |message| %>
+  <div><%= message %></div>
+  <% end %>
+</div>
+
+<div>
+  <%= f.label :desciption%>
+  <%= f.text_field :description %><br>
+  <% product.errors.full_messages_for(:description).each do |message| %>
+  <div><%= message %></div>
+  <% end %>
+</div>
+
+<div>
+  <%= f.submit %>
+</div>
+<% end %>
+
+OR 
+
+
+<%= form_with model: @article do |form| %>
+  <div>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :body %><br>
+    <%= form.text_area :body %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+
+..............
+
+6. Syntax of Form For  ::
+
+<%= form_for @post do |f| %>
+  <%= f.label 'Title' %>
+  <%= f.text_field :title %>
+  <br /> <br />
+  <%= f.label 'Body' %>
+  <%= f.text_area :body %>
+  <br /> <br />
+  <%= f.label 'Author' %>
+  <%= f.text_field :author %>
+  <br /> <br />
+  <%= submit_tag "#{@post.new_record? ? 'Create' : 'Update'} Post" %>
+<% end %>
+
+
+<!-- form used to delete a comment -->
+<%= form_for [@post, comment], method: "delete" do %>
+  <%= submit_tag "Delete Comment" %>
+<% end %>
+
+<!-- form used to create a comment -->
+<%= form_for [@post, @comment] do |f| %>
+  <%= f.label 'Comment' %>
+  <%= f.text_area :body %>
+  <br /><br />
+  <%= f.label :author %>
+  <%= f.text_field :author %>
+  <br /><br />
+  <%= f.submit %>
+<% end %>
+
+
+..............
+
+
+
+7. Syntax of Form Tag ::
+
+
+
+..............
+
+7.1 Syntax of Search Form ::
+
+
+
+..............
+
+9. Syntax of Scope ::
+ 
+class User
+    scope :lengthy_users, ->(length) { where(“LENGTH(title) > ?”, length) }
+end
+
+..............
+
+10. Syntax of Ajax ::
+
+
+..............
+
+
+11. Syntax of Api Methods ::
+
+class Api::V1::FactsController < ApplicationController
+  before_action :find_fact,only: [:show, :update, :destroy]
+  def index 
+    @facts = Fact.all
+    render json: @facts
+  end 
+  def show
+    render json: @fact
+  end 
+  def create
+    @fact = Fact.new(fact_params)
+    if @fact.save 
+      render json: @fact
+    else 
+      render error: {error: 'Unable to create fact'},status: 400 
+    end
+  end 
+  def update
+    if @fact 
+    @fact.update(fact_params)
+    render json: {message: 'Fact successfully updated.'},status: 200
+    else
+    render json: {error: 'Unable to update fact.' },status: 400
+  end
+  def destroy
+    if @fact 
+      @fact.destroy
+      render json: {message: 'Facts successfully destroyed'},status: 200
+      else
+      render json: {error: 'Unable to delete fact'},status:400
+      end
+  end
+  private 
+  def fact_params
+    params.require(:fact).permit(:fact, :likes, :user_id)
+  end
+  def find_fact
+    @fact = Fact.find(params[:id])
+  end 
+end 
+
+..............
+
+12. Syntax of Rails Controller Methods ::
+
+class BooksController < ApplicationController
+   def list
+      @books = Book.all
+   end
+   def show
+      @book = Book.find(params[:id])
+   end
+   def new
+      @book = Book.new
+      @subjects = Subject.all
+   end
+   def book_params
+      params.require(:books).permit(:title, :price, :subject_id, :description)
+   end
+   def create
+      @book = Book.new(book_params)
+      if @book.save
+         redirect_to :action => 'list'
+      else
+         @subjects = Subject.all
+         render :action => 'new'
+      end
+   end
+   def edit
+      @book = Book.find(params[:id])
+      @subjects = Subject.all
+   end
+   def book_param
+      params.require(:book).permit(:title, :price, :subject_id, :description)
+   end
+   def update
+      @book = Book.find(params[:id])
+      if @book.update_attributes(book_param)
+         redirect_to :action => 'show', :id => @book
+      else
+         @subjects = Subject.all
+         render :action => 'edit'
+      end
+   end
+   def delete
+      Book.find(params[:id]).destroy
+      redirect_to :action => 'list'
+   end
+   def show_subjects
+      @subject = Subject.find(params[:id])
+   end
+end
+..............
+
+13. Syntax of Regex :: /match will between two slashes /
+
+if "Do you like cats?".match(/like/)
+  puts "Match found!"
+end
+
+..............
+
+13.2 Syntax of gsub :: /match will between two slashes /
+
+str = "white chocolate"  # replace the word “white” with the word “dark”.
+str.gsub("white", "dark")
+"a1".gsub(/\d/, "2")   # "a2"
+"dog".gsub(/\w+/) { |animal| animal == "dog" ? "cat" : "dog" }
+
+...............
+
+
+14.Syntax of Basic Rspec Test Case ::
+
+class HelloWorld
+  def say_hello
+  "Hello World!"
+  end
+end
+describe HelloWorld do
+  context “When testing the HelloWorld class” do
+    it "should say 'Hello World' when we call the say_hello method" do
+    hw = HelloWorld.new
+    message = hw.say_hello
+    expect(message).to eq "Hello World!"
+    end
+en
+
+..............
+
+15. Syntax to write the Cron Job ::
+
+every 1.minute do
+  rake 'batch:send_messages'
+end
+
+...............
+
+16. Syntax to write the sidekiq:: background job ::
+
+...............
+
+17. Syntax of Enum in Rails ::
+
+class Post < ApplicationRecord
+  enum :status, [ :draft, :published, :archived, :trashed ]
+end
+
+class Post < ApplicationRecord
+  enum :status, %i(draft published archived trashed)
+end
+
+class Post < ApplicationRecord
+  enum :status, { draft: 0, published: 1, archived: 2, trashed: 3 }
+end
+
+Post.statuses
+=> { "draft" => 0, "published" => 1, "archived" => 2, "trashed" => 3 }
+
+Post.statuses[:archived]
+=> 2
+
+Post.statuses["trashed"]
+=> 3
+
+Post.statuses[:unarchived]
+=> nil
+
+...............
+
+18. Syntax of attr_accessor,attr_reader,attr_writer ::
+
+
+
+
+................
+
+19. Syntax of Validations :: 
+
+class User < ApplicationRecord
+  validates :name, presence: true
+end
+
+................
+
+
+20. Syntax of Joins ::
+................
+1.Syntax of Left Joins ::   Student.left_joins(:club)
+..........
+2. Syntax of Forced Left Joins :: Student.eager_load(:club)
+..........
+3. Syntax of Right Joins ::  Club.left_joins(:students)
+..........
+4. Syntax of Forced Right Joins :: Club.eager_load(:students)
+..........
+5. Syntax of Inner Joins :: Student.joins(:club)  OR    Club.joins(:students)
+..........
+6. Syntax of Other/Custom Joins :: Student.joins('RIGHT JOIN "clubs" ON "students"."id" = "clubs"."id"')
+..........
+6. Syntax of Full Outer Joins ::
+Student.joins(' FULL OUTER JOIN "clubs" ON "students"."id" = "clubs"."id" ')
+

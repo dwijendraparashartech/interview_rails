@@ -1,0 +1,212 @@
+letter_opener_gem.txt.....
+..........................
+
+This gem lets you see the preview of the mails that your Rails application sends- on your browser screen. It eases your effort of checking and editing in your mailbox.
+
+Link ::   https://github.com/ryanb/letter_opener 
+Link ::   
+http://vaidehijoshi.github.io/blog/2015/09/08/youve-got-mail-action-mailer-plus-letter-opener/
+
+...............................................................
+
+1. gem "letter_opener", group: :development  +  $ bundle 
+...............................................................
+
+
+2. Setting up  the delivery method in config/environments/development.rb ::
+
+config.action_mailer.delivery_method = :letter_opener
+config.action_mailer.perform_deliveries = true
+
+......
+note ::  Now any email will pop up in your browser instead of being sent. The messages are stored in tmp/letter_opener. If you want to change application that will be used to open your emails you should override LAUNCHY_APPLICATION environment variable or set Launchy.application in the initializer.
+
+...............................................................
+
+3. set the configration inside the letter opener :: 
+
+LetterOpener.configure do |config|
+  # To overrider the location for message storage.
+  # Default value is `tmp/letter_opener`
+  config.location = Rails.root.join('tmp', 'my_mails')
+
+  # To render only the message body, without any metadata or extra containers or styling.
+  # Default value is `:default` that renders styled message with showing useful metadata.
+  config.message_template = :light
+
+  # To change default file URI scheme you can provide `file_uri_scheme` config.
+  # It might be useful when you use WSL (Windows Subsystem for Linux) and default
+  # scheme doesn't work for you.
+  # Default value is blank
+  config.file_uri_scheme = 'file://///wsl$/Ubuntu-18.04'
+end
+
+...............................................................
+
+4. Write the Notification Mailer :: 
+
+$  rails generate mailer NotificationMailer
+it will create the below necessary files ::
+
+1 app/mailers/notification_mailer.rb
+2 app/views/notification_mailer
+3 test/functional/notification_mailer_test.rb
+
+...............................................................
+
+5. can change the emails sender email with the below line inside notification_mailer.rb ::
+
+class NotificationMailer < ActionMailer::Base
+	default :from => "from@example.com"
+end 
+
+...............................................................
+
+6. Create the Notification Mailer Method :::
+
+def notification_mailer(notification)
+  @notification = notification
+  @url  = "http://postbox.tut/"
+  mail(:subject => "New Notification")
+end
+
+...............................................................
+
+7. Create the view files for the Notification Mailer :: 
+Create the templates for the email ::
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /></pre>
+<h1>Notification email.</h1>
+<h2><%= @notification.headline %></h2>
+<pre>
+<%= @notification.content %>
+
+This email was sent out to you, because you are subscribed to the postbox-mailing-list.
+If you want to unscribscribe, please use this url: <%= @url %>.
+
+
+Looks like this  :: 
+
+Notification email.
+-------------------
+<%= @notification.headline %>
+
+<code><%= @notification.content %>
+
+This email was sent out to you, because you are subscribed to the steamengine-mailing-list.
+If you want to unscribscribe, please use this url: <%= @url %>.
+
+...............................................................
+
+Note :: Very Imp ::   Make sure that the method in your mailer (notification_mailer) and the name of your views (notification_mailer.html.erb) are the same. Otherwise, no email will be sent
+
+...............................................................
+
+8. Testing of the mailers ::
+We create the file - notification_email_test.rb ::
+
+notification_email_test.rb
+
+test/unit/notification_email_test.rb ::
+
+require 'test_helper'
+class NotificationMailerTest < ActionMailer::TestCase
+
+  tests NotificationMailer
+
+  test "notification_email" do
+
+    expected = new_mail
+    expected.from    = 'info@postbox.tut'
+    expected.to      = 'somelist@postbox.tut'
+    expected.subject = "New Notification"
+    expected.date    = Time.now
+
+    actual = nil
+    assert_nothing_raised { actual = NotificationMailer.notification_mailer(@recipient) }
+    assert_not_nil actual
+
+    expected.message_id = '<123@456>'
+    actual.message_id = '<123@456>'
+
+    assert_equal expected.encoded, actual.encoded
+
+   end
+
+end
+
+...............................................................
+
+9. The notification model and controllers :: 
+
+$ rails generate scaffold Notification headline:string content:text
+http://localhost:3000/notifications
+
+10. Add the create method in the controller file of notification mailer ::
+
+def create
+  @notification = Notification.new(params[:notification])
+  respond_to do |format|
+    if @notification.save
+      **NotificationMailer.notification_mailer(@notification).deliver**
+      format.html { redirect_to(@notification, :notice => 'Notification was successfully created.') }
+      format.xml  { render :xml => @notification, :status => :created, :location => @notification }
+    else
+      format.html { render :action => "new" }
+      format.xml  { render :xml => @notification.errors, :status => :unprocessable_entity }
+    end
+  end
+end
+
+...............................................................
+
+Note :: All mails will go to the tmp directory inside the project
+
+
+...............................................................
+
+some Other important points to create te emails :
+Link ::  
+http://vaidehijoshi.github.io/blog/2015/09/08/youve-got-mail-action-mailer-plus-letter-opener/
+
+...........................................
+
+
+0.Add default behaviour in  mailer ::
+
+class ApplicationMailer < ActionMailer::Base
+  default from: "help@vaidehisbookstore.com"
+  layout 'mailer'
+end
+
+1.Genrate the mailer by any name ::
+$ rails generate mailer Order
+
+2. While our order_mailer.rb is completely empty:
+class OrderMailer < ApplicationMailer
+end
+
+3. Add the confirmation mailer functionality :: 
+class OrderMailer < ApplicationMailer
+  def confirmation_email(order)
+    @order = order
+  end
+end
+
+4. Add mail to and subject in the mailer ::
+class OrderMailer < ApplicationMailer
+  def confirmation_email(order)
+    @order = order
+
+    mail(to: order.user.email, subject: "Your Order #{@order.number}")
+  end
+end
+
+5. Add the view part of the mailer ::
+mail(to: order.user.email) do |format|
+  format.text { render plain: "Hi, #{order.user.email}!" }
+  format.html { render html: "<h1>Hi, #{order.user.email}!</h1>".html_safe }
+end
+
+...............................................................
+

@@ -1,0 +1,15 @@
+automating_ror_deplpyment_with_aws_deploy.txt ::::::
+
+Link ::  https://blog.shikisoft.com/automate-ruby-on-rails-deployments-aws-codedeploy/
+
+In the amazon code deployment - there is :: 
+
+1. EC2 Instance 
+2. Application Load Balancer
+3. Amazon SNS
+4. Amazon S3
+
+Services ::  1.EC2 Autoscaling  ,  2.Amazon SNS 
+
+..................................................................
+

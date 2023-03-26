@@ -1,0 +1,24 @@
+ror_challenges.txt ...
+,........................
+
+1. Installing Ruby on Rails :: Issues 
+2. Rail Fails to Work at Windows 
+3. It is difficult to find up-to-date advise ::
+We have not sured that up-to-date advise we got, Rails started since 2004 and after every two years it is changing. So ::
+Carefully read the date or blog is uptodate or not 
+Carefully read the gem is uptodate or not and how many downloads for the particular gem are there .
+4. It is difficult to know which gems are used.
+5. Many times speeding issues of the api's come. 
+6. Sometimes it may take time to understand the code completely with the 
+new features.
+7. Run Time speed and Performance ::
+slow runtime speed . in most cases performance issues your ror application will face will be linked to the server or database architecture. for ex- twitter stuggled to improve ror performance that deteriorated after became very popular.Athough twitter did not abandon Ror completely but it had to replace certain internal communication components and server daemons with scala solutions. 
+8.Lack of the Flexibility :: 
+Sometimes there is a deep haul to your Rails application or using another framework that better suits your needs.
+
+9. Documentation :: It is dificult to locate the reliable documentation.
+Popular gems libraries and all the documentation easily get but it is sometime difficult hard to find the reliable documentation of less used gems.
+
+10. Rails Error Reporting is Cryptic.
+
+11. 

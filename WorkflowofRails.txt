@@ -1,0 +1,121 @@
+WorkflowofRails.txt ::
+
+:::::::::::::::::::::::::::::::]
+
+
+1. HTTP  ::
+
+When you open a web page, click on a link or submit a form in a web browser, the browser will connect to a web server via TCP/IP. The browser then sends the server a "request," think of it like a mail-in form that the browser fills out asking for information on a certain page. The server ultimately sends the web browser a "response." Ruby on Rails is not the web server though, the web server can be anything from Webrick (what usually happens when you start a Rails server from the command line) to Apache HTTPD (the web server that powers most of the web). The web server is just a facilitator, it takes the request and hands it to your Rails application, which generates the response and passes is back to the server, which in turn sends it back to the client. So the flow so far is:
+
+Client -> Server -> [Rails] -> Server -> Client
+
+......................
+
+2. The Router 
+
+
+
+
+
+
+
+
+
+
+
+......................
+
+
+3. The Controller
+
+
+
+
+
+
+
+
+
+
+......................
+
+
+4. The Model 
+
+
+
+
+
+
+
+
+......................
+
+
+5. The View 
+
+
+
+
+
+
+
+
+
+
+
+......................
+
+
+5. 
+
+The Browser will connect to a Web Server via TCP/IP. 
+
+
+And that's it, here is the complete life of a request to a Ruby on Rails web application.
+
+Web Browser - The browser makes the request, usually on behalf of the user when they click on a link.
+Web Server - The web server takes the request and sends it to the Rails application.
+Router - The router, the first part of the Rails application that sees the request, parses the request and determines which controller/action pair it should call.
+Controller - The controller is called. The controller's job is to retrieve data using the model and send it to a view.
+Model - If any data needs to be retrieved, the model is used to get data from the database.
+View - The data is sent to a view, where HTML output is generated.
+Web Server - The generated HTML is sent back to the server, Rails is now finished with the request.
+Web Browser - The server sends the data back to the web browser, and the results are displayed.
+
+
+
+
+1) The browser issues a request for the “/users” URL.
+
+2) Rails routes “/users” to the index action in the Users controller.
+
+3) The index action asks the User model to retrieve all users (User.all).
+
+4) The User model pulls all the users from the database.
+
+5) The User model returns the list of users to the controller
+
+6) The controller captures the users in the @users variable, which is passed to the index view
+
+7) The view uses embedded Ruby to render the “/users” page as HTML.
+
+8) The controller passes the HTML back to the browser.
+
+
+
+
+......................
+
+link    https://medium.com/@swapnilggourshete/rails-request-lifecycle-134a34f3a884
+
+Rails Request Lifecycle
+
+Breakdown of request flow -
+
+1. Browser generates HTTP/HTTPS request after a click or a event
+2. Web server receives request, analyses it and passes to application server
+3. Application server calls up proper controller-action after talking with router
+4. The resulted output is sent back to browser and displayed on screen
+
+

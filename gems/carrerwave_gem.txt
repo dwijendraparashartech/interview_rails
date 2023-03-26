@@ -1,0 +1,215 @@
+carrerwave_gem.txt...............
+.................................
+
+What is Carrierwave Gem ::
+
+This gem provides a simple and extremely flexible way to upload files from Ruby applications. It works well with Rack based web applications, such as Ruby on Rails.
+
+Benefits of the Carrier wave Gem :: 
+
+Benefits
+
+File Caching: Prevents users to select the file again & re-upload if the form fails the validation process
+Clean Code: Helps to write all the logic in uploader classes rather than in models, keeping your model clean and readable
+Image Processing: Provides efficient way to resize & crop images to different formats
+Storage Support: Stores files in third party storages such as AWS S3 bucket, Racksapce or Google Cloud
+Mongodb: Has good support for mongodb with the help of “carrierwave-mongoid” gem
+
+
+
+Links :: https://github.com/carrierwaveuploader/carrierwave
+
+..................................................................
+
+.........................................................
+Single file upload through the carrier wave :: 
+.........................................................
+
+1.
+$ gem install carrierwave
+
+2. Getting uploader :: 
+rails generate uploader Avatar
+
+3. Add the below code in the file ::  app/uploaders/avatar_uploader.rb
+
+class AvatarUploader < CarrierWave::Uploader::Base
+  storage :file
+end
+
+4. You can use your uploader class to store and retrieve files like this:
+
+uploader = AvatarUploader.new
+uploader.store!(my_file)
+uploader.retrieve_from_store!('my_file.png')
+
+5. Make sure you are loading CarrierWave after loading your ORM
+
+require 'carrierwave/orm/activerecord'
+
+
+6. Add a string column to the model you want to mount the uploader by creating a migration:
+
+rails g migration add_avatar_to_users avatar:string
+rails db:migrate
+
+7. Open your model file and mount the uploader:
+
+class User < ApplicationRecord
+  mount_uploader :avatar, AvatarUploader
+end
+
+8. Now you can cache files by assigning them to the attribute, they will automatically be stored when the record is saved.
+
+u = User.new
+u.avatar = params[:file] # Assign a file like this, or
+
+# like this
+File.open('somewhere') do |f|
+  u.avatar = f
+end
+
+u.save!
+u.avatar.url # => '/url/to/file.png'
+u.avatar.current_path # => 'path/to/file.png'
+u.avatar_identifier # => 'file.png'
+
+
+..................................................................
+
+https://github.com/carrierwaveuploader/carrierwave
+very very very very 
+very very 
+very very 
+very very 
+very very 
+Good Link ::::::::::::::::::::::::::::::::::::::::
+
+.........................................................
+Multiple  file upload through the carrier wave :: 
+.........................................................
+
+1. Add avatars to users ::: 
+
+For databases with ActiveRecord json data type support (e.g. PostgreSQL, MySQL)
+rails g migration add_avatars_to_users avatars:json
+rails db:migrate
+
+For database without ActiveRecord json data type support (e.g. SQLite)
+rails g migration add_avatars_to_users avatars:string
+rails db:migrate
+
+2. Open your model file and mount the uploader:
+
+class User < ApplicationRecord
+  mount_uploaders :avatars, AvatarUploader
+  serialize :avatars, JSON # If you use SQLite, add this line.
+end
+
+3. Make sure your file input fields are set up as multiple file fields. For example in Rails you'll want to do something like this:
+
+<%= form.file_field :avatars, multiple: true %>
+
+4. Also, make sure your upload controller permits the multiple file upload attribute, pointing to an empty array in a hash. For example:
+params.require(:user).permit(:email, :first_name, :last_name, {avatars: []})
+
+5. Now you can select multiple files in the upload dialog (e.g. SHIFT+SELECT), and they will automatically be stored when the record is saved.
+
+u = User.new(params[:user])
+u.save!
+u.avatars[0].url # => '/url/to/file.png'
+u.avatars[0].current_path # => 'path/to/file.png'
+u.avatars[0].identifier # => 'file.png'
+
+6. If you want to preserve existing files on uploading new one, you can go like:
+
+<% user.avatars.each do |avatar| %>
+  <%= hidden_field :user, :avatars, multiple: true, value: avatar.identifier %>
+<% end %>
+<%= form.file_field :avatars, multiple: true %>
+
+
+
+...........................................................
+Very good and simple link in rails application :: 
+
+Link 
+https://www.andolasoft.com/blog/upload-rails-file-using-carrierwave.html
+
+...............................................................
+
+1.install carrer wave gem 
+2.generate the uploader 
+3.create your column to your model where you want to store the image
+4.open up the model and mount the uplaoder
+5.can upload the different versions of the image
+6.create the config initilizer
+
+.....................................
+
+1.install carrer wave gem ::
+In your Rails App, add the following to your gem file & run the bundle installation.
+gem 'carrierwave' + bundle 
+
+2.generate the uploader 
+Generate the uploader by running the following command:
+$ rails generate uploader Avatar
+It gives you a file in the path given below:
+app/uploaders/avatar_uploader.rb
+
+3. Create a column to your model where you want to store the image:
+rails g migration add_avatar_to_students avatar:string
+Rakedb:migrate
+
+4. Open up the model and mount the uploader:
+class Student &amp;lt; ActiveRecord::Base
+          mount_uploader:avatar, AvatarUploader
+end
+
+5. In the generated uploader file you can mention different versions of an image, just like this:
+version :thumb do
+   process :resize_to_fill =&amp;gt; [150, 150]
+end
+version :tiny_thumb do
+   process :resize_to_fill =&amp;gt; [50, 50]
+end  
+
+6. Set file storage path in the uploader file. It’s the default storage path where all the files will be stored by CarrierWave.
+
+def store_dir              
+  "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+end
+
+7. Navigate to config > initializers and create a file: carrier_wave.rb.
+Paste the following code:
+
+require 'carrierwave/orm/activerecord'
+
+8. Add the configrtion code : 
+
+CarrierWave.configure do |config|
+    config.fog_credentials = {
+    :provider =&amp;gt; 'AWS',
+   : aws_access_key_id =&amp;gt; "YOUR AMAZON ACCESS KEY",
+  :aws_secret_access_key =&amp;gt; "YOUR AMAZON SECRET KEY",
+ :region =&amp;gt; 'us-west-1' # Change this for different AWS region. Default is 'us-east-1'
+  }
+   config.fog_directory = "bucket-name"
+    end
+
+
+
+...............................................................
+
+Upload multiple files in rails using carrier wave gem ::
+
+https://blog.francium.tech/upload-multiple-files-in-rails-api-using-carrierwave-1f37aaad2b07
+
+
+Important link for the carrier wave gem :: 
+
+https://www.rubydoc.info/gems/carrierwave/0.10.0
+
+https://medium.com/@dakota.lillie/uploading-files-using-carrierwave-in-rails-81ef54ebbcdb
+
+https://www.railscarma.com/blog/technical-articles/carrierwave-gem-file-uploads-rails/

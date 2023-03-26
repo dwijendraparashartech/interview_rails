@@ -1,0 +1,296 @@
+hotwire :::::::::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::::::::::::]]]]
+
+
+
+
+...........................................
+
+Q1. what is hotwire in Rails  , how to use it explain it in detail ?
+Hotwire is a completely new way of adding interactivity to your app with very few lines of code, and it works blazing fast by transmitting HTML over the wire. That means you can keep your hands clean from most Single Page Applications (SPA) frameworks.You can also keep your rendering logic centralized on the server, while still maintaining quick page load times and interactivity.
+
+Hotwire provides a way to build modern web applications without writing JavaScript by sending HTML instead of JSON over the wire, which makes pages load faster. It maintains rendering on the server-side and allows for a simpler and more productive development experience, as Rails has always incorporated into its technologies, without sacrificing the speed or responsiveness associated with a traditional single-page application (SPA).
+
+The core of Hotwire is the Turbo gem. It is a set of complementary techniques that speed up the navigation of pages and submission of forms, dividing complex pages into components and transmitting partial updates of the pages through the WebSocket (which consists of ActionCable, channels, and streaming data).
+
+..........
+
+When you would use hotwire ?
+The answer is anywhere you want to add interactivity to your application.
+
+Example of using HotWire ?
+Some content to be displayed/hidden conditionally based on a user's interaction (e.g., an address form where the list of states automatically changes based on the selected country).
+To update some content in real-time (e.g., a feed like Twitter where new Tweets automatically get added to the page).
+To lazy-load some parts of your pages (e.g., inside an accordion, you can load the titles and mark the details to be lazy-loaded to speed up load times).
+
+..........
+
+HotWire Components ?
+1.Turbo
+2.Stimulus
+3.Stara
+
+...........
+
+Hotwire = HTML-over-the-wire = Turbo + Stimulus (for now)
+Turbo: techniques to handle HTML responses (Turbo Frames, Turbo Streams, …)
+Stimulus: Lightweight JS Framework
+
+..........
+
+HTML-over-the-wire or Hotwire is a concept, not a specific technology. The main idea is to send server-rendered HTML to the client, instead of JSON, leaving application logic to the server.
+
+Turbo is the technology that implements Hotwire in the Rails world. And other backend stacks have their own version of Turbo. Turbo consists of Drive, Frames, and Streams.
+
+Turbo Drive is an evolution of Turbolinks. When enabled, it intercepts link clicks and form submission, maintains a persistent process that leaves window and document unchanged, but replaces the <body> element of the response.
+
+Turbo Frames allow different sections of the page to be lazily loaded and elements on the page to be automatically scoped by using <turbo-frame> element so that a response updates only the frame with a matching id, leaving rest of the page untouched. Turbo Frames are similar to iframes but different, in that they're part of the same DOM, styled by the same CSS, and part of the same JavaScript context.
+
+Turbo Streams take things even further. They allow for partial page updates from not only user interactions (like form submission) but also in response to websocket and SSE. <turbo-stream> elements support automatically changing the HTML of a target element by various operations like replace, append, prepend, remove, etc.
+
+..........
+
+Hotwire is not a single framework; it’s a suite of different frameworks.
+
+Turbo uses different techniques to reduce the amount of JavaScript most web applications have to write. This is the most important part of Hotwire.
+
+Stimulus is a JavaScript framework when you absolutely need to use JavaScript. It sprinkles the client-side interactivity for your application when a server-side trip is not justified.
+
+Strada (not yet released) works with native applications, making it easy to progressively level-up web interactions with native replacements.
+
+Turbo uses the following techniques to provide a SPA-like experience, while still keeping the simplicity of traditional web applications, i.e. sending HTML over the wire.
+
+Turbo Drive accelerates links and form submissions. It listens for link clicks or form submissions, performs them in the background, and updates the page without a full reload.
+
+Turbo Frames divide pages into independent contexts called frames (not iframe). Turbo captures link clicks and form submissions inside a frame, automatically updating the frame contents after receiving a response.
+
+Turbo Streams delivers page changes over WebSocket, SSE, or in response to form submissions using just HTML and a set of CRUD-like actions.
+
+.................................
+
+Is simple to use?
+It’s very simple to use; you just need the default package of a Rails project (Ruby, RoR, ActionCable, and WebSocket), a Turbo gem that downloads all the JS dependencies, and Redis to store some temporary data while browsing the WebSocket.
+
+You don't need to learn another language (JS) to have the speed of a single-page web application because Turbo is complemented by Turbo Drive, Frames, Streams, and Native. Drive speeds-up links and forms and reduces the need to reload networks, while Frames divides networks into independent contexts that are easier to load.
+
+.................................
+
+How is it used with Rails?
+This section will show you a step-by-step example.
+
+For this example, we will need:
+
+Ruby
+Ruby on Rails
+Redis
+SQLite (default database)
+Gem Hotwire
+TurboRails
+StimulusJS
+WebSocket
+ActionCable
+
+.................................
+
+
+Link ::  Process the Hotwire in your Rails Application ?
+
+https://www.honeybadger.io/blog/hotwire-rails/
+
+.................................
+
+
+
+What project will we create?
+We will create a social media project.
+
+First, open your terminal. Let's begin with a new rails project:
+
+rails new social-media
+Enter your project:
+
+cd social-media
+
+.................................
+
+
+Adding Hotwire
+Add the Hotwire gem to your project:
+
+bundle add hotwire-rails
+Alternatively, open your Gemfile and add this:
+
+gem "hotwire-rails"
+If you use the second option, you’ll need to run bundle now.
+
+bundle install
+Then, you’ll install it.
+
+rails hotwire:install
+
+
+.................................
+
+Initial settings
+Now is a great time to analyze the initial settings that Hotwire made. When visiting the Gemfile, it should look like this:
+
+gem 'redis', '~> 4.0'
+
+.................................
+
+
+What project will we create?
+We will create a social media project.
+
+First, open your terminal. Let's begin with a new rails project:
+
+rails new social-media
+Enter your project:
+
+cd social-media
+Adding Hotwire
+Add the Hotwire gem to your project:
+
+bundle add hotwire-rails
+Alternatively, open your Gemfile and add this:
+
+gem "hotwire-rails"
+If you use the second option, you’ll need to run bundle now.
+
+bundle install
+Then, you’ll install it.
+
+rails hotwire:install
+Initial settings
+Now is a great time to analyze the initial settings that Hotwire made. When visiting the Gemfile, it should look like this:
+
+gem 'redis', '~> 4.0'
+Why do we need Redis?
+The Redis gem was added because ActionCable needs it to store some temporary data while browsing the WebSocket. However, just installing Redis is not enough to use it. We need to check whether it is configured correctly. When you go to the config/cable.yml file, it should look like this:
+
+development:
+ adapter: redis
+ redis://localhost:6379/1
+Make sure Redis is running when your start your application (redis-server).
+
+JS dependencies
+Check the dependencies on package.json:
+
+dependencies: {
+ @hotwired/turbo-rails: ^7.0.0-beta.5,
+ @rails/actioncable: ^6.0.0,
+ @rails/activestorage: ^6.0.0,
+ @rails/ujs: ^6.0.0,
+ @rails/webpacker: 4.3.0,
+ stimulus: ^2.0.0
+}
+Generating our model
+After checking all the files, we will generate our views, controllers, models and migrations for the posts table with the body, and likes columns. To do this, run the following in the terminal:
+
+rails g scaffold posts body:text likes:integer
+Creating our database
+Now that we have everything generated, we need to send these changes to the database, so run the following in the terminal:
+
+rails db:create db:migrate
+If everything goes well, we can run the server (rails server) and check whether everything is OK. To do so, we will run the server and then visit the posts page, which will be http://localhost:3000/posts:
+
+posts
+printscreen of the posts directory
+
+Listing the posts
+Now, we will list the posts. To do so, we will create the app/views/posts/_post.html.erb file and add the following code to it:
+
+<div style="background: lightgrey; width: 300px; padding: 10px;">
+  <%= post.body %>
+  <br>
+  <%= link_to :edit, edit_post_path(post) %>
+  <%= button_to "likes (#{post.likes || 0})", post_path(post, like: true), method: :put %>
+</div>
+<br>
+Validations
+We need to validate the body field (which cannot be null), and we will tell the broadcast to display a tweet on the same screen as the first tweet after creating it. To do this, we will edit the file app/models/post.rb and insert the following code:
+
+class Post < ApplicationRecord
+  validates_presence_of :body
+
+  after_create_commit { broadcast_prepend_to :posts }
+end
+Ordering
+We have to order our posts, so open your controller (app/controllers/posts_controller.rb).
+
+...
+def index
+  @posts = Post.all.order(created_at: :desc)
+  @post = Post.new
+end
+...
+Wrapping up
+Now, let's edit our index (app/views/posts/index.html.erb) to show the new post page and the list of all posts.
+
+<%= turbo_stream_from :posts %>
+
+<%= turbo_frame_tag :post_form do %>
+  <%= render 'posts/form', post: @post %>
+<% end %>
+
+<%= turbo_frame_tag :posts do %>
+  <%= render @posts %>
+<% end %>
+Redirecting to the index
+Finally, let's modify the create method in our controller. To avoid redirecting us to show post page, let's keep everything on the same page.
+
+...
+def create
+  @post = Post.new(post_params)
+
+  respond_to do |format|
+  if @post.save
+   format.html { redirect_to posts_path }
+   format.json { render :show, status: :created, location: @post }
+ else
+    format.turbo_stream { render turbo_stream: turbo_stream.replace(@post, partial: 'posts/form', locals: { post: @post }) }
+    format.html { render :new, status: :unprocessable_entity }
+   format.json { render json: @post.errors, status: :unprocessable_entity }
+ end
+  end
+end
+...
+Our final page should look like this:
+
+final-page
+printscreen of the final page
+
+Checking the logs
+When a post is created, check your terminal logs; they should look like this:
+
+[ActionCable] Broadcasting to posts: "<turbo-stream action=\"prepend\" target=\"posts\"><template><div style=\"background: lightgrey; width: 300px; padding: 10px;\">\n  first post\n  <br>\n  <a href=\"/posts/1/edit\">edit</a>\n  <form class=\"button_to\" method=\"post\" action=\"/posts/4?like=true\"><input type=\"hidden\" name=\"_method\" value=\"put\" /><input type=\"submit\" value=\"likes (0)\" /><input type=\"hidden\" name=\"authenticity_token\" value=\"<token>==\" /></form>\n</div>\n<br>\n</template></turbo-stream>"
+Thoughts
+It means that ActionCable is working with turbo stream with a super fast performance, as you can see: Completed 302 Found in 18ms.
+
+Deploying
+Do we need another executable to run alongside our Rails server?
+No, because ActionCable works fine with popular servers, such as Unicorn, Puma, and Passenger.
+
+Does Heroku support Hotwire?
+Yes, Heroku supports the base of Hotwire (websockets). If you have any further questions, you can check Heroku’s official documentation.
+
+In case you are wondering why we are using Redis, there's one more reason
+If Heroku is used without Redis, messages will not be sent to everyone when your app is scaled to more than a single dyno. Due to the stateless nature of the current app, clients connected to the first dyno won’t get messages sent by clients connected to the second dyno. Redis solves this problem by storing the message state in global storage.
+
+Set up Redis on Heroku
+To establish a Redis CLI session with your remote Redis instance, use heroku redis:cli. If you don't specify an instance, then the instance located at REDIS_URL is used by default. If you have more than one instance, specify the instance to which you want to connect.
+
+How does it work on the application server?
+We need to set up each dyno to use the Redis pub-sub system. All the dynos will subscribe to the same channel (the default) and wait for messages. When each server gets a message, it can publish it to the connected clients. We’ll cover subscribe in a separate thread, as subscribe is a blocking function, so waiting for a messages will stop the execution flow. In addition, a second Redis connection is needed since once a subscribe command has been made on a connection, the connection can only unsubscribe or receive messages. Learn more about scaling here.
+
+Security
+Currently, the application is exposed and vulnerable to many attacks. Please set up WSS and sanitizes your input. Learn more about WebSocket Security here.
+
+Conclusion
+It's possible to use Hotwire through a new application, as we’ve shown here, but it's possible to update from Turbolinks.
+
+This article should have helped you understand how the “magic framework” works. In it, you had the possibility to develop, in practice, a small simple application that shows requests via an aggregated turbo stream with manipulation and navigation via WebSocket.
+
+......................................................................
+

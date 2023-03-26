@@ -1,0 +1,147 @@
+amazon_code_deployment_through_ec2.txt ::
+
+Link ::  https://medium.com/@antonio.cm.oliveira/deploying-rails-app-using-aws-codedeploy-to-ec2-the-right-way-2e19fa8c7b4c
+
+Steps :::
+
+Step 1:: Launch an EC2 Instance with code deploy
+Step 2:: Configure Code Deploy
+Step 3:: Configure Code Pipeline
+Step 4:: Deploy your app
+Step 5:: Why Parameter Store not Secrets Manager?
+Step 6:: Configure your parameters using AWS System Manager (parameter store)
+
+......................................................................
+
+
+
+Step 1:: Launch an EC2 Instance with code deploy::
+
+1.We should have AWS Account,VPC and Public Subnet 
+2.Sign In to the AWS Management Console and EC2 Console 
+3.In the Navigation pane choose instances then choose launch instance 
+4. Choose an Amazon Machine Image (AMI) page, from the Quick Start tab, locate the operating system and version you want to use, and then choose Select. At this example I use this one, but feel free to choose what you prefer:
+5.Choose an Instance Type page:: 
+6.Configure Instance Details
+7. Next to User data, with the As text option selected, type the following to install the CodeDeploy agent as the Amazon EC2 instance is launched.
+8.Choose Add Storage.
+9.Choose Add Tags
+10.Choose Configure Security Group.leave the Create a new security group option selected.
+11.1.A default SSH role is configured for Amazon EC2 instances running Amazon Linux, Ubuntu Server, or RHEL.
+11.2.A default RDP role is configured for Amazon EC2 instances running Windows Server.
+12. If you want to open the HTTP port, choose the Add Rule button, and from the Type drop-down list, choose HTTP. Accept the default Source value of Custom 0.0.0.0/0, and then choose Review and Launch. Add you IP with SSH type, so you can access the machine alter.
+13.Review Instance Launch page unchanged, and choose Launch.
+14.In the Select an existing key pair or create a new key pair dialog box.If you’ve already configured an Amazon EC2 instance key pair, you can choose it here.
+15. Choose Launch Instances
+
+.................................................................
+
+Step2:: Configure Code Deploy ::
+
+1.Sign in to the AWS Management Console and open the Amazon Code Deploy console at
+2.Click on create application
+3.Configure your app name and select Amazon EC2 on compute platform, and click on create again.
+4.You will see the Application Created Page.
+5.It means that you have already created your code deploy application and have to configure your deployment group.
+6.Before create your deployment group, you have to create a role to give access to your EC2
+7.To do that, access your IAM panel > Role > Create Role
+8. Select Code Deploy service, and click on Next: permissions
+9. Leave the Step Attached permissions policies page unchanged
+10.Leave the Step Tags page unchanged, and choose Next: Review
+11.Enter your role name, and click on Create Role
+12.Return on the create deployment group page
+13.Fill the name and Service Role with the role created on the step 11. Check In-Place deployment and Amazon EC2 instances. Leave the other options unchanged and click on create deployment group.
+
+
+.................................................................
+
+Step3:: Configure Code Pipeline ::
+
+1.Access the Code Pipeline page > Create new piepline
+2.Enter pipeline name and select new service role > next
+3.Source provider GitHub, and connect your GitHub account. It's better to keep GitHub Webhook, this will automatically trigger a pipeline when you push your code to master (or your desired branch).
+4.Skip the build step, rails is not builded
+5.Select the application and deployment group you have created
+6.Review > Create Pipeline
+7.Now, you have to attach a role to your EC2 instance to give access to code deploy also
+8.To do that, access your IAM panel > Role > Create Role
+9.Select EC2 service, and click on Next: permissions
+10.Find and select: AmazonS3FullAccess, AmazonEC2RoleforAWSCodeDeploy and create the below inline policy
+11.Choose Next: Tags
+12.Leave the Step Tags page unchanged, and choose Next: Review
+13.Enter your role name, and click on Create Role
+14.Go to your EC2 Dashboard > find your EC2 instance
+15.Select your instance > Action > Instance Settings > Attach/Replace IAM Role
+16.Select the role create on the step 11
+17.Create a file called dependencies_install.sh in a scripts folder
+18.Create file called appsec.yml (in your root folder)
+19.Your code pipeline is working with github, if you alter any code and push to the server you will see it running:
+
+
+.................................................................
+
+Step 4:: Deploy your app;
+
+At this point, if you change any code and push to the server. It will trigger the pipeline, and deploy to your EC2 instance.But, for production environment you don't want your settings and your connection string to database fixed on your code
+
+
+.................................................................
+
+Step5:: Why AWS Parameter Store not Secrets Manager?
+Why AWS Parameter Store not Secrets Manager?
+Both are really similar, but secrets manager has some pros and cons, comparing to parameter store.
+
+Both can do:
+
+Store secure values;
+Can encrypt using KMS key;
+Can be referenced in CloudFormation;
+Store change history (who changed and the old/new value);
+Pros of Secrets Manager
+
+Secrets Manager can rotate the RDS password, because the service is full integrated;
+Can be used through shared accounts;
+Cons of Secrets Manager
+
+Cost, Parameter Store doesn't have any additional cost for basic parameters;
+Due to cost reasons, I'll use Parameter Store. But feel free to choose what fits you best.
+
+
+.................................................................
+
+Step6:: Configuring parameters::
+
+If you want to store your parameters in a shared and secure place, we will use Systems Manager Parameter Store, so you won't worry about to deploy your local connection in production! Here is how to use it in your rails app:
+
+Access Systems Manager page on AWS Dashboard
+Select the option Parameter Store:
+
+3. Click on Create Parameter
+
+4. Enter the name, select tier standard, string for not secure data and SecureString for secure that.
+
+Here in SecureString, I'll use the KMS Key source from My Current Account. It means that the password and other secure strings will be encrypted with this key.
+
+5. After created, let make some code. First of all, I will create a code to set our environment variables, because I will use this to use migration and other options.
+
+Create a file called set_environment_variables.sh, in a scripts folder with this
+
+#!/bin/bash
+function set_parameter {
+SSM_PARAM_NAME=$1
+SSM_VALUE=`aws ssm get-parameters — with-decryption — names “${SSM_PARAM_NAME}” — query ‘Parameters[*].Value’ — output text`
+[ “$(eval echo “$”$1)” == “” ] && echo “export ${SSM_PARAM_NAME}=${SSM_VALUE}” >> ~/.bashrc
+}
+set_parameter “DB_USER”
+set_parameter “DB_PASS”
+set_parameter “DB_HOST”
+6. Alter your appspec.yml file adding this at the final:
+
+- location: scripts/set_environment_variables.sh
+runas: ubuntu
+7. Alter you database.yml file to get variables from environment
+
+
+8. If have some file that connect to database, alter to get data from environment!
+
+.................................................................

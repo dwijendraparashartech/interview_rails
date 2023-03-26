@@ -1,0 +1,187 @@
+e1 theory_1.txt
+
+....................
+
+theory_1.rb::  
+
+
+1. What are the Access Specifiers/Modifiers in Ruby ?  :: Public, Protected and Private
+
+...
+
+
+2. What is the differnce between Scopes and Class Methods ?
+A scope will always return an ActiveRecord::Relation object, even if the conditional evaluates to false , whereas a class method, will return nil . This can cause NoMethodError when chaining class methods with conditionals, if any of the conditionals return false .
+
+...
+
+
+3. What is Asset Pipeline, What are its Uses ?
+
+...
+
+4. What are Strong Paramaters ?
+
+
+...
+
+5. What is Duck Typing ? 
+Duck Typing is a way of programming in which an object passed into a function or method supports all method signatures and attributes expected of that object at run time. The object's type itself is not important. Rather, the object should support all methods/attributes called on it.
+...
+
+6.What is pluck? :: Query a single column from the model of table
+Pluck can be used to query a single column from the underlying table of a model.It accepts a column name as argument and return an array of values of the specified column wih the corresponding data type.
+Ex: 
+Client.where(:active=>true).pluck(:id) = Select id from clients where active=1
+Client.uniq.pluck(:role) = Select distinct roles from the clients.
+
+...
+
+7.What is the diff between dup and clone in Rails ?
+In general, clone and dup may have different semantics in descendant classes. While clone is used to duplicate an object, including its internal state, dup typically uses the class of the descendant object to create the new instance. When using dup, any modules that the object has been extended with will not be copied.
+
+If you want to change an object but keep a copy of the original then you can clone it.
+Ex of Clone ::  
+a = [1,2,3,4,5]
+a[1..-1]       # [2,3,4,5]
+Ex of Clone ::
+b = a.clone
+b.shift  # [1] 
+b  # [2,3,4,5]
+.....
+Ex of dup and clone ::
+a = Object.new.freeze
+b = a.dup
+b.frozen?   # false
+b = a.clone 
+b.frozen?   # true
+Exp :: 
+...
+
+8. What is Flash ?
+Flash is a special part of a session which clear with each request.Means which value is stored will be available in the next request.Which is useful for storing error messages etc.It is accessed in much the same way as the session likes a hash.Flash is a object of action dispatch class.
+
+...
+
+9. Does Ruby support STI or MTI ? Single table inheritance or Multi Table Inheritance ?
+Ruby only support single table inheirtance.
+
+...
+
+10.What is the diff between Hash#fetch & Hash#[]?
+Hash#fetch provides options for handling the case where a key does not exist in hash.
+
+...
+
+11.How to check an error in Ror Application?
+in below 2 files errors are shown ::
+1. log/apache.log
+2. log/error.log
+
+...
+
+12.What is Request.xhr?
+It tells the controller that new AJAX request has come.This always return the boolean values - TRUE or FALSE.
+
+...
+
+13. What is the diff between static and dynamic scaffolding ?
+syntax for static scaffolding : $ rails g scaffold User Comment # here comment is model and user is controller.All n static scaffold takes 2 parameters -
+1. controller name .  2.model name. 
+In dynamic scaffolding we define the controller and model one by one.
+
+...
+
+14. How we can serialize the data from yaml ?
+yaml is the straight forward machine,of parsable data serialization format.which is design by human readability and interaction with scripting language.Such as perl and python.
+We optimize the yaml for - 1. data serialization. 2. format dumping. 3. configration files. 4. log files. 5. internet messaging and filtering.
+
+...
+
+15. What is the difference between throw/catch & railse/rescue ?
+Throw and catch accept matching symbols as arguments and should be considered a control flow structure where raise and rescue is used to raise and handle exceptions.Throw and catch are not commonly used where raise and rescue are commonly used.
+
+...
+
+16. How can you run your rails application without creating database ?
+uncomment the line in enviornment.rb-
+path => rootpath config/enviornment.rb
+config.frameworks -= [action_web_service:action_mailer,:active-record]
+
+...
+17.How to find out the second maximum element in the database ?
+Rails query - Model.order("YourFieldDesc".limit(1).offset(1))
+
+...
+18.Diff bet application and web server ?
+web servers are the servers which can take the request from browser.
+App servers sack the functionalities of web server
+web server handles http requests,where app server serves - through business logic to application through any no of protocol.
+
+...
+19. Diff between #== && #equal ?
+#==    performs general comparison and implements differently across classes.
+equal? is defined basic object and compares object identity
+#equal? show not be overridden in subclasses.
+
+...
+20. Diff bet Dig,Float,Max ?
+Float Class :: is used when the meaning changes constantly
+Dig :: When there is an enormous need for float.
+Max:: is used whenever you want to symbolize or float in decimal digits.
+
+...
+21.How to Send the Mails through Rails App?
+1.First create the mailer - $ rails g mailer_name
+2.Define the mailer function
+3.Add the Content of this email and store in corresponding view folder.
+4.Finally add the deliver method to call the mailer function in the controller.
+
+...
+22. What is Caching in Rails ?
+Caching is used in any web technologies.It speed up the performance by storing previous results for subsequent requests.By default caching is disabled in Rails.Rails caching available at 3 levels:: 1. Page, 2. Action, 3. Fragment.
+
+...
+23. What are the purpose of RJs in Rails ?
+Rjs are the patterns that produces javascript which is run in an eval chunk by the browser in reply to an Ajax request.It is something used to classify Javascript, prototype & helpers provide by rails.
+
+...
+24. What ae the limitation of Ruby on Rails ?
+1. Databases with foreign keys
+2. Linking to many databases at the same time.
+3. Web services for soap
+4. Multiple databases servers are connected at the same time.
+
+...
+25.What is DSL and haw does it pertain to Ruby ?
+A DSL-Domain Specific language is an API that allows a developer to solve a problem or represent data more naturally than they might otherwise.The flexible nature of Ruby's syntax and the ability to alias and alter existing methods and classses makes it conductive to creating rich DSL's
+
+...
+26. How to find out the duplicate entries in the database tables?
+User.group(:email).having("count(email)>1") 
+
+...
+27.What does it mean to coerce a object ?
+To coerce an object means to force it into an expected type.one might do this in order to try and force an unknown object type into an expected type or format required by the operation. This is the common practice involved in the duck typing.
+...
+
+28.What is the highest level in the object model ?
+BasicObject 
+
+...
+29.Ruby is a strongly or weekly typed language?
+Ruby is an strongly typed language since an object is checked before an operation is perform on it.
+
+...
+30.Ruby is Stastically or dynamically typed language?
+Dynamic type since type checking is done at runtime.
+
+...
+31.What is object_id in Ruby?
+Each object has many public methods we use .object id is also one of the method in this.One random id is generate for a specific object. This value is a reference of the address in the memory where the object is store.every object has unique object id which is not changed throughout the lifecycle of the object.Each variable is getting a different location in memory to store their value when they are declared so even when we assigned the same string,they are not sharing the same address location in memory,therefore there object id is different.
+
+...
+32. How we can use sqldb or mysql db ?
+
+
+

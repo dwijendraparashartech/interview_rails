@@ -1,0 +1,384 @@
+multiple_databases.txt ::
+
+Link :: 
+
+https://guides.rubyonrails.org/v6.0/active_record_multiple_databases.html
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+https://medium.com/@primazp/multiple-databases-in-rails-part-1-setup-48f6d207685a
+https://www.rubyinrails.com/2019/03/25/rails-6-activerecord-multi-db-connection-switching/
+https://blog.arkency.com/rails-multiple-databases-support-in-rails-event-store/
+https://goldenowl.asia/blog/multiple-databases-in-rails
+https://blog.kiprosh.com/rails7-association-across-databases-with-disable-joins/
+
+
+
+....................................................................................
+
+....................................................................................
+
+....................................................................................
+
+....................................................................................
+
+....................................................................................
+
+....................................................................................
+
+
+:: :: :: :: :: :: :::::::::::::::::   :: :: :: :: :: :: ::::::::::::::::: 
+
+Multiple Database Connections :: :: :: :: :: :: :::::::::::::::::
+  
+1. True to self abstract class 
+2. Initialize a seperate database.yml file with other db connections. 
+3. Create Second Database.yml file
+4. Create Second Database  Schema
+5. Create Initializers to use the database file in its enviornment
+6. Create the rake tasks for the database files 
+7. Create and Run the migrations for the database files 
+8. Create Second DAtabase Base Class 
+9. Establish the Connections with the second database 
+10. Add a Custom Generator
+11. Maintain Second database schema in the tests.
+
+:: :: :: :: :: :: ::::::::::::::::: :: :: :: :: :: :: :::::::::::::::::
+
+How to connect to multiple databases ::
+
+Syntax ::
+
+connects_to database: { reading: :read_replica_db, writing: :write_replica_db }
+
+
+What this means is
+
+ActiveRecord will use read_replica_db connection configuration specified in database.yml to perform read queries on the model.
+ActiveRecord will use write_replica_db connection configuration specified in database.yml to perform write queries on the model.
+
+Example :: 
+
+class Product < ApplicationRecord
+  self.abstract_class = true
+  connects_to database: { writing: :products_primary, reading: :products_read }
+end
+
+This configuration will use products_primary database to perform write queries on products table
+This configuration will use products_read database to perform read queries on products table
+
+...................................
+...................................
+
+How to switch data in database conenctions in rails ::
+
+A block method connected_to is added to support switching of database connections. This is specifically useful if we want to retrieve certain data from another database or if we want to connect to read replica to perform some heavy querying etc.
+
+connected_to by role
+This block method can be used as given below.
+
+ActiveRecord::Base.connected_to(role: :reading) do
+  Product.first # finds product from replica connected to ApplicationRecord
+end
+It will create a database connection with :reading role.
+
+connected_to by role
+This block method can be used as given below.
+
+ActiveRecord::Base.connected_to(database: :slow_replica) do
+  Product.first
+end
+This will use database configuration specified in database.yml with name slow_replica and perform the query given in the block with ActiveRecord.
+
+...................................
+...................................
+
+
+
+:: :: :: :: :: :: ::::::::::::::::: :: :: :: :: :: :: :::::::::::::::::
+
+
+
+How to Connect Multiple databses in Rails 6 ::
+
+
+To make the story short, to use multiple databases you need to:
+
+define multiple database configurations in config/database.yml file (for each environment)
+define a new abstract class that uses connects_to to set the target databases
+define a separate folder for other database migration files (don’t forget to set it in the database config)
+define new models that inherit from new abstract class - all of them will be read & written to the database defined in the base class
+
+
+:: :: :: :: :: :: ::::::::::::::::: :: :: :: :: :: :: :::::::::::::::::
+
+
+
+....................................................................................
+....................................................................................
+
+....................................................................................
+
+....................................................................................
+
+....................................................................................
+
+....................................................................................
+
+
+
+
+
+....................................................................................
+
+....................................................................................
+
+....................................................................................
+
+....................................................................................
+
+....................................................................................
+                                  PROCESS
+....................................................................................
+
+....................................................................................
+
+....................................................................................
+
+....................................................................................
+
+
+1.  Update ApplicationRecord to be aware of our new replica.
+We use this line to perform this multiple databases :: 
+
+self.abstract_class = true
+
+...................................
+
+
+2.  Inititalize a seperate database.yml file with your other db configration 
+
+ -- config
+   database_second.yml
+
+1. config/database.yml
+2. config/octo_database.yml 
+
+...................................
+
+
+3. Add some code in this ::
+
+development:
+ adapter: postgresql
+ encoding: unicode
+ database: octo_db
+ pool: 5
+ host: localhost
+ username: octocat
+ password: 0c70_c47
+
+ ...................................
+
+
+ 4. Create diff Directory for this Database ::
+
+
+-- db_second
+   |-- migrate
+   schema.rb
+   seeds.rb
+
+
+In this way second database files will live in isolation from the primary database.
+
+db_second/schema.rb, db_second/seeds.rb and db_second/migrate should be just empty.
+
+The database_second.yml is just a usual database configuration file, nothing specific there.
+
+...................................
+
+
+
+4. Create Initializers :: Tell rails to load particular database yml file into its enviornment 
+
+Tell rails to load this yml file in it’s environment
+
+OCTO_DB = YAML.load_file(File.join(Rails.root, "config", "octo_database.yml"))[Rails.env.to_s]
+
+...................................
+
+5. Create the Rake Tasks for the database file :: 
+
+# lib/tasks/db_second.rake
+
+task spec: ['second:db:test:prepare']
+
+namespace :second do
+  namespace :db do |ns|
+    %i(drop create setup migrate rollback seed version).each do |task_name|
+      task task_name do
+        Rake::Task["db:#{task_name}"].invoke
+      end
+    end
+
+    namespace :schema do
+      %i(load dump).each do |task_name|
+        task task_name do
+          Rake::Task["db:schema:#{task_name}"].invoke
+        end
+      end
+    end
+
+    namespace :test do
+      task :prepare do
+        Rake::Task['db:test:prepare'].invoke
+      end
+    end
+
+    # append and prepend proper tasks to all the tasks defined here above
+    ns.tasks.each do |task|
+      task.enhance ['second:set_custom_config'] do
+        Rake::Task['second:revert_to_original_config'].invoke
+      end
+    end
+  end
+
+  task :set_custom_config do
+    # save current vars
+    @original_config = {
+      env_schema: ENV['SCHEMA'],
+      config: Rails.application.config.dup
+    }
+
+    # set config variables for custom database
+    ENV['SCHEMA'] = 'db_second/schema.rb'
+    Rails.application.config.paths['db'] = ['db_second']
+    Rails.application.config.paths['db/migrate'] = ['db_second/migrate']
+    # If you are using Rails 5 or higher change `paths['db/seeds']` to `paths['db/seeds.rb']`
+    Rails.application.config.paths['db/seeds'] = ['db_second/seeds.rb']
+    Rails.application.config.paths['config/database'] = ['config/database_second.yml']
+  end
+
+  task :revert_to_original_config do
+    # reset config variables to original values
+    ENV['SCHEMA'] = @original_config[:env_schema]
+    Rails.application.config = @original_config[:config]
+  end
+end
+view rawdb_second.rake hosted with ❤ by GitHub
+
+
+...................................
+
+6. Create and Run the migrations for the databases ::
+
+$ rake second:db:create
+$ rake second:db:migrate
+
+This will generate the Stats database schema file in db_second/schema.rb
+
+7. Add a Custom Generator :: 
+
+* You can also take a look at customer generator part in original post.
+
+Unfortunately, it is not possible to simply use Rails’ generator ActiveRecord::Generators::MigrationGenerator because it hardcodes the parent directory of the migration (notice the path hardcoded to the directory db/migrate in last but one line here below):
+
+
+# active_record/migration/migration_generator.rb
+
+def create_migration_file
+  set_local_assigns!
+  validate_file_name!
+  migration_template @migration_template, "db/migrate/#{file_name}.rb"
+end
+
+..........................................
+
+8. Create Second database base class :: 
+
+In order to map rails model to second database you have to manually establish connection to db. like below :: 
+
+DO NOT do this. This way not only leads to many lines of duplicated code in models but also opens a new connection to database per each model!
+
+class SecondBaseUser < ActiveRecord::Base
+  establish_connection DB_SECOND
+end
+
+Do this :: 
+
+There is a better way. It is possible to create an abstract superclass for all second database models and inherit it from ActiveRecord::Base. I also suggest to create a separate namespace for all second database models.
+
+
+module Second
+  class Base < ActiveRecord::Base
+    self.abstract_class = true
+    establish_connection DB_SECOND
+  end
+  class User < Second::Base
+  end
+end
+
+..........................................
+
+9. Maintain Second db schema in tests :: 
+
+In order to automatically load changes in second database in test environment I added these lines to my test support files:
+
+if defined?(ActiveRecord::Migration)
+  current_db = Rails.configuration.database_configuration[Rails.env]
+
+  ActiveRecord::Base.establish_connection DB_SECOND
+  ActiveRecord::Migration.maintain_test_schema!
+
+  ActiveRecord::Base.establish_connection current_db
+  ActiveRecord::Migration.maintain_test_schema!
+end
+
+..........................................
+
+
+10. If you are using DatabaseCleaner gem, you can set it to clean the models that use the Stats database too:
+
+RSpec.configure do |config|
+  current_db = Rails.configuration.database_configuration[Rails.env]
+
+  config.before(:suite) do
+    ActiveRecord::Base.establish_connection DB_AIRWAVE
+    DatabaseCleaner.clean_with(:deletion)
+    ActiveRecord::Base.establish_connection current_db
+    DatabaseCleaner.clean_with(:deletion)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.strategy = :transaction
+  end
+
+  config.before(:each, js: true) do
+    DatabaseCleaner.strategy = :deletion
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+Questions ::
+
+How to switches to connection switching
+How to connect to multiple databases 
+

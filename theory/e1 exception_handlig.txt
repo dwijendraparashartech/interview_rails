@@ -1,0 +1,144 @@
+1. what is the differnce between try , catch and throw
+in try block we write the code which may throw  the exception and in the catch block we write the code to handle that exception. 
+throw - throw the exception 
+
+retry statement 
+raise statement
+ensure statement
+else statement
+
+
+..........................................................................
+
+
+syntax of exception handling :: 
+
+
+Rescuing Specific Exceptions:
+
+...................
+
+For standard Error ::
+
+begin
+  # ...
+rescue StandardError => e
+  # ...
+end
+
+...................
+
+For Argument Error ::
+
+
+begin
+  # ...
+rescue ArgumentError => e
+  # ...
+end
+
+...................
+
+For Argument and Type Error ::
+
+begin
+  # ...
+rescue ArgumentError => e
+  # ...
+rescue TypeError => e
+  # ...
+rescue => e
+  # ...
+end
+
+.....................
+
+Rescuing All Exceptions:
+
+begin
+  # ...
+rescue Exception => e
+  # ...
+end
+
+.....................
+
+How to check Ruby syntax to identify exceptions::
+
+begin
+    # may raise an exception
+rescue AnException
+    # exception handler
+rescue AnotherException
+    # exception handler
+else
+    # other exceptions
+ensure
+    # always executed
+end
+
+......................
+
+Exception Handling :
+
+#!/usr/bin/ruby
+begin
+   file = open("/tmp/myfile")
+rescue Errno::ENOENT
+   p "File not found"
+else
+   p "File opened"
+end
+
+......................
+
+
+
+ensure statement: 
+
+
+
+
+ else statement:
+ This statement is present in between the rescue block and ensure block. This block only executes when no exception is raised.
+
+.......................
+
+How to check Ruby syntax to identify exceptions ::
+
+The code between begin and rescue is where a Ruby exception can occur. If an exception is encountered, the code inside the rescue clause gets executed.
+
+.......................
+
+For One / Any method of Rails Controller Exeception Handling Works ::
+
+
+Before
+..............................
+
+def show
+    product = Product.find_by(id:params[:id])
+        if product
+            render json: product,status:200
+        else
+            render json: {error:"Product Not Found"}
+        end
+    end
+end 
+
+After :: For Exception Handling 
+Remove the error message from the method in controller :: 
+................................
+# After including ErrorHandler module in ApplicationController
+# Remove the Error block from the controller actions.
+................................
+
+ def show
+    @user = User.find_by!(id: params[:id])
+    render json: @user, status: :ok
+  end
+
+................................
+
+
+

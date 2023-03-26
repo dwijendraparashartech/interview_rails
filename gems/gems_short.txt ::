@@ -1,0 +1,4 @@
+gems_short.txt :: 
+
+1. Gem activerecord-import is library used to insert a large number of records into the use database ActiveRecord. By using this gem, it allows us to use one statement insert with alot of data. And this ways can help you to improve the performance in your application.
+

@@ -1,0 +1,1603 @@
+Example.txt ::
+
+Imp links ::
+https://www.akshaykhot.com/metaprogramming-ruby/
+..................
+
+0. Example of RSPec Test Cases 
+1. Example of metaprogramming
+2. ExamplE of monkey patching 
+3. ExamplE of delegate method 
+4. ExamplE of single table inheritance
+5. ExamplE of multi table inheritance
+6. ExamplE of duck typing
+7. ExamplE of single ton method 
+8. ExamplE of private/protected/public methods
+9. ExamplE of method-overriding & method-overloading 
+10.ExamplE of PORO-Plain Old Ruby Objects 
+11.ExamplE of Scopes 
+12.ExamplE of Procs 
+13.ExamplE of Lambdas 
+14.ExamplE of Garbage Collector 
+15.ExamplE of Join and Include 
+16.ExamplE of Design Pattern
+17.ExamplE of Decorator Design Pattern
+18.ExamplE of has_and_belongs_to_many and has_many_through association 
+19.ExamplE of types of Joins in Rails 
+20.Example of Attributes :: attr_accessor,attr_getter,attr_accessor 
+21.Example of Encapsulation in Rails 
+22.Example of Helper Method in Rails 
+
+
+............  ............  ............  ............ ............  ............  ............  ............  ............  ............ ............  ............ 
+Rspec Links :: Best Best Best Link to Understand ::
+https://dev.to/isalevine/intro-to-rspec-in-rails-basic-syntax-and-strategy-for-testing-3hh6
+
+
+
+ 0.Example of RSPec Test Cases 
+ .................................
+
+ First Example :: 
+
+  RSpec.describe Human, "#greet" do
+    it "should greet successfully" do
+      human = Human.new
+      expect(human.greet).to eq "Hello, world!"
+    end
+  end
+ ----------------------------------------------------
+  Second Example ::
+
+  class Bowling
+    attr_reader :score
+    def hit(pin_count)
+    end
+  end 
+  ..................
+
+  require 'bowling'
+  Rspec.describe Bowling,"#score" do
+    context "with no strikes or spares do"
+    it "sums the pin count for each roll" do
+    bowling = Bowling.new
+    20.times {bowling.hit(4)}
+      expect(bowling.score).to eq 80
+  end
+  ---------------------------------------------------
+
+Third Example ::  Link ::  https://www.tutorialspoint.com/rspec/rspec_introduction.htm
+This is the Best Example :: 
+
+Class for which Rspec Write :: 
+
+  class HelloWorld
+     def say_hello 
+        "Hello World!"
+     end
+  end
+
+Rspec Test Case for this Class :: 
+
+  describe HelloWorld do 
+   context “When testing the HelloWorld class” do 
+      it "should say 'Hello World' when we call the say_hello method" do 
+         hw = HelloWorld.new 
+         message = hw.say_hello 
+         expect(message).to eq "Hello World!"
+      end
+   end
+  end
+
+Rspec Write Command :: 
+
+rspec spec spec\hello_world_spec.rb
+
+Rspec Result ::
+
+Finished in 0.002 seconds (files took 0.11101 seconds to load) 
+1 example, 0 failures
+
+  ---------------------------------------------------
+Fourth Example From my end ::  From my Project :: 
+
+Complete example of Rspec Test Case tax.rb :: From my end :: 
+
+
+
+require 'rails_helper'
+RSpec.describe "BxBlockTax::Tax", type: :request do
+  TAX_URL = '/bx_block_tax/taxes/'
+    TAX_URL_FILT = '/bx_block_tax/taxes/filter'
+    TAX_URL_IMP = '/bx_block_tax/taxes/import'
+    TAX_URL_EXP = '/bx_block_tax/taxes/export'
+    TAX_URL_BULK_U = '/bx_block_tax/taxes/bulk_update'
+    TAX_URL_BULK_D = '/bx_block_tax/taxes/bulk_destroy'
+    TAX_URL_Sh = '/bx_block_tax/taxes/search'
+    TAX_URL_Namerates = '/bx_block_tax/taxes/tax_rate_names/'
+
+  before(:all) do
+    role = BxBlockRolesPermissions::Role.find_or_create_by(name: "Director")
+    @account = create(:account, role_id: role.id)
+    auth_token = BuilderJsonWebToken::JsonWebToken.encode(@account.id)
+    @account.update(lms_token: auth_token)
+    @headers = {
+        "token" => @account.lms_token
+    }
+
+    @tax = create(:tax)
+    @tax2 = create(:tax)
+    @tax3 = create(:tax)
+    @tax4 = create(:tax, tax_type:"CGST")
+  end
+
+  describe "Get#index" do
+    it 'returns list of Taxes' do
+      get TAX_URL, headers: @headers
+      json_data = json_response(response)
+      expect(response.status).to eq 200
+    end
+
+     it 'When there is no Tax in the Record' do
+      get TAX_URL, headers: @headers
+      json_data = json_response(response)
+      expect(response.status).to eq 200
+    end
+  end
+
+  describe "POST#create" do
+
+    let(:params) do {
+        tax: {
+          name: Faker::Name.name,
+          tax_percentage: 15,
+          description: "tax1 description",
+          tax_type: "CGST",
+          is_gst: true
+        }
+      }
+    end
+
+      let(:taxtype_params) do {
+        tax: {
+          name: Faker::Name.name,
+          tax_percentage: 15,
+          description: "tax1 description",
+          tax_type: "",
+          is_gst: true
+        }
+      }
+    end
+
+      let(:valid_taxtype_params) do {
+        tax: {
+          name: Faker::Name.name,
+          tax_percentage: 15,
+          description: "tax1 description",
+          tax_type: "GST",
+          is_gst: true
+        }
+      }
+    end
+
+      let(:name_params) do {
+        tax: {
+          name: "",
+          tax_percentage: 15,
+          description: "tax1 description",
+          tax_type: "CGST",
+          is_gst: true
+        }
+      }
+    end
+
+      let(:tax_per_params) do {
+        tax: {
+          name: Faker::Name.name,
+          tax_percentage: "" ,
+          description: "tax1 description",
+          tax_type: "CGST",
+          is_gst: true
+        }
+      }
+    end
+
+    it "when tax successfully Created" do
+      post TAX_URL , params: params, headers: @headers
+      json_data = json_response(response)
+      expect(response).to have_http_status 201
+    end
+
+    it "Please enter name" do
+      post TAX_URL , params: name_params, headers: @headers
+      json_data = json_response(response)
+      expect(json_data["errors"]["message"].join("")).to eq "Please enter name"
+      expect(response).to have_http_status 422
+    end
+
+    it "Please enter tax%" do
+      post TAX_URL , params: tax_per_params, headers: @headers
+      json_data = json_response(response)
+      expect(json_data["errors"]["message"].join("")).to eq "Please enter tax %"
+      expect(response).to have_http_status 422
+    end
+  end
+
+  describe "Put#update" do
+    let(:params) do {
+        tax: {
+          name: "Tax1",
+          tax_percentage: 15,
+          description: "tax1 description",
+          tax_type: "CGST",
+          is_gst: true
+        },
+      }
+    end
+    let(:new_params) do {
+        tax: {
+          name: "",
+          tax_percentage: 25,
+          description: "tax2 description",
+          tax_type: "CGST",
+          is_gst: true
+
+        }
+      }
+    end
+
+    it "when tax successfully updated" do
+      put TAX_URL + "#{@tax.id}", params: params, headers: @headers
+      expect(response.status).to eq 201
+      json_data = json_response(response)
+      expect(response).to have_http_status 201
+      expect(json_data['data']['id'].to_i).to eq @tax.id
+    end
+    it "when tax not present" do
+      put TAX_URL + "#{@tax.id}", params: new_params, headers: @headers
+      json_data = json_response(response)
+      expect(json_data["errors"]['name'].join("")).to eq "Tax name can't be blank"
+      expect(response).to have_http_status 422
+    end
+  end
+
+  describe "Get#show" do
+    it "when tax found" do
+      get TAX_URL + "#{@tax.id}", headers: @headers
+      json_data = json_response(response)
+      expect(response).to have_http_status 201
+    end
+
+    it "when tax not found" do
+      get TAX_URL + 0.to_s, headers: @headers
+      json_data = json_response(response)
+      expect(json_data["errors"]).to eq nil
+      expect(response).to have_http_status 404
+    end
+  end
+
+  describe "DELETE#destroy" do
+    it 'delete given tax' do
+      delete TAX_URL + "#{@tax.id}", headers: @headers
+      json_data = json_response(response)
+      expect(response.status).to eq 200
+    end
+  end
+
+  describe "GET#filter" do
+    let(:name_params) do {
+        name: @tax.name,
+        start_range: 15,
+        end_range: 30,
+        tax_type: @tax.tax_type,
+        tax_percentage: @tax.tax_percentage
+      }
+    end
+    it 'when name not present' do
+      get TAX_URL_FILT, params: name_params, headers: @headers
+      json_data = json_response(response)
+      expect(response).to have_http_status 200
+      expect(json_data["data"].count).to eq 1
+    end
+  end
+
+  describe "GET#search" do
+    it 'it should return results' do
+      get TAX_URL_Sh + "?name=#{@tax.name}", headers: @headers
+      json_data = json_response(response)
+      expect(response.status).to eq 200
+      expect(json_response(response)['data'][0]["id"].to_i).to eq @tax.id
+    end
+    it 'it should return no records' do
+      get TAX_URL_Sh + "?name=asasas", headers: @headers
+      json_data = json_response(response)
+      expect(response.status).to eq 404
+      expect(json_response(response)['message']).to eq "No records."
+    end
+  end
+
+  describe "Get#tax_rate_names" do
+    it 'returns list of Taxes' do
+      get TAX_URL_Namerates, headers: @headers
+      json_data = json_response(response)
+      expect(response.status).to eq 200
+    end
+  end
+
+  describe "PUT#bulk_update" do
+    let(:params) do {
+          "tax_type": "UTGST",
+          "ids": [@tax.id,@tax2.id]
+     }
+   end
+    let(:new_params) do {
+          "tax_type": "CGST",
+          "ids": ''
+     }
+    end
+    it 'when tax successfully updated' do
+      put TAX_URL_BULK_U, headers: @headers,params:params
+      json_data = json_response(response)
+      expect(response).to have_http_status 201
+      json_data['data'][0]["attributes"]["tax_type"] != @tax.tax_type
+    end
+
+      it "when tax not present" do
+      put TAX_URL_BULK_U , params: new_params, headers: @headers
+      json_data = json_response(response)
+      # expect(json_data["errors"]['name'].join("")).to eq "Tax name can't be blank"
+      expect(response).to have_http_status 404
+    end
+  end
+
+  describe "DELETE#bulk_destroy" do
+    it 'when tax successfully deleted' do
+      delete TAX_URL_BULK_D + "?ids=#{@tax4.id},#{@tax2.id}", headers: @headers
+      json_data = json_response(response)
+      expect(response).to have_http_status 200
+    end
+    it 'when tax not found' do
+      delete TAX_URL_BULK_D + "?ids=''", headers: @headers
+      json_data = json_response(response)
+      expect(response).to have_http_status 404
+    end
+  end
+
+  # import action
+  describe "POST#import" do
+    let(:params) do {
+      file: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, 'app/assets/csv_files/sample_file_for_tax.csv')))
+      }
+    end
+    it 'import the csv file' do
+      post TAX_URL_IMP, headers: @headers,params:params
+      json_data = json_response(response)
+      expect(response).to have_http_status 200
+    end
+  end
+end
+
+
+
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+
+1. Meta programming ::
+
+First Example of Meta Programming ::
+.......................................
+
+Very good blog of ruby meta progamming :: 
+
+https://www.bigbinary.com/books/learn-rubyonrails-book/rails-macros-and-metaprogramming
+
+
+metaclass is eigenclass or singleton class 
+
+# before meataprogramming 
+class MyClass
+  def red
+    'red'
+  end
+  def blue
+    'blue'
+  end
+  def green
+    'green'
+  end
+  def yellow
+    'yellow'
+  end
+end
+
+# after meataprogramming 
+class MyClass
+  COLORS = ['red', 'blue', 'green', 'yellow']
+  COLORS.each do |color|
+    define_method color do
+      color
+    end
+  end
+end
+
+Second Example of Meta Programming ::
+.......................................
+
+class Animal
+  def eats?
+    true
+  end
+end
+dog = Animal.new
+dog.send(:eats?) # true
+
+...
+
+Defining Methods Dynamically :: 
+
+class Animal
+  def perform(action)
+    puts "Performing #{action}."
+  end
+end
+
+class Animal
+  ["eat", "walk"].each do |action|
+    define_method(action) do
+      puts "performing #{action}"
+    end
+  end
+end
+
+...............
+
+
+
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+
+............  ............  ............  ............ ............  ............  ............  ............  ............  ............ ............  ............ 
+
+2. Monkey patching ::
+
+First and Best Example ::
+
+class String 
+  def reverse 
+    puts "Reversing has Stopped Manually by Monkey Patching Technique"
+  end 
+end 
+"Reverse me?".reverse
+
+......................................................................
+
+
+
+# Before applying patching
+hash = { "Geeks"=>"G","for"=>"F","geeks"=>"g" }
+puts "Before blocking reverse: " hash.delete "for"
+puts "Deleted 'for' key"
+puts hash
+
+# Apply patching
+class Hash
+  def delete(key)
+    "Delete blocked!!"
+  end
+end
+
+# After applying patching
+hash = { "Geeks"=>"G","for"=>"F","geeks"=>"g" }      
+puts "Before blocking reverse: "
+puts "Deleting 'for' key but " + hash.delete("for")
+puts hash
+
+Output:
+Before blocking reverse: 
+Deleted 'for' key
+{"Geeks"=>"G", "geeks"=>"g"}
+Before blocking reverse: 
+Deleting 'for' key but Delete blocked!!
+{"Geeks"=>"G", "for"=>"F", "geeks"=>"g"}
+
+
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+............  ............  ............  ............ ............  ............  ............  ............  ............  ............ ............  ............ 
+
+3. Delegation :: Delegate Method ::
+
+Link :: https://medium.com/@pk60905/using-delegate-in-rails-527332da7f96
+Example :: 
+
+For example I have a QueueItem and aVideo model.
+
+QueueItem < ActiveRecord::Base
+  belongs_to :video
+end
+Video < ActiveRecord::Base
+  has_many :queue_items
+  belongs_to :category
+end
+
+...........
+
+If I want to get the category object of the video in first queue_item, I may write
+
+queue_item = QueueItem.first
+queue_item.video.category.name
+#=> "Action"
+
+............
+
+It is kind of cumbersome. Instead of getting the object via model association, we can use delegate to help us.
+
+class QueueItem < ActiveRecord::Base
+  belongs_to :video
+ 
+  delegate :category, to: :video
+end
+Then we can get the category by
+
+queue_item = QueueItem.first
+queue_item.category.name
+#=> "Action"
+Or even you can set a category_name method in the QueueItem model.
+
+
+
+class QueueItem < ActiveRecord::Base
+  belongs_to :video
+ 
+  delegate :category, to: :video
+  def category_name
+    category.name
+  end
+end
+queue_item = QueueItem.first
+queue_item.category_name
+#=> "Action"
+You can set one or more method names (specified as symbols or strings) if you want. And the name of the target object via the :to option(also a symbol or string).
+
+There are some options you can use in delegation
+
+:to — Specifies the target object
+:prefix — Prefixes the new method with the target name or a custom prefix
+:allow_nil — if set to true, prevents a NoMethodError to be raised
+You can use the prefix option to make the method more readable.
+
+
+
+class QueueItem < ActiveRecord::Base
+  belongs_to :video
+  delegate :category, to: :video
+  delegate :title, to: :video, prefix: :video
+end
+
+queue_item = QueueItem.first
+queue_item.video_title == queue_item.video.title
+# => true
+
+  
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................................
+
+............  ............  ............  ............ ............  ............  ............  ............  ............  ............ ............  ............ 
+
+4. Single table inheritance Example :: 
+
+rails generate model Expert name gender salary type
+rails db:create db:migrate
+
+# app/models/beard_dresser.rb
+class BeardDresser < Expert
+end
+
+# app/models/hair_dresser.rb
+class HairDresser < Expert
+end
+
+HairDresser.create(name: "John", gender: "male", salary: "10000")
+BeardDresser.create(name: "Mike", gender: "male", salary: "9000")
+
+HairDresser.count
+=> 1
+
+BeardDresser.count
+=> 1
+
+Expert.count
+=> 2
+
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+............  ............  ............  ............ ............  ............  ............  ............  ............  ............ ............  ............ 
+ 
+5. Example of observer 
+
+A. simple email method to send email but our model job is not to send the emails so it breaks the single responsibility principle 
+class User < Activerecord::Base
+  after_save :send_email_notification
+
+  private
+  def send_email_notification
+    if status_changed?
+      UserNotificationMailer.account_open_email(self).deliver if status=='created'
+      UserNotificationMailer.account_activated_email(self).deliver if status == 'active'
+      UserNotificationMailer.account_deactivation_email(self).deliver if status =='deactive'
+    end
+  end
+end
+
+
+B. 
+class UserObserver < ActiveRecord::Observer
+  def after_save(record)
+    if record.status_changed?
+      UserNotificationMailer.account_open_email(record).deliver if record.status=='created'
+      UserNotificationMailer.account_activated_email(record).deliver if record.status == 'active'
+      UserNotificationMailer.account_deactivation_email(record).deliver if record.status =='deactive'
+    end
+  end
+end
+
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+............  ............  ............  ............ ............  ............  ............  ............  ............  ............ ............  ............ 
+
+C. 
+Use Single observer for multiple models ::
+.............
+
+............  ............  ............  ............ ............  ............  ............ ............  ............  ............  ............ .............
+
+6. example of Callback ::
+
+A. 
+class Subscription < ActiveRecord::Base
+   before_create :record_signup
+   private
+   def record_signup
+      self.signed_up_on = Date.today
+   end
+end
+
+B.
+
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+.............
+
+7. Example of Duck typing ::
+
+Duck typing is a style of programming where it allows an object to be passed in to a method that expects a certain type even if it doesn’t inherit from that type. 
+All it has to do is support the methods and properties of the expected type in use by the method. In duck typing, one is concerned with just those aspects of an object that are used, rather than the type of the object itself.
+If the object does not have the methods that are called then it will signal a run-time error to the user. If the object have the methods, then they are executed no matter the type of the object.
+
+
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+
+
+...................................................
+...................................................
+...................................................
+...................................................
+...............
+
+8. Example of Private , Protected and Public Method ::
+
+1.Example of Public Method :: 
+
+class Person 
+  def speak
+    puts "Hey, Tj!"
+  end 
+end 
+you = Person.new 
+you.speak # "Hey, Tj!" 
+
+...............
+
+2. Example of Private Method :: 
+
+class Person
+  def speak
+    puts "Hey, Tj!"
+  end
+  def whisper_louder
+    whisper
+  end 
+# private methods are for internal usage within the defining class
+  private 
+  def whisper
+    puts "His name's not really 'Tj'." 
+  end 
+end
+you = Person.new 
+you.speak # "Hey, Tj!"
+a_hater = Person.new
+a_hater.speak # "Hey, Tj!"
+a_hater.whisper # NoMethodError
+a_hater.whisper_louder # "His name's not really 'Tj'."
+
+...............
+
+3. Example of Protected Method :: 
+
+class Person
+  def speak
+    puts "Hey, Tj!"
+  end
+  def whisper_louder
+    whisper
+  end
+ private
+  def whisper
+    puts "His name's not really 'Tj'."
+  end
+ protected
+ def greet
+   puts "Hey, wassup!"
+ end
+end
+class Me < Person
+  def be_nice
+    greet 
+  end
+end
+tj = Me.new
+tj.be_nice # "Hey, wassup!"
+tj.greet # NoMethodError
+
+.............
+............
+............
+
+
+Example of Private , public and protected method in ruby ??
+
+All methods, no matter the access control, can be accessed within the class. But what about outside callers?
+
+Public methods enforce no access control -- they can be called in any scope.
+
+Protected methods are only accessible to other objects of the same class.
+
+Private methods are only accessible within the context of the current object.
+
+class AccessLevel
+  def something_interesting
+    another = AccessLevel.new
+    another.public_method
+    another.protected_method
+    another.private_method
+  end
+
+  def public_method
+    puts "Public method. Nice to meet you."
+  end
+
+  protected
+
+  def protected_method
+    puts "Protected method. Sweet!"
+  end
+
+  private 
+
+  def private_method
+    puts "Incoming exception!"
+  end
+end
+
+AccessLevel.new.something_interesting
+ #=> Public method.  Nice to meet you.
+ #=> Protected method.  Sweet!
+ #=> NoMethodError: private method ‘private_method’ called for
+ #=>  #<AccessLevel:0x898c8>
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+...............
+...................................................
+...................................................
+...................................................
+...................................................
+
+...............
+
+...........  ............  ............  ............ ............  ............  ............ ............  ............  ............  ............ ............
+
+9. Example of SingeTon Method ::
+
+MyExample :: 
+
+class Stm
+  def print
+    puts 'Hello'
+  end
+end 
+o1= Stm.new
+o2= Stm.new
+o1.print # => 'Hello'
+o2.print # => 'Hello'
+
+def o2.print
+  puts 'Sto'
+end 
+o1.print
+o2.print
+
+..................
+Ex0 :: 
+class ExampleObject
+  def print_hello
+    puts 'Hello'
+  end
+end 
+object1= ExampleObject.new
+object2= ExampleObject.new
+object1.print_hello # => 'Hello'
+object2.print_hello # => 'Hello'
+
+def object2.print_hello
+  puts 'Bonjour'
+end 
+object1.print_hello
+object2.print_hello 
+
+...........................
+
+
+Ex1 :: ........................
+
+...............................
+
+# Ruby program to demonstrate the use 
+# of singleton methods
+o1 = String.new 
+
+# object1(o1)
+o1 = "GeeksforGeeks"
+o2 = String.new 
+  
+# object2(o2)
+o2 = "GoodExample"
+  
+# Singleton method of object o2 
+def o2.size     
+ return "Size does not matter"
+end
+   
+puts "Singleton Method Example:"
+puts "Invoke from the object(o1):"
+  
+# Returns the size of string "Example1"
+puts o1.size 
+puts "Invoke from the object(o2):"
+  
+# Returns the o2.size method’s
+# return statement
+puts o2.size
+
+Output:
+
+Singleton Method Example:
+Invoke from the object(o1):
+13
+Invoke from the object(o2):
+Size does not matter
+
+..............
+
+Ex2 ::
+
+# Ruby program to demonstrate the use 
+# of singleton methods
+class Vehicle
+  def wheels
+    puts "There are many wheels"
+  end
+end
+  
+# Object train
+train = Vehicle.new 
+  
+# Object car
+car = Vehicle.new   
+  
+# Singleton method for car object
+def car.wheels   
+  puts "There are four wheels"
+end
+  
+puts "Singleton Method Example"
+puts "Invoke from train object:"
+train.wheels         
+puts "Invoke from car object:"
+car.wheels
+
+Output:
+Singleton Method Example
+Invoke from train object:
+There are many wheels
+Invoke from car object:
+There are four wheels
+
+............................
+
+
+Explanation:
+It can be observed that the method wheels have been redefined for the car object of Vehicle class. This wheels method is nothing but a singleton method that shows different behavior for the car.
+
+
+........................................
+
+Ex3 :: 
+
+ruby> class SingletonTest
+    |   def size
+    |     print "25\n"
+    |   end
+    | end
+   nil
+ruby> test1 = SingletonTest.new
+   #<SingletonTest:0xbc468>
+ruby> test2 = SingletonTest.new
+   #<SingletonTest:0xbae20>
+ruby> def test2.size
+    |   print "10\n"
+    | end
+   nil
+ruby> test1.size
+25
+   nil
+ruby> test2.size
+10
+   nil
+
+
+In this example, test1 and test2 belong to same class, but test2 has been given a redefined size method and so they behave differently. A method given only to a single object is called a singleton method.
+
+........................................
+
+
+
+
+...........  ............  ............  ............ ............  ............  ............ ............  ............  ............  ............ .............
+...........  ............  ............  ............ ............  ............  ............ ............  ............  ............  ............ .............
+
+Link ::  https://www.toptal.com/ruby/ruby-metaprogramming-cooler-than-it-sounds
+https://thecodeboss.dev/2015/08/metaprogramming-in-ruby-part-1/
+Very Very Very Very Very Very  Important Blog ::::::::::::::::: 
+
+10. Example of class_eval ::
+
+class_eval can be used to create an instance method
+
+Developer.class_eval do
+  p "class_eval - self is: " + self.to_s
+  def frontend
+    p "inside a method self is: " + self.to_s
+  end
+end
+# "class_eval - self is: Developer"
+
+p developer = Developer.new
+# #<Developer:0x2c5d640>
+
+developer.frontend
+# "inside a method self is: #<Developer:0x2c5d640>"
+
+.....................................
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+
+11. Example of instance_eval ::
+
+There’s one more way to create a class method, and that is by using instance_eval:
+
+class Developer
+end
+
+Developer.instance_eval do
+  p "instance_eval - self is: " + self.to_s
+  def backend
+    p "inside a method self is: " + self.to_s
+  end
+end
+# "instance_eval - self is: Developer"
+
+Developer.backend
+# "inside a method self is: Developer"
+
+.....................................
+
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+
+12. Example of Method Overloading ??
+
+Link ::  https://www.codingninjas.com/codestudio/library/overloading-methods-in-ruby
+
+
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+.....................................
+
+
+13. Example of Method Overriding ??
+
+Example :::::::::::::  
+Link ::  https://www.geeksforgeeks.org/method-overloading-in-ruby/
+
+class Test
+    def self.sum(a,b)
+        puts(a+b)
+    end
+    def self.sum(a,b,c)
+        puts(a+b+c)
+    end
+      
+end
+Test.sum(1,2)
+
+# output :  main.rb:13:in `sum': wrong number of arguments (2 for 3) (ArgumentError)                                                      
+        from main.rb:18:in 
+
+
+.......................
+
+class Test
+    def self.sum(a,b)
+        puts(a+b)
+    end
+    def self.sum(a,b,c)
+        puts(a+b+c)
+    end
+      
+end
+Test.sum(1,2,7)
+
+10
+The second method overwrites the previous method and hence it works absolutely fine when we call the method with three arguments.
+
+Explanation :: 
+
+In Ruby, when a second method is defined with the same name it completely overrides the previously existing method. The previous method is no longer accessible and hence throws error when we try to access it.
+.....................................
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+
+14. Example of Method Overloading ::  
+
+Ex 1 , 2 ,3  ,4 ,5 Are Method Overloading :: 
+......................
+Ex: 1 
+
+class MethodOverloadingExample
+  def display_message(message)
+    puts message
+  end 
+
+  def display_message(message,user)
+    puts "Hello #{user},#{message}"
+  end 
+end 
+
+obj1 = MethodOverloadingExample.new
+obj1.display_message('Welcome to the Ruby World')
+$ ruby method_overloading_example.rb
+#Output :: Wrong Number of Arguments (given1,expected2)-Arguments Error
+
+......................
+Ex: 2 
+
+class MethodOverloadingExample
+  def display_message(message)
+    puts message
+  end 
+
+  def display_message(message,user)
+    puts "Hello #{user},#{message}"
+  end 
+
+  def display_message
+    puts "Welcome to the Ruby World"
+  end 
+end 
+
+obj1 = MethodOverloadingExample.new
+obj1.display_message('Welcome to the Ruby World')
+$ ruby method_overloading_example.rb
+#Output :: Wrong Number of Arguments (given1,expected0)-Arguments Error
+
+......................
+Ex: 3
+
+class MethodOverloadingExample
+  def display_message(message)
+    puts message
+  end 
+
+  def display_message(message,user)
+    puts "Hello #{user},#{message}"
+  end 
+
+  def display_message
+    puts "Welcome to the Ruby World"
+  end 
+end 
+
+obj1 = MethodOverloadingExample.new
+obj1.display_message('Welcome to the Ruby World','Chetan Singh')
+$ ruby method_overloading_example.rb
+#Output :: Wrong Number of Arguments (given1,expected0)-Arguments Error
+
+
+......................
+Ex: 4
+
+class MethodOverloadingExample
+  def display_message(message)
+    puts message
+  end 
+
+  def display_message(message,user)
+    puts "Hello #{user},#{message}"
+  end 
+end 
+
+obj1 = MethodOverloadingExample.new
+obj1.display_message('Welcome to the Ruby World','Chetan Singh')
+$ ruby method_overloading_example.rb
+#Output :: 'Welcome to the Ruby World','Chetan Singh'
+
+
+......................
+
+Ex: 5 :: Can support the variable no of arguments by * ,we take these variable no of arguments in the array list but this will be 
+
+class MethodOverloadingExample
+  def display_message(*message)
+    puts message
+  end 
+
+  def display_message(message,user)
+    puts "Hello #{user},#{message}"
+  end 
+
+  def display_message
+    puts "Welcome to the Ruby World"
+  end 
+end 
+
+obj1 = MethodOverloadingExample.new
+obj1.display_message('Welcome to the Ruby World','Chetan Singh')
+$ ruby method_overloading_example.rb
+#Output :: 'Welcome to the Ruby World','Chetan Singh'
+
+......................  ......................  ......................  ......................
+
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+15. Example of Method Overriding :: 
+Example of Method Overriding :: 
+The below example is for the method overriding 
+..........................
+Ex.
+method_overriding_example.rb 
+....
+class MethodOverridingExample
+def display_message 
+  message = "Welcome to the Ruby Progamming World"
+  puts message
+end 
+def display_message
+  user = 'Chetan Singh'
+  message = 'Welcome to the Ruby World'
+  puts "Hello #{user} #{message}"
+end
+def display_message
+  puts "Welcome to the Ruby World"
+end 
+end 
+....
+........................
+Execute :: 
+ruby method_overriding_example.rb 
+obj1 = MethodOverridingExample.new
+obj1.display_message
+Output :: Last method will be used because ruby is the interpretd language so it execute the code line by line .
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+
+Ex. 16 :: Example of Garbage Collection ::
+
+
+
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+
+
+
+14.ExamplE of Garbage Collector 
+
+
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+15.ExamplE of Join and Include 
+
+
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+
+
+16.ExamplE of Design Pattern
+
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+
+17.ExamplE of Decorator Design Pattern
+
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+ 
+
+18.ExamplE of has_and_belongs_to_many and has_many_through association ::
+
+
+has_many_through :
+
+class Physician < ApplicationRecord
+  has_many :appointments
+  has_many :patients, through: :appointments
+end
+
+class Appointment < ApplicationRecord
+  belongs_to :physician
+  belongs_to :patient
+end
+
+class Patient < ApplicationRecord
+  has_many :appointments
+  has_many :physicians, through: :appointments
+end
+
+................................
+
+has_and_belongs_to_many :: 
+
+class Assembly < ApplicationRecord
+  has_and_belongs_to_many :parts
+end
+
+class Part < ApplicationRecord
+  has_and_belongs_to_many :assemblies
+end
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+
+19.ExamplE of types of Joins in Rails 
+
+
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+
+20.Example of Example of Attributes :: attr_accessor,attr_getter,attr_accessor  in Rails ::
+
+Link ::  https://medium.com/rubycademy/a-matter-of-attributes-668bdd29ad29
+
+1. attr ::
+module Attr
+  attr :attr1, 'attr2'
+end
+irb> Attr.instance_methods
+ => [:attr1, :attr2]
+
+Exp : The attr method creates an instance variable and a getter method for each attribute name passed as argument.An argument can be a Symbol or a String that will be converted to Symbol.In the above example, the Attr module includes 2 instance methods that allow to read the value of attr1 and attr2.
+
+
+
+2. attr_reader ::
+module Attr
+  attr_reader :attr1, 'attr2'
+end
+irb> Attr.instance_methods
+ => [:attr1, :attr2]
+
+ Exp : The attr_reader method is similar to the attr one
+
+
+
+ 3. attr_writer ::
+module Attr
+  attr_writer :attr1, 'attr2'
+end
+irb> Attr.instance_methods
+ => [:attr1=, :attr2=]
+
+Exp :  The attr_writer method creates an instance variable and a setter method for each attribute name passed as argument.
+
+An argument can be a Symbol or a String that will be converted to Symbol
+
+4. attr_accessor ::
+module Attr
+  attr_accessor :attr1, 'attr2'
+end
+irb> Attr.instance_methods.sort
+ => [:attr1, :attr1=, :attr2, :attr2=]
+
+Exp : The attr_accessor method creates an instance variable, a getter and a setter method for each attribute name passed as argument.An argument can be a Symbol or a String that will be converted to Symbol.In the above example, the Attr module includes 4 instance methods that allow to read and modify the value of attr1 and attr2.
+
+5. Lazy Initialization ::
+class Website
+  attr_accessor :link, :title
+  def initialize
+    @title = "The best Ruby newsletter"
+  end
+end
+irb> website = Website.new
+ => #<Website:0x00777 @title="The best Ruby newsletter">
+irb> website.instance_variables
+ => [:@title]
+irb> website.link = "http://ruby.devscoop.fr"
+ => "http://ruby.devscoop.fr"
+irb> website.instance_variables
+[:@title, :@link]
+
+Exp :  In the previous examples, I told you that the attr_* methods create instance variables. It’s almost true.In effect, the instance variables created by the attr_* methods use thelazy initialization mechanism.This means that the instance variables are only initialized when the setter method is invoked — or when the instance variable is explicitly set within an instance method.In the above example, the @title instance variable is explicitly created in the Website#initialize method.
+So, this instance variable is available in the array returned by the first call to instance_variables.Notice that the @link instance variable is not yet created, despite the call to attr_accessor. This instance variable is only created after the call to the Website#link= method.So, by using the attr_* methods, the instance variable associated to each argument name will only be created when we set a value to it (by using the setter method or by explicitly assign a value to it).
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+
+21.Example of Encapsulation in Rails :
+
+
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+
+22.Example of Helper Method in Rails :
+
+
+1.Example of helper method in Controller :: 
+
+
+module UsersHelper
+  def full_name(user)
+    user.first_name + user.last_name
+  end
+end
+
+class UsersController < ApplicationController
+  include UsersHelper
+
+  def update
+    @user = User.find params[:id]
+    if @user.update_attributes(user_params)
+      redirect_to user_path(@user), notice: "#{full_name(@user) is successfully updated}"
+    else
+      render :edit
+    end
+  end
+end
+
+...
+
+2. 1.Example of helper method in Controller in Rails 5 ::
+
+module UsersHelper
+  def full_name(user)
+    user.first_name + user.last_name
+  end
+end
+
+class UsersController < ApplicationController
+
+  def update
+    @user = User.find params[:id]
+    if @user.update_attributes(user_params)
+      notice = "#{helpers.full_name(@user) is successfully updated}"
+      redirect_to user_path(@user), notice: notice
+    else
+      render :edit
+    end
+  end
+end
+
+...
+
+
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................
+...................................................  ...................................

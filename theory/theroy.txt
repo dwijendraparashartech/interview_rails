@@ -1,0 +1,532 @@
+
+1. what are the serailizers , why we use the serializers ?
+ans - 
+Serializers in Ruby on rails convert a given object into json format. 
+Serializers control the particular attributes rendered when an object or model is 
+converted into json format.
+serializers show that actually what we want to see from our serializers.
+
+.....................................................
+
+
+2. what are the csv files ::
+CSV ---  "Comma-Seperated-Values"
+csv are the "Comma-Seperated-Values".It is common data format which consist of rows with values seperated by commas.It's used for exporting and importing data.
+
+Example of CSV Files ::
+You can sexport your gmail contacts as CSV File, and you can also import them using the same format.
+
+What a Csv file looks like ::
+
+id,name
+1,chocolate
+2,bacon
+3,apple
+4,banana
+5,almonds
+
+how to import csv files in rails ::
+
+1. make the method self.import(file) in the model
+2. add some functionalitis in the create method in the controller 
+3. make a form for import csv files in the view files 
+
+.....................................................
+
+
+Q ::: What Methodologies We use in Ruby on Rails ???
+
+Link ::  https://www.botreetechnologies.com/blog/project-management-methodology-for-ruby-on-rails-app-development/
+
+1. Waterfall
+2. PRINCE2
+3. Lean Methodology
+4. Scrumban
+5. Agile Methodology 
+
+
+Why Agile Methodology is perfect for  Rails ::
+
+1. Better Code Quality 
+2. Rapid MVP Development
+3. Improved predictability
+
+
+2. Agile Methodology :: It used the MVC Artchitecture. The adavantage of using this particular model is that you can detach business login from the client User Interface. 
+
+3. Agile ::
+  1. A Quick Primer on The Programming Language Ruby
+  2. Convention Not Configuration
+  3. Concentrates on REST
+  4. The Agile Software Development Method
+  5. Uses MVC Architecture
+  6. Agile Development Life Cycle
+
+....................................................
+
+Top 10 Project Management Methodology :: 
+
+1. Waterfall Methodology
+2. Agile Methdology
+3. Scrum Methodology
+4. PMI/ PMBOK
+5. CPM - Critical Path Method 
+6. Kanban Methodology
+7. XP - Extreme Programming 
+8. Lean Methodology 
+9. Six Sigma 
+10. PRINCE2
+
+Link ::::: 
+
+https://www.projectmanager.com/blog/project-management-methodology
+
+....................................................
+
+Naming conventions in Ror ??
+Explain the naming convention in Rails.
+Variables: All letters are lowercase, and words are separated by underscores.
+Class and Modules: Mixed case, no underscore, each word starts with an uppercase.
+Database Table: The database table name should have lowercase letters and underscore between words; all table names should be in the plural form.
+Model: Mixed-case, always has singular with the table name.
+Controller: Represented in plural form like OrdersController.
+
+....................................................
+
+What is the function of ORM in Ruby on Rails?
+
+
+
+-ORM stands for Object Relationship Model that models the classes and helps in setting a relationship between the existing models.
+
+-It allows the classes to be mapped to the table that is present in the database and objects get mapped to the rows in database table.
+
+-It shows the relationship that exists between the object and frame it using the model to display the output to the users.
+
+-It keeps the data in the database according to its relationships and performs the functions accordingly.
+
+-It maps the database in case of any updates and update for the same if the fields are changed or new values are entered.
+
+....................................................
+
+What is the difference between Static and Dynamic Scaffolding?
+
+
+-Dynamic Scaffolding is used to give the model name that is being used with the function like: scaffold: model_name. Whereas, Static Scaffolding requires manual entry in the command and it is given as:
+
+-Script/generate scaffold Post title: string content:text category_id: integer
+
+-Dynamic Scaffolding automatically generates the entire content and user interface at runtime. Whereas, Static Scaffolding requires the insertion of the command to, generate the data with their fields.
+
+-Dynamic Scaffolding doesn’t require the database to be integrated as it gets created in runtime. Whereas, Static Scaffolding requires the database to, be migrated.
+
+-Dynamic Scaffolding allows the generation of new, edit and deletes methods for the use in application. Whereas, Static Scaffolding doesn’t allow any such generation to, take place.
+
+....................................................
+
+Write a program to generate and run the application without the use of database in Ruby on rails?
+
+
+-The program can be written in a normal file and executed by editing the file environment.rb and uncommenting the line where it is included.
+
+-The program is as follows:
+
+Path => rootpath conf/ environment.rb
+# This is the comment that needs to be used as it tells that use this only with the rails.
+config.frameworks -= [ :action_web_service, :action_mailer,:active_record ]
+
+-The setting of the path needs to be done to show the correct fetching of the file and insertion of the records.
+
+....................................................
+
+
+What is the purpose of load, auto_load, and require_relative in Ruby?
+
+-Load allows the process or a method to be loaded in the memory and it actually processes the execution of the program used in a separate file.
+
+It includes the classes, modules, methods and other files that executes in the current scope that is being defined.
+It performs the inclusion operation and reprocesses the whole code every time the load is being called.
+
+-Auto_load: this initiates the method that is in hat file and allows the interpreter to call the method.
+
+-require_relative: allows the loading to take place of the local folders and files.
+
+....................................................
+
+27. Explain about Dig, Float and Max?
+Float class is used whenever the function changes constantly.
+Dig is used whenever you want to represent a float in decimal digits.
+Max is used whenever there is a huge need for Float.
+
+....................................................
+
+29.Explain what a sweeper is in Rails?
+Ans: Sweepers are responsible for expiring or terminating caches when model objects change
+
+.......................................................
+
+37. Define WEBrick Web Server?
+Ans. A Webrick web server is wholly written in Ruby language and is a Ruby library that provides HTTP web servers. We can configure it as an HTTPS, a Proxy, or a virtual server. Moreover, it supports different platforms like Windows, Unix, macOS, etc.
+
+.......................................................
+
+
+38. Is Rails a Web Server?
+Ans. Rails or Ruby on Rails is an MVC and a server-side web application framework that offers a default structure for web services, a web page, and a database.
+
+.......................................................
+
+45. What are the Caching levels available in Rails?
+Ans. The three caching levels available in Ruby on Rails are- Fragment, Page, and Action.
+.......................................................
+
+46. What is meant by Action Cable in Ruby on Rails?
+Ans. Action cable is a type of framework that continuously integrates with the rest of the Rails applications through WebSockets. It also allows us to add real-time features to the rails apps much faster
+.......................................................
+
+Explain the role of garbage collection in Ruby on Rails.
+
+Garbage collection frees up memory for other processes by removing pointer programs and inaccessible objects left behind after a program has executed. This frees the programmer from having to track objects created dynamically during runtime.
+
+.......................................................
+
+2) Explain what is class libraries in Ruby?
+Class libraries in Ruby consist of a variety of domains, such as data types, thread programming, various domains, etc.
+
+.......................................................
+
+
+4) Explain what is “Yield” in Ruby on Rails?
+A Ruby method that receives a code block invokes it by calling it with the “Yield”.
+
+.......................................................
+
+19) Mention what is the difference between Active support’s “HashWithIndifferent” and Ruby’s “Hash” ?
+The Hash class in Ruby’s core library returns value by using a standard “= =” comparison on the keys. It means that the value stored for a symbol key cannot be retrieved using the equivalent string. While the HashWithIndifferentAccess treats Symbol keys and String keys as equivalent.
+
+.......................................................
+
+21) Explain what is Mixin in Rails?
+Mixin in Ruby offers an alternative to multiple inheritances, using mixin modules can be imported inside other class
+
+.......................................................
+
+23) Explain how you can run Rails application without creating databases?
+You can execute your application by uncommenting the line in environment.rb
+
+path=> rootpath conf/environment.rb
+
+config.frameworks = [ action_web_service, :action_mailer, :active_record]
+
+.......................................................
+
+28) Mention the log that has to be seen to report errors in Ruby Rails?
+
+Rails will report errors from Apache in the log/Apache.log and errors from the Ruby code in log/development.log.
+
+
+.......................................................
+
+34) Mention what are the limits of Ruby on Rails?
+
+Ruby on Rails has been designed for creating a CRUD web application using MVC. This might make Rails not useful for other programmers. Some of the features that Rails does not support include
+
+Foreign key in databases
+Linking to multiple data-base at once
+Soap web services
+Connection to multiple data-base servers at once
+
+.......................................................
+35)  
+50) Mention what is the difference between Procs and Blocks?
+The difference between Procs and Blocks,
+
+Block is just the part of the syntax of a method while proc has the characteristics of a block
+Procs are objects, blocks are not
+At most one block can appear in an argument list
+Only block is not able to be stored into a variable while Proc can
+
+.......................................................
+
+53) Mention what is the difference extend and include?
+
+The “include” makes the module’s methods available to the instance of a class, while “extend” makes these methods available to the class itself.
+
+These interview questions will also help in your viva(orals)
+
+.......................................................
+
+46) Mention what is the syntax for Ruby collect Iterator?
+The syntax for Ruby collect Iterator collection = collection.collect.
+
+.......................................................
+
+8) What is Rails script? Name some of them?
+
+Rails provide some excellent tools that are used to develop a Rails application. These tools are packaged as scripts from command line.
+
+Following are the most useful Rails scripts used in Rails application
+
+.......................................................
+
+Question 3. Explain About Restful Architecture?
+
+
+RESTful: REST stands for Representational State Transfer. REST is an architecture for designing both web applications and application programming interfaces (API’s), that’s uses HTTP.
+
+RESTful interface means clean URLs, less code, CRUD interface. CRUD means Create-READ-UPDATE-DESTROY. In REST, they add 2 new verbs, i.e, PUT, DELETE.
+
+
+.......................................................
+
+Question 13. What Things We Can Define In The Model?
+
+There are lot of things you can define in models few are:
+
+Validations (like validates_presence_of, numeracility_of, format_of etc.)
+Relationships (like has_one, has_many, HABTM etc.)
+Callbacks (like before_save, after_save, before_create etc.)
+Suppose you installed a plugin say validation_group, So you can also define validation_group settings in your model
+ROR Queries in Sql
+Active record Associations Relationship
+
+
+.......................................................
+
+what is sprocket ???
+
+Sprockets is a Ruby library for compiling and serving web assets. It features declarative dependency management for JavaScript and CSS assets, as well as a powerful preprocessor pipeline that allows you to write assets in languages like CoffeeScript, Sass and SCSS
+
+Link ::   https://github.com/rails/sprockets
+
+.......................................................
+
+What is the Location for Initialization Code ?? Where we put the initialization Code ??
+
+config/application.rb
+Environment-specific configuration files
+Initializers
+After-initializers
+
+
+.......................................................
+
+How to Configuring Rails ??
+Configuring Rails means configuring the components of Rails , as well as configuring rails itself. 
+There are 2 files that allow you to specify various settings that you want to pass down to the various files.
+1. config/application.rb :: This is the  Configration File
+2. config/environments/production.rb :: This is the enviornment specific configration file .
+
+.......................................................
+
+what are the basic general configration settings that are used in the configration files ::
+What are the configration Assets, How we used it ??
+What are the configration Generators, How we used it ??
+What are the configration Middleware, How we used it ??
+What are the configration Active Model , How we used it ??
+What is  the configration Active Record ??
+What is  the configration Active Record ??
+What is  the configration Active Controller ??
+What is  the configration Active Index ??
+What is  the configration Action Mailbox ??
+What is  the configration Action Mailbox ??
+Active Support
+Active Job 
+Action Cable 
+Active Storage 
+Action Text
+Connections PAramerters 
+
+.......................................................
+How to create the Rails Enviornemnt ??
+
+Rails Enviornment Settings ?
+Database Pooling ?
+Custom Configration ?
+Search Engine Indexing ?
+Event File system Monitor ?
+
+.......................................................
+
+
+What is Sonar Cube ?? 
+SonarQube is a popular platform for Code Quality. It can be used for static and dynamic analysis of a codebase and can detect common code issues such as bugs and vulnerabilities.
+
+.......................................................
+
+What are the important Configration files in Rails Application ??
+
+config/application.rb  :: Sets up Bundler and the load paths.
+config/boot.rb  :: This contains any application-wide configuration settings for Rails and its components. e.g. Time Zone or Localisation *
+config/environment.rb  ::  This loads your Rails application and runs all the initializers
+
+
+Link ::
+.......................................................
+
+What are the Initializers in Rails ?? How many types of initializers Rails Provide ??
+
+The ten initializer files that Rails provides for you are:
+
+Application Controller Renderer Allows you to render arbitrary templates without having to be in a controller action.
+Assets Allows you to specify additional stylesheets of JavaScript files to include.
+Backtrace Silencers Allows you to modify the way that backtraces are shortened.
+Cookies Serialiser Allows you to specify the way cookies are serialised.
+Filter Parameter Logging Allows you to specify which parameters to filter out of your log files.
+Inflections Contains the default inflections for pluralisation and singularisation of uncountable words.
+Custom MIME Types Rails supports a standard set of MIME types. Adding to this file allows you to specify additional MIME types for your application to respond to.
+New Framework Defaults Contains migration options to make upgrading Rails versions a little easier.
+Session Store Allows you to specify what class to use to store the session.
+Wrap Parameters Configures your application to work with JavaScript MVC frameworks, such as Backbone.js, out of the box.
+.......................................................
+
+What are the Initializers in Rails ??
+
+An initializer is any file of ruby code stored under /config/initializers in your application. You can use initializers to hold configuration settings that should be made after all of the frameworks and plugins are loaded.
+
+.......................................................
+
+What are the Enviornment Variables  in Rails ?? What is their Use ??
+
+Many applications require configuration of settings such as email account credentials or API keys for external services. You can pass local configuration settings to an application using environment variables.
+you can have the enviornment variables to make the credentials private in the respository time to send and receive the code .
+Environment variables are not tracked by Git, therefore they won’t be committed to public repositories. As a result, our keys are kept safe and our applications are secure.
+
+
+.......................................................
+Good Link ::   http://railsapps.github.io/rails-environment-variables.html
+
+How to set the  Enviornment Variables  in Rails ??
+
+Option One: Set Unix Environment Variables
+Option Two: Use the Figaro Gem
+Option Three: Use a local_env.yml File
+
+.......................................................
+
+
+How to create the Configration Objects in Ruby ??
+Link ::  https://www.cloudbees.com/blog/creating-configuration-objects-in-ruby
+
+
+
+.......................................................
+
+
+.......................................................
+
+What are the Operation Enviornments under Rails application ?
+
+development, test, and production. 
+Each environment has its own configuration file which specifies how things should work in that environment. 
+These files can be found in the config/environments directory and are called, development.rb, test.rb, and production.rb.
+They include details such as which database to connect to, and whether classes in your application should be reloaded with each request. 
+We use an environment variable called RAILS_ENV to determine which environment we are in.
+
+.......................................................
+
+What are the other Important Useful Files in the Rails Configration ??
+
+
+config/database.yml: contains all the settings required by Active Record to connect to a database.
+config/secrets.yml: stores your application’s sensitive data, such as access keys and passwords that are required for external APIs.
+config/routes.rb: provides a mapping between a URL and a controller action. This is covered in more detail in Rails Routing.
+
+.......................................................
+
+How to use Environement Variables in Ruby ?? 
+
+Link :: https://www.rubyguides.com/2019/01/ruby-environment-variables/
+
+.......................................................
+
+https://itnext.io/environment-variables-in-ruby-on-rails-17e4934cfd71
+
+.......................................................
+.......................................................
+MVC Architecture Usage ::
+
+https://www.nopio.com/blog/ruby-rails-popular-job-interview-questions/
+
+Let’s explain request/response flow in Rails:
+
+The user opens their browser and enters a URL.
+The browser sends a GET request to the URL. The request hits the Rails Router (config/routes.rb).
+The router receives the request information from the web server and based on that, decides which controller action should be called. If a request matches to any path in the routes file, the corresponding controller and action will be called.
+The controller receives the parameters from the router and passes them into appropriate model methods.
+The model queries a database to fetch data.
+The Database returns stored data to the model.
+The model manages the data and returns it to the controller.
+The controller feeds the received data to the view.
+The view renders the page as HTML, prepares a response and forwards it to the controller.
+The controller forwards the ready response to the browser.
+The browser displays a response to the user.
+
+.....................................................................
+
+
+What is the Active Record ??
+
+
+9. What are the drawbacks of using Active Record and when we shouldn’t use it?
+Although Active Record has many advantages over the raw sql queries, there are some situations when using plain sql queries is the better option. You should use raw sql queries instead of an Active Record query when you have to create a query with complex criterias, and when you have to update significant amount of records. In the first case raw sql query will be easier to write and less confusing. For the second case, let’s analyze this situation as an example.
+
+Firstly, let’s add a larger amount of data into the Department table. Add to the db/seeds.rb file this piece of code:
+
+(1..1000).each do |i|
+  Department.create(name: 'Test')
+end
+And run:
+
+$ rake db:seed
+Now, let’s add  all of our employees to one department. First, let’s try this with Active Record.
+
+Create migration:
+
+$ rails generate migration AddDepartmentToEmployeesWithAR
+Replace the update method in this migration with this piece of code:
+
+def change
+  Employee.all.each do |employee|
+    employee.update(department_id: 1)
+  end
+end
+Now, let’s do the same thing; but this time we will use raw sql query to update all employees with one department.
+
+Create migration:
+
+$ rails generate migration AddDepartmentToEmployeesWithSQL
+Replace update method in this migration with this piece of code:
+
+def change
+  execute 'UPDATE employees SET department_id = 2'
+end
+Now let’s see which migration will be faster.
+
+migration
+As you can see, second migration which uses plain sql query is much faster than first migration which uses ActiveRecord query.
+
+
+
+..................................................
+
+
+12. What’s different between ActiveRecord::Relation’s count, length and size methods?
+count – counts the number of elements using query with the SQL command ‘COUNT’ but the result is not stored internally during object life cycle. This means, each time we invoke this method, SQL query is performed again. You should use this method if you don’t have anything loaded.
+length – loads all objects just to count them and then return the result count. It should be used only if you have already loaded all entries to avoid another database query.
+size – returns the size of the collection. If a collection is loaded, it will count its elements without any database query; but if a collection is not loaded, it will perform an additional query.
+So we can say that size adapts to the situation.
+
+
+..................................................
+
+
+14. What’s the difference between nil?, empty?, blank? and present? methods?
+nil? – tests whether the object is exactly nil, that is whether it is an instance of NilClass
+empty? – can be used on strings, arrays and hashes and returns true if they don’t contain elements. If called on something that is nil, it will throw a NoMethodError.
+blank? – an object is blank if it’s false, empty, or a whitespace string.
+present? – An object is present if it’s not blank.
+Here is the table with all the cases:
+
+
+

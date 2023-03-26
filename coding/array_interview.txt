@@ -1,0 +1,225 @@
+array_interview.txt ::
+
+array = [1, 1, 2, 3, nil]
+
+1. Remove duplicate items from array :: array.uniq
+2. Remove nil items from array ::  array.compact
+3. Remove Even items from array :: array.reject! {|c| c.even?}
+4. Remove Odd items from array ::  array.reject! {|c| c.odd?}
+5. Remove nil items from array ::  array.reject! {|c| c.nil?}
+6. Presence in the String :: array = ['Simple', 'Ample', 'Sit'] ,  array.find{|s| s['Si']}
+7. Find common items from below arrays :: array1 = [1, 2, 3 ] ,array2 = [0, 5, 2]
+print array3 = array1 & array2
+8. Sum up the values of a Hash in Ruby ?  hash = {"a"=>10, "b"=>20, "c"=>30}
+  hash.values.inject { |a, b| a + b }
+
+9. Write the Routes for below code  for comments and blk_upload ::
+
+  resources :posts do
+      member do
+        get 'comments'
+      end
+      collection do
+        post 'bulk_upload'
+      end
+  end
+
+  Ans ::
+
+ Route for Bulk Upload :: 
+
+ POST  /posts/bulk_upload
+
+  Route for Comments :: 
+
+ /posts/:id/comments
+
+
+...............
+
+10. # use metaprogramming to refactor these methods
+def admin?
+  role ==  'admin'
+end
+
+def marketer?
+  role == 'marketer'
+end
+
+def sales?
+  role == 'sales'
+end 
+
+Ans :: try this may be this is right 
+
+ROLE =  ['admin','marketer','sales']
+ROLE.each do |user_role|
+	define_method #{user_role}" do 
+		role == user_role
+	end 
+end 
+.............
+
+11. # write rspec. if poduct count is 0 display message "Out of stock"
+
+
+..............
+
+12. # ajax call to list post comments with controller, view, js code
+
+..............
+
+13. Use below methods with proper arguments ?
+# use below methods with proper arguments
+
+def func1(*input)
+  puts input
+end
+
+def func2(**input)
+  puts input
+end
+
+# for example
+def math(x, y)
+end
+math(2,3)
+
+..............
+
+
+14. In Array ::
+
+Ques Type ::  Find the highest value in an array of hashes in Ruby
+Method ::  You can use max_bymethod
+Link ::  https://stackoverflow.com/questions/39581381/find-the-highest-value-in-an-array-of-hashes-in-ruby
+
+
+# find users where the score is more than 100
+array = [
+  { name: 'Dan', score: 110 },
+  { name: 'Mike', score: 57 },
+  { name: 'Jill', score: 120 }
+]
+
+Ans ::
+array.max_by{|k| k[:score] }
+
+................
+
+
+
+15. 
+
+Has Many through Association Relationship ::
+
+class Physician < ApplicationRecord
+  has_many :appointments
+  has_many :patients, through: :appointments
+end
+
+class Appointment < ApplicationRecord
+  belongs_to :physician
+  belongs_to :patient
+end
+
+class Patient < ApplicationRecord
+  has_many :appointments
+  has_many :physicians, through: :appointments
+end
+
+
+................
+
+Q.How To Serialize Data With Yaml?
+Ans: YAML is a straight forward machine parsable data serialization format, designed for human readability and interaction with scripting language such as Perl and Python. YAML is optimized for data serialization, formatted dumping, configuration files, log files, internet messaging and filtering.
+
+................
+
+Q.How To Use Two Databases Into A Single Application?
+Ans: magic multi-connections allows you to write your model once, and use them for the multiple rails databases at the same time. sudo gem install magic_multi_connection. After installing this gem, just add this line at bottom of your environment.rb require “magic_multi_connection”
+
+.................
+
+Q.What Are The Servers Supported By Ruby On Rails?
+Ans: RoR was generally preferred over WEBrick server at the time of writing, but it can also be run by: Lighttpd (pronounced ‘lighty’) is an open-source web server more optimized for speed-critical environments. Abyss Web Server- is a compact web server available for windows, Mac osX and Linux operating system. Apache and nginx
+
+...................
+
+
+Q.What Do You Mean By Naming Convention In Rails.
+Ans: Variables: Variables are named where all letters are lowercase and words are separated by underscores. E.g: total, order_amount. Class and Module: Classes and modules uses MixedCase and have no underscores, each word starts with a uppercase letter. Eg: InvoiceItem Database Table: Table name have all lowercase letters and underscores between words, also all table names to be plural. Eg: invoice_items, orders etc Model: The model is named using the class naming convention of unbroken MixedCase and always the singular of the table name. For eg: table name is might be orders, the model name would be Order. Rails will then look for the class definition in a file called order.rb in /app/model directory. If the model class name has multiple capitalized words, the table name is assumed to have underscores between these words. Controller: controller class names are pluralized, such that Orders Controller would be the controller class for the orders table. Rails will then look for the class definition in a file called orders_controlles.rb in the /app/controller directory.
+
+////////////////////////
+
+.How You Run Your Rails Application Without Creating Databases?
+Ans: You can run your application by uncommenting the line in environment.rb path=> rootpath conf/environment.rb config.frameworks-=) @image.save render :layout => false end
+
+
+.........
+
+Q.Pluck ?
+Ans: pluck can be used to query a single column from the underlying table of a model. It accepts a column name as argument and returns an array of values of the specified column with the corresponding data type. Client.where(:active => true).pluck(:id) # SELECT id FROM clients WHERE active = 1 Client.uniq.pluck(:role) # SELECT DISTINCT role FROM clients
+
+..........
+
+Q.Difference Between Rails 2 And Rails 3 ?
+Ans: I found 7 major Difference between rails 2 and rails 3 has: New Router Api, New mailer, New Active Record Query interface, Assets pipeline, Security Improvements, Unobtrusive JavaScript (UJS) , Dependency management with bundler.
+
+
+...........
+
+Q.How To Find Second Max Element From Database ?
+Ans: Rails Query:Model.order("yourField DESC").limit(1).offset(1) Mysql: SELECT * FROM yourTable ORDER BY yourField DESC LIMIT 1,1; Other sql ways: -select max(column_name) from table_name where column_name<(select max(column_name) from table_name) -SELECT Name FROM Employees group BY Salary DESCENDING limit 2;
+Q.What Is Rack ?
+Ans: Rack: a Ruby Webserver Interface Rack middleware is a way to filter a request and response coming into your application.
+Q.How Do I Find Only Duplicate Entries In A Database Table?
+Ans: Rails: User.group(:email).having("count(email)>1 Mysql: select * from users group by first,email having count(*) > 1 Contact for more on Ruby On Rails Online Training
+
+.............
+
+
+11. What is Session and Cookies?
+
+Session is used to store user information on the server side. Maximum size is 4 kb. Cookies are used to store information on the browser side or we can say client side.
+
+................
+
+
+
+13. What things we can define in the model?
+
+There are lot of things you can define in models few are:
+
+1. Validations (like validates_presence_of, numeracility_of, format_of etc.)
+2. Relationships (like has_one, has_many, HABTM etc.)
+3. Callbacks (like before_save, after_save, before_create etc.)
+
+................
+
+14.  How many types of callbacks available in ROR?
+
+ (1) before_validation
+ (2) before_validation_on_create
+ (3) validate_on_create
+ (4) after_validation
+ (5) after_validation_on_create
+ (6) before_save
+ (7) before_create
+ (8) after_create
+ (9) after_save
+
+ ...............
+
+
+23. How to use sql db or mysql db without defining it in the database.yml?
+
+You can use ActiveRecord anywhere
+require “rubygems”
+require “active_record”
+ActiveRecord::Base.establish_connection({
+               :adapter=> ‘postgresql’, :user=>’foo’, :password=> ‘abc’, :database=>’whatever’})
+
+
+...............
+

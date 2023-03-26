@@ -1,0 +1,243 @@
+theory_imp.txt :: 
+
+...........................................................................
+
+0.What are the third party libraries in your rails application , how to integrate third party library in your rails application , which third party library you did use ?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+...........................................................................
+
+
+1. What is Bang Method in Rails ?
+
+https://thecodest.co/blog/ruby-software-development-what-are-the-bang-methods-and-when-to-create-them/
+
+The bang method changes the recipient
+According to the documentation, the map! method invokes the given block once for each element of self, replacing the element with the value returned by the block and if no block is given, an Enumerator is returned instead. As we can see, object_id remains unchanged.
+
+...........................................................................
+
+
+
+2. What are the singleton MEthods in ruby ??
+
+Link ::   https://www.geeksforgeeks.org/ruby-singleton-methods/
+
+Ruby's singleton methods are the methods that can be defined for a specific object only i.e. it works for a single object.
+
+Ex :: 
+
+hese kinds of methods belong to the singleton class or eigenclass and are available exclusively for a single object, unlike the other methods which are available for all the instances of the class.
+
+This feature is more useful where there is a need for the object to possess some unique behavior or methods which the other objects of the class do not own.
+.........
+
+Syntax:
+
+def Obj.GFG
+# Method body 
+end
+
+Example :: 
+
+
+# Ruby program to demonstrate the use 
+# of singleton methods
+class Vehicle
+  def wheels
+    puts "There are many wheels"
+  end
+end
+  
+# Object train
+train = Vehicle.new 
+  
+# Object car
+car = Vehicle.new   
+  
+# Singleton method for car object
+def car.wheels   
+  puts "There are four wheels"
+end
+  
+puts "Singleton Method Example"
+puts "Invoke from train object:"
+train.wheels         
+puts "Invoke from car object:"
+car.wheels
+
+..............................................
+
+3. What is the difference between props and attr in html ?
+
+prop() method provides a way to explicitly retrieve property values, while . attr() retrieves attributes. For example, selectedIndex, tagName, nodeName, nodeType, ownerDocument, defaultChecked, and defaultSelected should be retrieved and set with the . prop() method.
+
+..............................................
+
+Link ::  https://www.javatpoint.com/ruby-multithreading#:~:text=Ruby%20Thread,different%20programs%20using%20multiple%20process.
+
+4. What is Threading in Ruby ??
+
+Ruby Thread. Thread means lightweight sub-process. It is a separate path of execution. In Ruby, different parts of a program can run at the same time by either splitting tasks within a program using multiple threading or splitting tasks between different programs using multiple process.
+
+
+
+
+..............................................
+
+5. What is Singleton class or EigenClasses ?
+
+Link :: Very Good Blog ::  https://medium.com/rubycademy/understanding-the-eigenclass-in-less-than-5-minutes-dcb8ca223eb4
+
+“Eigen” is a German word meaning "self" ,own, and eigenclass is called as metaclass , singletonclass. the class methods of a class are nothing more than singleton methods on the Class instance that represents that class.
+
+
+..............................................
+
+6. What is Singleton in Rails ?
+
+Singleton is a creational design pattern, which ensures that only one object of its kind exists and provides a single point of access to it for any other code. Singleton has almost the same pros and cons as global variables. Although they're super-handy, they break the modularity of your code.
+
+................................................
+
+Git Commands ::
+
+1. What is the diff between Cherrypick and Rebase ??
+
+rebase moves commits from the current branch to another branch.
+cherry-pick copies commits from another branch to the current branch.
+
+
+
+
+.................................................
+
+What security features that rails provide more ??
+
+
+
+
+What is index in Rails ??
+
+Link ::   https://medium.com/@mera.stackhouse/what-are-indexes-and-how-to-add-them-to-your-rails-app-dc066d538771
+
+
+An index for a certain column/columns in a database works similarly to an index in a book. Instead of scanning every page of a book for all instances of a subject, we flip to the index, which is usually alphabetized in some fashion, and find the subject in there. The subject entry points us to the relevant pages of the book.
+
+A database index is an ordered data structure(read: another table)that we can create to help our database with some laborious searches. We can create an index for a certain column of our database that we query a lot (maybe an email column) and it will create another table that is, for example, alphabetized to make for a more efficient search. This table’s other column will point to the relevant row of the first table.
+
+.............................................
+
+link :: https://semaphoreci.com/blog/2017/05/09/faster-rails-is-your-database-properly-indexed.html
+
+Q.  What makes your Rails Application Slow ??
+
+Database queries usually play the biggest role in an application’s performance footprint. 
+
+A. Loading too much data into memory 
+B.  N+1 queries
+C   lack of cached values
+D   lack of proper databases indexes
+
+Missing database indexes on foreign keys and commonly searched columns or values that need to be sorted can make a huge difference. The missing index is an issue that is not even noticeable for tables with several thousand records. However, when you start hitting millions of records, the lookups in the table become painfully slow.
+
+.............................................
+
+13. Tell me something about git stash?
+Git stash can be used in cases where we need to switch in between branches and at the same time not wanting to lose edits in the current branch. Running the git stash command basically pushes the current working directory state and index to the stack for future use and thereby providing a clean working directory for other tasks.
+
+.............................................
+
+14. How to create the rails application without any database ??
+
+rails new myApp --skip-active-record
+
+.............................................
+
+
+15. What are the instance_eval and class_eval ???
+
+Link ::  https://web.stanford.edu/~ouster/cgi-bin/cs142-winter15/classEval.php
+
+.............................................
+
+16.  How to delete a specific element in Ruby ??
+
+array.delete_at(index)
+
+.............................................
+
+17. What is the controller subdirectory in Ruby ??
+
+app/controllers − The controllers subdirectory is where Rails looks to find the controller classes. A controller handles a web request from the user. app/helpers − The helpers subdirectory holds any helper classes used to assist the model, view, and controller classes.
+
+.............................................
+
+
+18. 
+What is the difference between git pull and git fetch?
+
+Hide answer
+git fetch only downloads new data from a remote repository, but it doesn’t integrate any of the downloaded data into your working files. All it does is provide a view of this data.
+
+git pull downloads as well as merges the data from a remote repository into your local working files. It may also lead to merge conflicts if your local changes are not yet committed. Use the git stash command to hide your local changes.
+
+.............................................
+
+19.
+One of your teammates accidentally deleted a branch, and has already pushed the changes to the central git repo. There are no other git repos, and none of your other teammates had a local copy. How would you recover this branch?
+
+Check out the latest commit to this branch in the reflog, and then check it out as a new branch.
+
+.............................................
+
+20. How can you copy a commit made in one branch to another (e.g. a hot fix commit from released branch to current development branch)?
+
+You need to use the cherry-pick command. It provides the possibility to play back an existing commit to your current location/branch. So you need to switch to the target branch (e.g. git checkout development) and call git cherry-pick {hash of that commit}.
+
+In spite of applying the same changes, it will be a new commit with a new hash because the changes are applied to a different destination.
+
+.............................................
+
+21. What is a conflict in git and how can it be resolved?
+
+A conflict arises when more than one commit that has to be merged has some change in the same place or same line of code. Git will not be able to predict which change should take precedence. This is a git conflict.
+
+To resolve the conflict in git, edit the files to fix the conflicting changes and then add the resolved files by running git add. After that, to commit the repaired merge, run git commit. Git remembers that you are in the middle of a merge, so it sets the parents of the commit correctly.
+
+.............................................
+
+
+Link :: Git very imp questions asked everytime ??
+
+https://www.toptal.com/git/interview-questions
+
+.............................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

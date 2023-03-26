@@ -1,0 +1,121 @@
+kaminari_gem.txt
+......................
+Link :: 
+Very good and detailed gem ::
+https://github.com/kaminari/kaminari
+
+Very basic gem ::
+
+https://medium.com/@waseem.ghafoor/pagination-in-rails-app-with-kaminari-8158f8738f4e
+
+https://github.com/kaminari/kaminari
+
+
+..................................................................
+
+1. include kaminari gem -- gem ‘kaminari’  + bundle 
+
+2. Run the following command and customize it according to your requirements::
+$ rails g kaminari:config
+
+3. Add params page in the kaminari 
+Add page(params[:page]) in front get data query in controller function.
+data = []
+@data = User.page(params[:page])
+
+4. Add <%= paginate @attribute %> in html view and it is done. Kaminari automatically handles each and everything for it. 
+
+..................................................................
+
+Check the records with the kaminari ::
+User.order(:name).page(7)
+User.count                     #=> 1000
+User.page(1).limit_value       #=> 20
+User.page(1).total_pages       #=> 50
+User.page(1).current_page      #=> 1
+User.page(1).next_page         #=> 2
+User.page(2).prev_page         #=> 1
+User.page(1).first_page?       #=> true
+User.page(50).last_page?       #=> true
+User.page(100).out_of_range?   #=> true
+
+The Per Scope ::
+User.order(:name).page(7).per(50)
+
+User.count                     #=> 1000
+a = User.limit(5); a.count     #=> 5
+a.page(1).per(20).size         #=> 20
+a.page(1).per(20).total_count  #=> 1000
+
+The Padding scope ::
+User.order(:name).page(7).per(50).padding(3)
+
+The Unscope Method ::
+users = User.order(:name).page(7).per(50)
+unpaged_users = users.except(:limit, :offset) # unpaged_users will not use the kaminari scopes
+
+
+..................................................................
+
+How to do configration in kaminari ::
+
+$  rails g kaminari:config
+
+You can configure the following default values by overriding these values using Kaminari.configure method.
+
+
+default_per_page      # 25 by default
+max_per_page          # nil by default
+max_pages             # nil by default
+window                # 4 by default
+outer_window          # 0 by default
+left                  # 0 by default
+right                 # 0 by default
+page_method_name      # :page by default
+param_name            # :page by default
+params_on_first_page  # false by default
+
+..................................................................
+
+Change the page method name in the kaminari ::
+
+You can change the method name page to bonzo or plant or whatever you like
+
+..................................................................
+
+Configuring Max per_page Value for Each Model by max_paginates_per
+
+class User < ActiveRecord::Base
+  max_paginates_per 100
+end
+
+..................................................................
+
+
+You can specify max_pages value per each model using the following declarative DSL. This value restricts the total number of pages that can be returned. Useful for setting limits on large collections.
+
+class User < ActiveRecord::Base
+  max_pages 100
+end
+
+..................................................................
+
+Controller Code for the kaminari gem ::
+@users = User.order(:name).page params[:page]
+
+
+..................................................................
+
+Views Method ::
+<%= paginate @users %>
+
+..................................................................
+
+Paginate Helper Method ::
+
+<%= paginate @users %>
+
+This would output several pagination links such as « First ‹ Prev ... 2 3 4 5 6 7 8 9 10 ... Next › Last »
+
+
+

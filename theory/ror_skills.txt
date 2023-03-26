@@ -1,0 +1,28 @@
+ror_skills.txt::
+
+
+skills:
+
+Web development experience with Ruby on Rails;
+Knowledge of Ruby and its syntax;
+Ruby programming language;
+Object-oriented programming skills;
+In-depth understanding of backend development;
+Conceptual understanding of server-side templating languages;
+Knowledge of server-side CSS preprocessors;
+Familiarity with JavaScript, HTML5, CSS3 for front-end development;
+Knowledge of concepts like the Object Relationship Model, “Model View Controller” (MVC), and RESTful APIs;
+Experience with SQL databases and NoSQL databases;
+Knowledge of integrating multiple data sources into apps;
+Understanding of software architecture, testing concepts, and “Continuous Integration” (CI)/”Continuous Delivery” (CD);
+Familiarity with operating systems like Windows, Unix, Linux, etc.;
+Familiarity with cloud platforms;
+Knowledge of a version control system and tools like GitHub;
+Experience with popular test automation frameworks and DevOps tools.
+Look for the following competencies:
+
+Communication skills;
+Problem-solving skills;
+Passion for excellence;
+Commitment to project goals;
+Collaboration skills.

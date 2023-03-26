@@ -1,0 +1,225 @@
+e1 theory_4.txt
+
+theory_4.rb 
+
+4 no questions 
+
+
+.......................................................................................
+How to use two databass in ror app ?
+.......................................................................................
+1.  Ruby on Rails sets up default connection based on your database.yml, configration to automatically select development,test or production.
+But what if we want to access two or more databases having 2+ connections open at the same time.Active Record requires that you subclass ActiveRecord::Base. That prevents you doing migrations from one database to another.It prevents you using one set of model classes on two or more databases with the same schema.
+Magic multi-connectuib allows you to write your models once and use them for multiple Rails databases at the same time.Have use magical namespacing.
+
+2. $ sudo gem install magic_multi_connection  :: This gem command allow us to write your model once and use that for multiple rails databases.
+
+
+
+.......................................................................................
+How many Queries will be Run in the join and include ?
+.......................................................................................
+
+Join always run a single query
+include basically run two queries 
+
+
+
+
+.......................................................................................
+What is Garbage Collector ? How does we used it ?
+.......................................................................................
+
+
+
+
+
+
+
+
+
+
+.......................................................................................
+How to improve the Ruby Code ?
+.......................................................................................
+
+1.Avoid Hidden Structures
+2.Avoid While!(not)
+3.Avoid Functions that do not work well with Iterators  
+4.Patch the GC::Garbage Collector
+5.USe Double pipe ||= for your Methods
+6.Use loop do over while true 
+7.Use Hash [...] to create a Hash from a list of Values 
+
+.......................................................................................
+How to improve the Speed of Rails Application?
+.......................................................................................
+
+Avoid : 1 ,2 ,3 
+1.Avoid :: Avoid Creating Unnecessary Objects.
+2.Avoid :: Method Interations on large Collections
+3.Avoid :: Two Methods find_by and find_by_all
+4.Beware of Pagination 
+5. Call only What you need 
+6. Correctly Indexing database 
+7. Eager or Preloaded queries 
+8. Eliminate N+1 queries
+9. Minimize the no of database request
+Reduce : 10,11
+10.Reduce:: Reduce Garbage Collections Call Amounts
+11.Reduce:: Reduce size of images and tables 
+12.Render Partials Properly
+13.Select the Right Session Storage 
+14.Turn Caching On 
+15.Try Jruby
+Use :: 16,17,18,19,20
+16.Use Background Processing::Sidekiq
+17.Use Bullet Gem
+18.Use cdn for your Assets
+19.Use proper indexes for full text search 
+20.Use String Method :: << 
+21. Write less code use more gem 
+
+
+.......................................................................................
+What are the Features of Rails ?
+.......................................................................................
+
+
+
+
+
+
+.......................................................................................
+What are the Features of Ruby ?
+.......................................................................................
+
+
+
+
+
+
+
+
+
+
+
+
+.......................................................................................
+What are the Scopes and how we can use the scopes?what are its types ?
+.......................................................................................
+Scopes are custom queries that defined inside rails models with the scope method.
+Scoping allow us that we specify common used queries that we reference as method calls at association objects or models.You can cover where,join and include.All Scope bodies should return an ActiveRecord::Relation or nil to allow for further methods(such as other scopes) to be called on it.Every Scope takes 2 Arguments:: name and lambda 
+A name :: Which you use to call this scope
+A Lambda :: Which implements the query 
+
+Example of Scope ::   
+scope:active_users,->{where(active:true)}
+
+class Book < ApplicationRecord
+	scope:out_of_print,->{where(out_of_print:true)}
+end 
+
+
+Features of Scopes ::
+1.How to call the scopes
+2.Call the scope at the Association
+3.Scopes are also chainable with Scopes 
+...
+
+1. How to call the Scopes :: Book.out_of_print
+
+2. Call the scope at Association :: Call the scope at association which has the Book Object
+author = Author.first
+author.first.out_of_print  :: This will take record of - All out of print books by customer.
+
+3. Scopes are also chainable with Scopes 
+class Book < ApplicationRecord
+	scope:out_of_print,->{}
+	scope:out_of_print_and_expressive,->{out_of_print.where("price>500")}
+end 
+...
+We can use the Scope by the below ways ::
+1.Passing in Arguments
+2.Using Conditionals
+3.Applying Default Scope
+4.Merging of Scopes
+5.Remove all Scoping 
+...
+
+Remove all Scoping ::
+
+
+Diff between scope and class methods ::
+There is one notable difference between the scope method and a class method: scope-defined scopes will always return an ActiveRecord::Relation, even if the logic within returns nil. Class methods, however, have no such safety net and can break chainability if they return something else.
+...
+
+Diff between scope and class methods ::With Example ::
+
+1. When we define a scope on an ActiveRecord model
+ class Vehicle < ActiveRecord::Base
+    scope :red, -> { where(color: 'red') }
+  end
+
+2.A class method is added to the Model. It is simply like this
+class Vehicle < ActiveRecord::Base
+    def self.red
+      where(color:'red')
+    end
+  end
+...
+Explanation of the difference between scope and class method by this example :: 
+
+The object returned by scope is always an ActiveRecord::Relation not Array. And this is the greatest benefit, because you can call all the queries on this object just like any other Relation object.
+
+  Vehicle.red
+  Vehicle.red.count
+  Vehicle.red.where(type: 'Hatchback')
+You should always pass a callable object to the scopes defined with #scope. This ensures that the scope is re-evaluated each time it is called.
+
+...
+
+How to call the Scopes ::
+
+
+..........................................
+
+Types of Scopes ::
+1.Default Scopes 
+2.Extended Scopes 
+
+Example of Scope with arguments ::
+scope :graduated_after, ->(date) { where('graduation_date > ?', date) }
+
+...
+Remove all Scoping :: Use unscope method to remove the scope 
+Ex:: Book.uscoped.load   
+Exp :: This unscope method will call at some method not at any query 
+
+Remove All Scoping ::
+Ex:: Book.unscoped.all
+Book.where(out_of_print:true).unscoped.all
+
+Unscope will accept the block ::
+Book.unscoped{Book.out_of_print}
+
+..........................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.......................................................................................
+5.
+.......................................................................................
+
+

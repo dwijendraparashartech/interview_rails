@@ -1,0 +1,358 @@
+queires.txt ::
+
+Very good link and problem ::  https://stackoverflow.com/questions/50401702/joining-nested-associations-multiple-level
+
+
+
+All Query Examples Basically ::
+
+Category.joins(:products) 
+Product.joins(:category, :likes)
+Category.joins(products: :likes)
+Category.joins(products: [:reviews, :likes])
+Author.joins(books: [{ reviews: { customer: :orders } }, :supplier] )
+time_range = (Time.now.midnight - 1.day)..Time.now.midnight
+Customer.joins(:orders).where('orders.created_at' => time_range).distinct
+
+
+
+
+...............................................
+
+Query 00 :: Sql Query Example ::
+
+SQL Query for the Joins :: 
+There are multiple ways to use the joins method.
+Query ::     Author.joins("INNER JOIN books ON books.author_id = authors.id AND books.out_of_print = FALSE")
+Result ::   SELECT authors.* FROM authors INNER JOIN books ON books.author_id = authors.id AND books.out_of_print = FALSE
+
+
+
+
+...............................................
+More Important others different queries ::
+
+Query ::::   Rails find all Customers that have exactly 1 Order::::::::::::::::
+
+Customer.joins(:orders).group(:id).having("count(orders.id) = 1")
+Customer.joins(:orders).group("customers.id").having("count(orders.id) = 1")
+Customer.joins(:orders).where("count(orders.id) = 1")
+
+............................................
+
+
+Query 01 ::  All the Categories that have products with duplicate categories also
+Category.joins(:products)  ::  Simple Joins
+.......
+
+Query 02 ::  All the Categories that have products without  duplicate categories
+Category.joins(:products).uniq  ::  Simple Joins
+.......
+
+Query 03 ::  All the Products that have categories with duplicate categories also
+Product.joins(:categories)  ::  Simple Joins
+.......
+
+Query 04 ::  All the Products that have categories without  duplicate categories
+Product.joins(:categories).uniq  ::  Simple Joins
+.......
+
+Query 05 ::  All products(duplicate also) that have a category and at least one like
+Product.joins(:category, :likes)  ::  Multiple Joins
+.......
+
+Query 05.1 ::  All products that have a category and at least one like
+Product.joins(:category, :likes)  :: Multiple Joins
+.......
+
+Query 05.2 ::  All uniq products that have a category and at least one like
+Product.joins(:category, :likes).uniq  :: Multiple Joins
+.......
+
+Query 06 ::   All categories that have products that were liked
+Category.joins(products: :likes).uniq  :: Nested Joins 
+.......
+
+Query 07 :: All Categories that have Product has_many reviews and likes.
+Category.joins(products: [:reviews, :likes]).uniq  :: Nested Joins 
+.......
+
+Query 08 ::  All Products with a Number of Quantity :: 
+Product.where(quantity: 0)
+.......
+
+Query 09 ::  All Products with a Range of Quantity ::
+Product.where(quantity: 2..5)  (for range of quantity from 2 to 5)
+.......
+
+Query 10 ::  All Products with a Condition of Quantity ::
+Product.where('quantity > 3')  (Conditional)
+.......
+
+Query 11 ::  All Categories that have products with a quantity equal to 0 ::
+Category.joins(:products).where(products: {quantity: 0})
+.......
+
+Query 12 ::  You can pass in any SQL conditions as a string ::
+Category.joins(:products).where('products.quantity > 3')
+.......
+Query 13 ::  Return a Book object for all books with reviews :: Join Single Association with Inner Join :: 
+Book.joins(:reviews)
+Book.joins(:reviews).distinct
+.......
+
+Query 14 :: Return all books with their author that have at least one review :: Using Multiple Join :: 
+Book.joins(:author, :reviews)
+Note :: Books with multiple reviews will show up multiple times.
+.......
+
+Query 15 :: Return all books that have a review by a customer :: Joining Nested Associations (Single Level)
+Book.joins(reviews: :customer)
+.......
+
+Query 16 :: Return all authors that have books with reviews and have been ordered by a customer, and the suppliers for those books. :: Joined Nested Associations Multiple Level
+Author.joins(books: [{ reviews: { customer: :orders } }, :supplier] )
+.......
+
+Query 17 :: Example of Left Outer Joins :: 
+Customer.left_outer_joins(:reviews).distinct.select('customers.*, COUNT(reviews.*) AS reviews_count').group('customers.id')
+
+.......
+
+Query 18 :: Find all customers who have orders that were created yesterday :: Specifying Conditions on Join Tables :: 
+time_range = (Time.now.midnight - 1.day)..Time.now.midnight
+Customer.joins(:orders).where('orders.created_at' => time_range).distinct
+..............
+An alternative and cleaner syntax is to nest the hash conditions: 
+time_range = (Time.now.midnight - 1.day)..Time.now.midnight
+Customer.joins(:orders).where(orders: { created_at: time_range }).distinct
+
+time_range = (Time.now.midnight - 1.day)..Time.now.midnight
+Customer.joins(:orders).merge(Order.created_in_time_range(time_range)).distinct
+
+.......
+
+Query 19 :: Rails Joins Queries for a Particular Id :: All of the posts that have a specific tag_id, through the Taggings model :: 
+I have three models
+Tag => :id, :name
+Tagging => :id, :tag_id, :post_id
+Post => :id, :summary
+class Post < ActiveRecord::Base
+   has_many :taggings
+   has_many :tags, :through => :taggings 
+
+ end
+ class Taggins < ActiveRecord::Base 
+   belongs_to :post 
+   belongs_to :tag
+ end
+ class Tag < ActiveRecord::Base 
+   has_many :taggings 
+   has_many :posts, :through => :taggings 
+ end
+ ..........
+ @post = Post.joins(:taggings).where(:tag_id => 17)
+ post = Post.joins(:taggings).where(taggings: {tag_id: 17})
+ @post = Post.joins(:taggings).where("taggings.tag_id = ?", 17)
+ 
+.......
+
+Query 20 :: Find all books where the title field value is 'Introduction to Algorithms'.
+Conditions :: Pure String Conditions ::
+Book.where("title = 'Introduction to Algorithms'")
+.......
+
+
+Query 21 :: Find all books where the title field value is 'Introduction to Algorithms'.
+Conditions :: Pure String Conditions :: and Array Conditions :: 
+
+Book.where("title = ?", params[:title])
+Book.where("title = ? AND out_of_print = ?", params[:title], false) :: with mult condtns
+Book.where("title = ?", params[:title])  :: highly preferable
+Book.where("title = #{params[:title]}")  :: lower preferable
+Book.where("created_at >= :start_date AND created_at <= :end_date",
+  {start_date: params[:start_date], end_date: params[:end_date]})
+Book.where("title LIKE ?", params[:title] + "%")
+Book.where("title LIKE ?",
+  Book.sanitize_sql_like(params[:title]) + "%")
+.......
+
+Query 22 :: Associations of Includes ::
+
+books = Book.includes(:author).limit(10)
+books.each do |book|
+  puts book.author.last_name
+end
+...
+Customer.includes(:orders, :reviews)
+
+Find the customer with id 1 and eager load all of the associated orders for it, the books for all of the orders, and the author and supplier for each of the books :: Nested Association Hash :: 
+
+Customer.includes(orders: {books: [:supplier, :author]}).find(1)
+Customer.includes(:orders, :reviews) :: Array of Multiple Associations
+Customer.includes(orders: {books: [:supplier, :author]}).find(1) ::  Nested Associations Hash
+
+Author.includes(:books).where(books: { out_of_print: true })
+Author.includes(:books).where("books.out_of_print = true").references(:books)
+
+
+...
+Query 23 :: Associations of Preload ::
+books = Book.preload(:author).limit(10)
+books.each do |book|
+  puts book.author.last_name
+end
+
+...
+Query 24 :: Associations of EagerLoad ::
+books = Book.eager_load(:author).limit(10)
+books.each do |book|
+  puts book.author.last_name
+end
+
+...
+
+Query25 :: Retrieve Filtered Data from Multiple Tables ::
+Customer
+  .select('customers.id, customers.last_name, reviews.body')
+  .joins(:reviews)
+  .where('reviews.created_at > ?', 1.week.ago)
+
+...
+
+Query26 :: Retrieving specific data from multiple tables ::
+Book
+  .select('books.id, books.title, authors.first_name')
+  .joins(:author)
+  .find_by(title: 'Abstraction and Specification in Program Development')
+...
+
+Query27 :: Find by Sql Query :: Find the record with the help of sql ::
+
+Customer.find_by_sql("SELECT * FROM customers INNER JOIN orders ON customers.id = orders.customer_id ORDER BY customers.created_at desc")
+=> [#<Customer id: 1, first_name: "Lucas" ...>, #<Customer id: 2, first_name: "Jan" ...>, ...]
+
+..
+Query28 :: select_all  :: Find by Sql Query ::
+ Customer.connection.select_all("SELECT first_name, created_at FROM customers WHERE id = '1'").to_a
+=> [{"first_name"=>"Rafael", "created_at"=>"2012-11-10 23:23:45.281189"}, {"first_name"=>"Eileen", "created_at"=>"2013-12-09 11:22:35.221282"}]
+
+...
+Query29 :: Pluck   :: 
+pluck can be used to query single or multiple columns from the underlying table of a model. It accepts a list of column names as an argument and returns an array of values of the specified columns with the corresponding data type.
+
+Client.where(:active=>true).pluck(:id) = Select id from clients where active=1
+Client.uniq.pluck(:role) = Select distinct roles from the clients.
+
+
+
+irb> Book.where(out_of_print: true).pluck(:id)
+SELECT id FROM books WHERE out_of_print = true
+=> [1, 2, 3]
+
+irb> Order.distinct.pluck(:status)
+SELECT DISTINCT status FROM orders
+=> ["shipped", "being_packed", "cancelled"]
+
+irb> Customer.pluck(:id, :first_name)
+SELECT customers.id, customers.first_name FROM customers
+=> [[1, "David"], [2, "Fran"], [3, "Jose"]]
+
+pluck makes it possible to replace code like:
+
+Customer.select(:id).map { |c| c.id }
+# or
+Customer.select(:id).map(&:id)
+# or
+Customer.select(:id, :first_name).map { |c| [c.id, c.first_name] }
+Copy
+with:
+
+Customer.pluck(:id)
+# or
+Customer.pluck(:id, :first_name)
+...
+
+
+...
+Query30 ::   :: Find out the Record with the multiple tables ::
+Order.joins(:customer, :books).pluck("orders.created_at, customers.email, books.title")
+irb> Customer.pluck(:first_name).limit(1)
+NoMethodError: undefined method `limit' for #<Array:0x007ff34d3ad6d8>
+
+irb> Customer.limit(1).pluck(:first_name)
+=> ["David"]
+Copy
+
+
+...
+Query31 :: Check the Existence of the Objects ::
+Customer.exists?(1)
+Customer.exists?(id: [1,2,3])
+Customer.exists?(first_name: ['Jane', 'Sergei'])
+Customer.where(first_name: 'Ryan').exists?
+
+...
+Query32 :: Retrieving Multiple Objects in Batches ::
+
+find_each ::
+
+User.find_each do |user|
+  NewsMailer.weekly(user).deliver_now
+end
+User.where(weekly_subscriber: true).find_each do |user|
+  NewsMailer.weekly(user).deliver_now
+end
+User.find_each(batch_size: 5000) do |user|
+  NewsMailer.weekly(user).deliver_now
+end
+User.find_each(start: 2000) do |user|
+  NewsMailer.weekly(user).deliver_now
+end
+User.find_each(start: 2000, finish: 10000) do |user|
+  NewsMailer.weekly(user).deliver_now
+end
+
+
+find_in_batches ::
+# Give add_invoices an array of 1000 invoices at a time.
+Invoice.find_in_batches do |invoices|
+  export.add_invoices(invoices)
+end
+Invoice.pending.find_in_batches do |invoices|
+  pending_invoices_export.add_invoices(invoices)
+end
+
+...
+
+Query33: Example of All joins Syntax ::
+
+Syntax of Joins ::
+
+................
+0.Syntax of Inner Joins :: Student.joins(:club) or Club.joins(:students)
+................
+1.Syntax of Left Joins ::   Student.left_joins(:club)
+..........
+2. Syntax of Forced Left Joins :: Student.eager_load(:club)
+..........
+3. Syntax of Right Joins ::  Club.left_joins(:students)
+..........
+4. Syntax of Forced Right Joins :: Club.eager_load(:students)
+..........
+5. Syntax of Inner Joins :: Student.joins(:club)  OR    Club.joins(:students)
+..........
+6. Syntax of Other/Custom Joins :: Student.joins('RIGHT JOIN "clubs" ON "students"."id" = "clubs"."id"')
+..........
+6. Syntax of Full Outer Joins ::
+Student.joins(' FULL OUTER JOIN "clubs" ON "students"."id" = "clubs"."id" ')
+
+
+
+Query34: By default sql query  :: (may be check below please)
+
+Student.joins(' FULL OUTER JOIN "clubs" ON "students"."id" = "clubs"."id" ')
+
+
+
+

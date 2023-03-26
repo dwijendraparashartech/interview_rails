@@ -1,0 +1,295 @@
+amazon_deployment.txt::
+Link :  https://www.codewithjason.com/launch-ec2-instance-hosting-rails-application/
+        https://blog.shikisoft.com/automate-ruby-on-rails-deployments-aws-codedeploy/
+        https://thecodest.co/blog/deploying-rails-app-with-amazon-ecs/
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Deploy Rails App to Amazon::
+
+What are the Steps to deploy an ruby on rails application to Amazon ::
+Steps::
+1. Launch an EC2 Instance with code deploy 
+2. Configure Code Deploy
+3. Configure Code Pipeline
+4. Deploy your App
+4. Why Parameters Store not Secret Manager 
+5. Configure your Parameter using AWS System Manager (Parameter Store)
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Deploying Rails app with Amazon ECS::
+
+
+1.Create Amazon ECR - Elastic Container Registry
+2.Create Amazon Load Balancer :: 
+3.Create the ECS Cluster ::
+4.Create new Task Definition Button ::
+5.Create the Service ::
+6.Update the ECS Security Group
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Defitnitions ::
+1.What is Amazon ECR?
+2.What is Amazon Load Balancer?
+3.What is the ECS Cluster?
+4.What is the Task Definition Button?
+5.What is Service?
+6.What is the ECS Security Group?
+
+
+
+
+
+
+
+
+STeps ::
+
+1.Create Amazon ECR ::
+
+
+2.Create Amazon Load Balancer ::
+Go to EC2 services -> Load Balancing -> Load Balancers, click Create Load Balancer, select Application Load Balancer and click the Create button.
+
+
+3.Create the ECS Cluster 
+
+3.1.
+Go to the ECS page and click on the Clusters link and Create Cluster button. Choose the “EC2 + Linux Networking” one and click Next Step. 
+
+3.2.
+Set the cluster name to “sample-rails-app-cluster”. Choose the EC2 instance type, I took the t2-micro one as it’s available within the Free Tier plan. Leave the number of instances as 1. 
+
+3.3.
+In the networking section, use your default VPC and select all its subnets. Click create, wait a little bit and voila, we have a new ECS Cluster created.
+
+4.Create new Task Definition Button
+
+5.Update the ECS Security Group
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+.......................................................................
+
+1.Launch an EC2 Instance  ::
+
+||||||||||||||||||||||||||||||
+
+1.Create the Account at Amazon.
+2.Login to AWS Console and go to the EC2 Section under the Service Menu
+3.Create and Download a Key pair :
+4.Launch the EC2 instance 
+
+
+
+||||||||||||||||||||||||||||||
+
+1.Create the Account at Amazon.
+
+2.Login to AWS Console and go to the EC2 Section under the Service Menu
+
+2.1. On the Left Hand Menu Click Instances
+2.2. On the Subsequent Page click Launch Instance.
+2.3. You’ll be shown a list of possible instance types. Select Ubuntu Server (ami-0d5d9d301c853a04a).
+2.4. On the next screen click Review and Launch without changing anything.
+2.5. Click Launch on the screen that follows.
+
+3.Create and Download a Key pair :
+
+After click launch will go to the EC2 pair to choose an existing one or create a new key pair
+To create a new key pair Go to the options to Select an existing pair or Create a new pair options then do this ::
+1.Crate a new key pair
+2.key pair name - ec2-tutorial
+
+4.Launch the EC2 instance 
+
+After you have downloaded your key pair() click the Launch Instance 
+
+||||||||||||||||||||||||||||||
+
+2.SSH into your new instance as a Test ::
+
+2.1.
+Go back to Services > EC2 > Instances. Right-click on your instance and click Connect.
+3 options ::
+1.A standalone SSH Client
+2.EC2 Instance Connect (browser based SSH connections)
+3.A Java SSH Client directly from my browser : java Required
+
+2.2. Change the command to give the correct path to ec2-tutorial.pem.
+You’ll need to change the command from this
+ssh -i "ec2-tutorial.pem" ubuntu@ec2-3-136-155-207.us-east-2.compute.amazonaws.com
+to this
+ssh -i "~/.ssh/ec2-tutorial.pem" ubuntu@ec2-3-136-155-207.us-east-2.compute.amazonaws.com
+The difference is that the initial command won’t have the correct path to ec2-tutorial.pem.
+
+2.3.Change the permission ::
+You’ll also need to change the permissions on ec2-tutorial.pem. The ssh program doesn’t like it when the specified key’s permissions are overly open. Change the permissions as follows:
+$ chmod 400 ~/.ssh/ec2-tutorial.pem
+
+2.4. Run your SSH Command ::
+Now you can finally run your SSH command.
+$ ssh -i "~/.ssh/ec2-tutorial.pem" ubuntu@ec2-3-136-155-207.us-east-2.compute.amazonaws.com
+
+||||||||||||||||||||||||||||||
+
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+
+Create a repository with Amazon Elastic Container Registry (ECR)
+Amazon ECR is a container registry. We will be using it to store our app’s images and pull them from it so that they run on ECS.
+
+Go to your AWS panel, look for Elastic Container Registry and click Get Started. You’ll see the below screen:
+
+repository with Amazon Elastic Container Registry
+
+We will create a private repository and name it sample-rails-app.
+
+The repository is there, but it’s empty. We want it to contain our app’s image. This is the next step.
+
+# throw errors if Gemfile has been modified since Gemfile.lock
+
+RUN bundle config --global frozen 1
+
+WORKDIR /app
+
+COPY Gemfile Gemfile.lock ./
+
+RUN bundle install
+
+COPY . .
+
+CMD \["rails", "server", "-b", "0.0.0.0"]
+Then we should build an image and push it to the ECR repository.
+
+Before that, let’s precompile assets with `rails assets:precompile`.
+
+Now, go to the created repository. At the top of the screen, you’ll see a View push commands button with details on how to do this.
+
+In my case (Linux), I run it with these AWS instructions:
+
+aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 212516879399.dkr.ecr.eu-central-1.amazonaws.com
+
+docker build -t sample-rails-app .
+
+docker tag sample-rails-app:latest 212516879399.dkr.ecr.eu-central-1.amazonaws.com/sample-rails-app:latest
+
+docker push 212516879399.dkr.ecr.eu-central-1.amazonaws.com/sample-rails-app:latest
+Make sure that your user is permitted to do this operation. I added AmazonElasticContainerRegistryPowerUser policy to my user, which looks like this:
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "ecr:GetRegistryPolicy",
+                "ecr:DescribeRegistry",
+                "ecr:GetAuthorizationToken",
+                "ecr:DeleteRegistryPolicy",
+                "ecr:PutRegistryPolicy",
+                "ecr:PutReplicationConfiguration"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": "ecr:*",
+            "Resource": "arn:aws:ecr:*:212516879399:repository/*"
+        }
+    ]
+}
+We have our docker image prepared.
+
+Creating the Application Load Balancer
+I want the outside world to be able to connect only to my Application Load Balancer. It will pass traffic to containers that are running inside our ECS cluster.
+
+Go to EC2 services -> Load Balancing -> Load Balancers, click Create Load Balancer, select Application Load Balancer and click the Create button.
+
+Set its name to sample-rails-app-alb, use your default VPC and select all its subnets.
+
+We’re left with Security Groups and Listeners and routing sections.
+
+Security Groups
+We will create a new security group for our load balancer. It works like a firewall; we will set the rules for inbound and outbound traffic. We want to accept inbound http traffic (TCP port 80) and allow all outbound traffic. 
+
+To do this, click on the “Create new security group” link.
+
+In the section “Basic details”, set name and description, leave the default VPC.
+
+In my case – name: “sample-rails-app-alb-sg”, description: “http from outside, all from inside”
+
+Add the inbound rule with Type: HTTP and Source: Anywhere-IPv4. Leave outbound rules as they are.
+
+Click create security group, then go back to the tab where you were creating the Application Load Balancer, refresh security groups and add the one we’ve just created, remove the default one.
+
+Listeners and routing
+In this section, we will define to where we want the load balancer to pass traffic. Leave Listener Protocol and Port as HTTP and 80, as this is exactly what we want, and click “Create target group” link.
+
+Set the name to “sample-rails-app-alb-tg”. The only change is the Port number. We will be passing it to port 3000 as this is the one for our Rails app. Ignore the next step (Registered targets) and create the target group.
+
+Now go back to the tab where we were creating the Application Load Balancer, refresh the target group and select the one we’ve just created.
+
+We have our Application Load Balancer ready, now let’s play with ECS.
+
+Creating an ECS Cluster
+There is a lot of scary terms you’re going to see – cluster, tasks, tasks definition, services. To make it simpler, think about the cluster as a group of servers (EC2 instances). On each one, we run tasks, which are just a group of containers running together. Task definition describes which containers are in a given group and which resources we would like to give them (memory, cpu). Services keep an eye on these tasks to make sure that there is always correct number of healthy tasks running in our cluster.
+
+With this in mind, let’s create our cluster.
+
+Go to the ECS page and click on the Clusters link and Create Cluster button. Choose the “EC2 + Linux Networking” one and click Next Step. 
+
+Set the cluster name to “sample-rails-app-cluster”. Choose the EC2 instance type, I took the t2-micro one as it’s available within the Free Tier plan. Leave the number of instances as 1. 
+
+In the networking section, use your default VPC and select all its subnets. Click create, wait a little bit and voila, we have a new ECS Cluster created.
+
+Task Definition
+Click on the Task Definitions link, then Create new Task Definition button. Select the EC2 option and click Next Step. The app that we’re going to run is very simple, so we need only a few options here. 
+
+Set Task Definition name to “sample-rails-app”, then go straight to the Container definitions section and click “Add container”. Name the Container as “sample-rails-app”, and set image location in the format “repository-url/image:tag”. In the new browser tab, go to the ECR to copy the image URI. In my case, it was: “212516879399.dkr.ecr.eu-central-1.amazonaws.com/sample-rails-app:latest”.
+
+Set your Memory Limit to the recommended 300-500MiB. Now, the most tricky thing – Port Mapping.
+
+Our app runs inside a container on port 3000. So put 3000 as the container port. We will enter 0 as a host port, which basically means that it selects a random port. Fortunately, our Application Load Balancer will know this port mapping and will be able to direct traffic correctly. We can even run multiple tasks on this single instance. 
+
+Add the environment variable RAILS_ENV and set it to production.
+
+Now click Add to add our container definition and click Create to finish Task Definition setup.
+
+Service
+We have our cluster, load balancer and task definition. Now we have to somehow run these tasks inside our cluster. This is the job of services. Go to the newly created cluster, select the Services tab and click on the Create button. 
+
+Set the Launch type to EC2, add name “sample-rails-app-service”. Set the number of tasks to 1 and click Next Step. On this page, select the Application Load Balancer radio button and choose the existing IAM role for it. In the “Container to load balance” section, you should have already entered a correct container “sample-rails-app:0:3000”, then click “Add to load balancer.”
+
+For “Production listener port”, choose 80:HTTP; as the Target group name, use the one we created before – “sample-rails-app-alb-tg” and click Next Step. Leave Auto Scaling options as they are, click Next Step and Create Service.
+
+Update the ECS Security Group
+ 
+You can go to created cluster page and check the Tasks tabs, there should be one task running. The Service has started it. Now go to EC2 service page, click Load Balancers and see our Application Load Balancer’s details. You should have there its DNS name. Copy it and open in the browser. It should direct you to our app. Unfortunately, we get the “504 gateway time-out” error. 
+
+The problem is in the security group of our cluster. Its inbound rules do not allow traffic incoming from the load balancer. To fix it, go back to the EC2 panel and click on the Security Groups link. There is a new group that was created during the cluster creation process. It should have the name starting with “EC2ContainerService-sample-rails-app-cluster”. Click on it and edit the inbound rules. As we want to allow any traffic from our VPC, go to the Amazon VPC panel and check what’s your VPC IPv4 CIDR. Set the rule type to “All traffic” and the source to IPv4 CIDR. Save this rule and try to load the balancer’s DNS name. 
+
+Hopefully, you see just as I do :)
+
+
+
+Read More
+
+GraphQL Ruby. What about performance?
+
+Rails and Other Means of Transport
+
+Rails Development with TMUX, Vim, Fzf + Ripgrep
+

@@ -1,0 +1,57 @@
+string methods 
+..............
+string is str :: 
+
+count the occurrences of a specified character ::  return str.count(chr) 
+sort a string's characters alphabetically :: return str.chars.sort.join
+remove a specified character ::  return str.tr(chr, '')
+remove the first and last two characters::return str = str[2...-2] || return  str[2...-2]
+get a substring from a specified position to the last char of a given string ::::
+return str  = str[n...-1]   ||  return str[n...-1]
+get the number of lines :: str.lines.count
+Truncate a given string to the first n words :: print str.split[0...n].join(' ')
+Remove a character from a given string if it starts with that specified character :::
+print my_string.sub!(/^J/, '')
+whether a string starts with an other string ::   return my_string.start_with?(substr)
+remove a substring from a specified string ::    return my_string.slice! substr
+split a delimited string and convert it to an array:: return my_string.split(d)
+draw a string as bold or italic text ::  "<#{tag}> #{word} </#{tag}>"
+
+Get The String Length :: "ruby".size      ||     "ruby".size
+Check If A String Is Empty :: "".size == 0  ||   "".empty?
+String Interpolation? ::  name = "Jesus"   ,  puts "Hello #{name}"
+How to Extract a Substring ::  string = "abc123" ||  string[0,3]  ||  string[3,3]
+string = "abc123"  ||  string[0..-2]  # "abc12"
+
+
+Counting Characters :: str.count("a")
+How to Change String Encodings :: "abc".encoding  ||   "abc".force_encoding("UTF-8")
+Remove the Last Character From a String :: "abcd?".chomp("?")  : if no char then org str
+Rplace Txt Inside Str Using Gsub Method:string.gsub("dogs", "cats") | string.gsub("c", "")
+string = "abccc"  ,  string.gsub("c", "")
+
+string = "We have 3 cats", string.gsub(/\d+/, "5") , # "We have 5 cats" 
+How to Create Multiline Strings ::  
+
+Convert a String to Upper or Lowercase in Ruby ::  "abcd".upcase  , "ABCD".downcase
+Iterate Over Characters Of a String in Ruby :: "rubyguides".each_char { |ch| puts ch }
+How to Append Characters :: String Concatenation ::  using the << method:
+string = "" , string << "hello" , string << " " , string << "there" # "hello there"
+Check If A String Is A Number::"123".match?(/\A-?\d+\Z/),"123bb".match?(/\A-?\d+\Z/)
+Convert a String Into An Integer :: "49".to_i , "a".to_i
+Convert an Array to a String :: arr = ['a', 'b', 'c'] , arr.join  # "abc"
+arr = ['a', 'b', 'c'], arr.join("-") , # "a-b-c"
+Convert a String to An Array of Characters ::  string = "a b c d"||string.split||# ["a", "b", "c", "d"]
+String Prefix & Suffix ::  string = "ruby programming" || string.start_with? "ruby" 
+Trim a String & Remove White Space::extra_space="   test      "extra_space.strip
+# "test"
+Compare Strings Ignoring Case :: lang1 = "ruby" , lang2 = "Ruby" ||lang1.upcase == lang2.upcase
+How to Pad a Ruby String :: binary_string = "1101", binary_string.rjust(8, "0"),binary_string = "1111", binary_string.ljust(8, "0")
+How to Find Out If a String Contains Another String :: 
+
+
+......................................
+
+
+
+

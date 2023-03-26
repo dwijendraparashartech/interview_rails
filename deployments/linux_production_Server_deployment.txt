@@ -1,0 +1,265 @@
+linux_production_Server_deployment.txt
+https://www.phusionpassenger.com/library/walkthroughs/deploy/ruby/ownserver/standalone/oss/deploy_app_main.html
+
+Deploying a Ruby app on a Linux/Unix production server
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||                    |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+1 Update your gem bundle
+	2 Transferring the app code to the server
+	2.1 Push your code to a Git repository
+	2.2 Login to your server, create a user for the app
+	2.3 Install Git on the server
+	2.4 Pull code
+3 Preparing the app's environment
+	3.1 Login as the app's user
+	3.2 Install app dependencies
+	3.3 Configure database.yml and secrets.yml
+	3.4 Compile Rails assets and run database migrations
+4 Starting the app in Passenger
+	4.1 Create a Passenger config file
+	4.2 Go back to the admin account
+	4.3 Start Passenger Standalone
+	4.4 Test drive
+	4.5 Make sure Passenger Standalone starts on system boot
+Next step
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+1 Update your gem bundle
+	2 Transferring the app code to the server
+	2.1 Push your code to a Git repository
+	2.2 Login to your server, create a user for the app
+	2.3 Install Git on the server
+	2.4 Pull code
+
+
+1 Update your gem bundle
+
+1.1. Remove these lines in gemfile ::
+gem "unicorn"
+gem "thin"
+gem "puma"
+
+1.2 Add these lines to gemfile ::
+Make sure the following lines exists:
+gem "passenger"
+gem "sqlite3"
+
+1.3 Note that the sqlite3 gem may be located inside a development group, like this:
+
+group :development do
+  gem "sqlite3"
+end
+
+# -OR-
+
+gem "sqlite3", groups: [:development]
+
+
+1.4. Since we are going to use sqlite3 in production in this tutorial, we need to ensure that this gem is moved outside the development group, like this:
+
+gem "sqlite3"
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+................................
+
+2.Transferring the app code to the server
+
+................................
+
+
+2.1 Push your code to a Git repository
+If you are using our sample app, you can skip to the next step.
+We want to transfer our application's code to the server. The easiest way to do that is via Git.
+
+If you have already setup a Git repository, push your application's code to that repository by running this on your local computer:
+
+git push
+If you have not already setup a Git repository, go to Github, create a repository and push your application's code there.
+
+................................
+
+2.2 Login to your server, create a user for the app
+Login to your server with SSH:
+
+ssh adminuser@yourserver.com
+Replace adminuser with the name of an account with administrator privileges or sudo privileges.
+
+Starting from this point, unless stated otherwise, all commands that we instruct you to run should be run on the server, not on your local computer!
+Now that you have logged in, you should create an operating system user account for your app. For security reasons, it is a good idea to run each app under its own user account, in order to limit the damage that security vulnerabilities in the app can do. Passenger will automatically run your app under this user account as part of its user account sandboxing feature.
+
+You should give the user account the same name as your app. But for demonstration purposes, this tutorial names the user account myappuser.
+
+sudo adduser myappuser
+We also ensure that that user has your SSH key installed:
+
+sudo mkdir -p ~myappuser/.ssh
+touch $HOME/.ssh/authorized_keys
+sudo sh -c "cat $HOME/.ssh/authorized_keys >> ~myappuser/.ssh/authorized_keys"
+sudo chown -R myappuser: ~myappuser/.ssh
+sudo chmod 700 ~myappuser/.ssh
+sudo sh -c "chmod 600 ~myappuser/.ssh/*"
+
+................................
+
+2.3 Install Git on the server
+Debian, Ubuntu	
+sudo apt-get install -y git
+Red Hat, CentOS, Fedora, Scientific Linux, Amazon Linux	
+sudo yum install -y git
+Other operating systems
+................................
+
+2.4 Pull code
+You need to pick a location in which to permanently store your application's code. A good location is /var/www/APP_NAME. Let us create that directory.
+
+sudo mkdir -p /var/www/myapp
+sudo chown myappuser: /var/www/myapp
+Replace myapp and myappuser with your app's name and your app user account's name.
+
+Now let us pull the code from Git:
+
+cd /var/www/myapp
+sudo -u myappuser -H git clone git://github.com/username/myapp.git code
+If you are using our sample app, use this Git clone command instead:
+
+cd /var/www/myapp
+sudo -u myappuser -H git clone --branch=end_result https://github.com/phusion/passenger-ruby-rails-demo.git code
+Your app's code now lives on the server at /var/www/myapp/code
+
+................................
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+3 Preparing the app's environment
+3.1 Login as the app's user
+All subsequent instructions must be run under the application's user account. While logged into your server, login under the application's user account as follows:
+
+sudo -u myappuser -H bash -l
+3.2 Install app dependencies
+Your application has various dependencies. They must be installed. Most of these dependencies are gems in your Gemfile, managed by Bundler. You can install them by running bundle install --deployment --without development test -j 2 in your app's directory:
+
+cd /var/www/myapp/code
+bundle install --deployment --without development test
+Your app may also depend on services, such as PostgreSQL, Redis, etc. Installing services that your app depends on is outside of this tutorial's scope.
+
+3.3 Configure database.yml and secrets.yml
+Since your Rails app probably needs a database, you need to edit config/database.yml. For demonstration purposes, we will setup your app with an SQLite database because that is the easiest.
+
+Open the file:
+
+nano config/database.yml
+Ensure that the production section looks like this:
+
+production:
+  adapter: sqlite3
+  database: db/production.sqlite3
+Rails also needs a unique secret key with which to encrypt its sessions. Starting from Rails 4, this secret key is stored in config/secrets.yml. But first, we need to generate a secret key. Run:
+
+bundle exec rake secret
+...
+This command will output a secret key. Copy that value to your clipboard. Next, open config/secrets.yml:
+
+nano config/secrets.yml
+If the file already exists, look for this:
+
+production:
+  secret_key_base: <%=ENV["SECRET_KEY_BASE"]%>
+Then replace it with the following. If the file didn't already exist, simply insert the following.
+
+production:
+  secret_key_base: the value that you copied from 'rake secret'
+To prevent other users on the system from reading sensitive information belonging to your app, let's tighten the security on the configuration directory and the database directory:
+
+chmod 700 config db
+chmod 600 config/database.yml config/secrets.yml
+3.4 Compile Rails assets and run database migrations
+Run the following command to compile assets for the Rails asset pipeline, and to run database migrations:
+
+bundle exec rake assets:precompile db:migrate RAILS_ENV=production
+
+................................
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+4 Starting the app in Passenger
+Now that you are done with transferring your app's code to the server and setting up an environment for your app, it is time to start your app in Passenger.
+
+4.1 Create a Passenger config file
+Since this is a production environment, we need to customize Passenger a little bit. Go to your application's code directory and create a file named Passengerfile.json:
+
+cd /var/www/myapp/code
+nano Passengerfile.json
+Insert:
+
+{
+  // Run the app in a production environment. The default value is "development".
+  "environment": "production",
+  // Run Passenger on port 80, the standard HTTP port.
+  "port": 80,
+  // Tell Passenger to daemonize into the background.
+  "daemonize": true,
+  // Tell Passenger to run the app as the given user. Only has effect
+  // if Passenger was started with root privileges.
+  "user": "myappuser"
+}
+Replace myappuser with your app's user account name.
+
+4.2 Go back to the admin account
+You have previously logged into your app's user account in order to prepare the app's environment. That user does not have sudo access. In the next steps, you need to start Passenger with root privileges, for which sudo access is needed. So you need to switch back to the admin account.
+
+This can be done by simply exiting the shell that was logged into the app's user account. You will then be dropped back to the admin account. For example:
+
+# This is what you previously ran:
+admin$ sudo -u myappuser -H bash -l
+myappuser$ ...
+
+# Type `exit` to go back to the account you were before
+exit
+ _
+4.3 Start Passenger Standalone
+While in your application's code directory, start Passenger. As configured, it will start on port 80 and will daemonize into the background.
+
+Note that, because Passenger is configured to listen on port 80, this command must be run with root privileges. Only root privileged processes can listen on ports lower than 1024.
+
+cd /var/www/myapp/code
+sudo bundle exec passenger start
+4.4 Test drive
+You should now be able to access your app through the server's host name! Try running this from your local computer. Replace yourserver.com with your server's hostname.
+
+curl http://yourserver.com/
+...your app's front page HTML...
+If you do not see your app's front page HTML, then the most likely cause is that you did not setup DNS records. Setting up DNS is outside the scope of this tutorial. In the mean time, we recommend that you use your server's IP address as the server name.
+
+4.5 Make sure Passenger Standalone starts on system boot
+Passenger is now running and serving your app, but that only lasts until you reboot your server. So you must configure your server to start Passenger Standalone on system boot.
+
+The easiest way to do that is to add it to the file /etc/rc.local. This script is called during system boot. Ensure that it's executable and open it in a text editor:
+
+sudo chmod +x /etc/rc.local
+sudo nano /etc/rc.local
+Here is an example of what you may want to add to /etc/rc.local. If there is an exit command in rc.local, make sure you add these before the exit command.
+
+#!/bin/sh
+# Change working directory to your webapp.
+cd /var/www/myapp/code
+
+# Start Passenger Standalone in daemonized mode. Passenger will be started as
+# root when run from this file, but Passengerfile.json tells it to drop its
+# privileges to a normal user.
+bundle exec passenger start
+
+................................................................................
+

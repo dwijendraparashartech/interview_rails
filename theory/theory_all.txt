@@ -1,0 +1,2852 @@
+e1 theory_all.txt ::
+
+theory_all.txt
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+
+Q- What are the steps involved in writing and setting up an application in Ruby on Rails?
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What are the different uses of Ruby modules? Could you provide an example of each and explain why it is valuable?
+Traits/Mixins:
+Examples: Mappable, Renderable, Movable
+Traits/Mixins is a useful alternative to class inheritance when there is a need to acquire behavior that describes a trait (e.g. Renderable) instead of an is-a relationship (e.g. Vehicle), especially when there is a need for multiple traits since a class can only inherit once.
+Namespace:
+Examples: Graphics, Devise, Finance
+Namespace Ruby classes and modules to avoid naming clashes with similarly-named classes/modules from libraries
+Singleton class alternative:
+Examples: Application, Universe, Game
+Modules cannot be instantiated, therefore they can be used as an easy alternative to singleton classes to represent only one instance of a domain model via module methods (equivalent of class methods)
+Bag of stateless helper methods:
+Examples: Helpers, Math, Physics
+Stateless helper methods receive their data via arguments without needing a class to be instantiated nor keep any state (e.g. calculate_interest(amount, rate_per_year, period)), so a module is used instead for holding a bag of stateless helper methods.
+In addition to knowing the 4 different functions of modules in Ruby cited above, it’s important to know when to use a module v.s. a superclass when doing object-oriented domain modeling since that can greatly impact maintenance of the code a few months down the road in a software project.
+
+For a further practical example, a car-race-betting game allows players to bet on cars rendered on the screen as moving at different speeds. When the game is over, players can print a sheet of game results representing each car’s details and status to claim their prize at a casino.
+
+If the candidate were to implement all of these details in a car object, and later introduce differences between a Jaguar, Mercedez, and Porche, the candidate would rely on a car superclass shared among three subclasses via inheritance.
+
+However, if in the future, trucks and horses are thrown into the mix as well, the candidate would have to split the ability of an object to move, the ability to render object on screen, and the ability to print object details into separate modules (Movable, Renderable, and Printable respectively), and mix them into each of Car, Truck, and Horse.
+
+Next, the three classes can each serve as a superclass for multiple subtypes as needed by the game (e.g. JaguarCar, FireTruck, ThoroughbredHorse). This will offer maximum separation of concerns and improved maintainability of the code.
+
+...
+
+link ::  https://arc.dev/developer-blog/ruby-on-rails-interview-questions/
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q0. Can you explain the role of thread pooling in relation to the thread lifecycle in Ruby?
+Ans ::  
+In Ruby, the lifecycle of a single thread starts automatically as soon as CPU resources are available. The thread runs the code in the block where it was instantiated and obtains the value of the last expression in that block and returns it upon completion. Threads use up resources, but running multiple threads at a time can improve an app’s performance. Thread pooling is a technique wherein multiple pre-instantiated reusable threads are left on standby, ready to perform work when needed. Thread pooling is best used when there are a large number of short tasks that must be performed. This avoids the overhead of having to create a new thread every time a small task is about to be performed.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q0. Can you explain how Ruby looks up a method to invoke?
+Since Ruby is a pure object-oriented language, it’s important to make sure your developer thoroughly understands how objects work. The first place that Ruby looks for a method is in the object’s metaclass or eigenclass—the class that contains methods directly defined on the object. If the method cannot be found in an object’s metaclass, Ruby will then search for the method in the ancestors of an object’s class. The list of ancestors for any class starts with the class of the object itself, and climbs parent classes until it reaches the Object, Kernel, and BasicObject classes at the top of the Ruby class hierarchy. If Ruby cannot find the method, it will internally send another method aptly called “method_missing?” to the object class. Ruby will repeat another search for this method, and will at least find it in the object class, provided the programmer did not see fit to define the “method_missing?” class earlier in the ancestry of the object.
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+1. how to use two databass in ror app ?
+Ans :: Active Record allowed one connection to a database at a time. Ruby on rails per class.
+Ruby on Rails sets up default connection based on your database.yml, configration to automatically select development,test or production.
+But what if we want to access two or more databases having 2+ connections open at the same time.Active Record requires that you subclass ActiveRecord::Base. That prevents you doing migrations from one database to another.It prevents you using one set of model classes on two or more databases with the same schema.
+Magic multi-connectuib allows you to write your models once and use them for multiple Rails databases at the same time.Have use magical namespacing.
+
+Steps ::
+
+1.establish_connection :  Use establish_connection Method for other enviornment
+2.connects_to : USe connects_to Method to give permissions for reading and writing 
+3.self.abstract_class : USe self.abstract_class Method 
+4.database.yml : Add Database in database.yml
+
+............................
+asked q in interview :
+
+include javascript code in html 
+when we run html page how browser understand which page is this
+doc in html 
+............................
+
+1.Use establish_connection method to switch to diff database:
+	ActiveRecord = Base.establish_connection( ..... ) :: Use Base
+	MyClass.establish_connection(...)   :: For Specific Model Use MyClass
+
+2.Preconfigured enviornment from database.yml :Connect to seperate database outside of active record : 
+	ActiveRecord::Base.establish_connection(ActiveRecord::Base.configrations['other_env'])
+
+3.USe self.abstract_Class = true inside the models for multiple databases 
+
+4.Use connects_to method for reading and writing ::
+class AnimalsModel < ApplicationRecord
+	self.abstract_Class = true
+	connects_to database: {writing:animal_primary,reading:animal_replica}
+end 
+
+.......................
+
+1.Use establish_connection to switch to a diff database:
+ActiveRecord = Base.establish_connection(
+	:adapter => "mysql"
+    :host    => "localhost"
+    :username => "myuser"
+    :password => "mypass"
+    :database => "somedatabase"
+)
+
+2.You can also pass preconfigured enviornment from database.yml like so ::
+Connecting to a seperate database outside of an ActiveRecord class require this :: 
+ActiveRecord::Base.establish_connection(ActiveRecord::Base.configrations['other_env'])
+
+
+3.You can also set it for a specific model :: 
+MyClass.establish_connection(...)
+
+
+4.Make your self.abstract_class =true inside the models for use multiple databases
+
+5.Change the database.yml with multiple databases and use connects_to method :: 
+
+A. Change this file like this :: database.yml ::
+
+development:
+primary:
+	database: primary_db
+	user: root
+primary_replica:
+	database: primary_db
+	user: ro_user
+	replica:: true
+
+animals:
+	database:my_animal_db
+	user:root
+	migrations_path:: db/animals_migrate
+animals_replica:
+	database:my_animal_db
+	user:ro_user
+	replica:: true
+
+B. Specifying in your Model:
+
+class AnimalsModel < ApplicationRecord
+	self.abstract_Class = true
+	connects_to database: {writing:animal_primary,reading:animal_replica}
+end 
+
+class Dog < AnimalsModel
+	#connected to both the animals_primary db for writing and animal_replica for reading
+end  
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+.........................................................................................
+
+2. How many types of Joins are there ? What is the difference between these Joins ?
+............................
+1. Inner Join :: This Join Returns those records which have matching values in both the tables.
+2. Full Join :: This Join Returns those records which either have a match in the left or the right table.
+3. Left Join :: This Joins Returns records from the left table,and also those records which satisfy the condition from the right table. 
+4. Right Join :: This joins Returns records from the right table, and also those records which satisfy the condition from the left table.
+.................................................................
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+
+3. What is Normalization in SQL ??
+Normalization is the process to eliminate data redundancy and enhance data integrity in the table. Normalization also helps to organize the data in the database. It is a multi-step process that sets the data into tabular form and removes the duplicated data from the relational tables.
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+4. What is De-Normalization in SQL ??
+Denormalization is the process of adding precomputed redundant data to an otherwise normalized relational database to improve read performance of the database. Normalizing a database involves removing redundancy so only a single copy exists of each piece of information.
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+5.1. What are Design Pattern in Rails ??
+...
+1. Builder :: This is a creational Design Pattern.Complex Objects can be created step by step without much effort.Also called this Adapter.Its main purpose is to entangle the complexity of Objects.This pattern provides a simple way of returning a given class or instance depending on te class.
+...
+2.Decorator :: This Pattern is used to clean up the code/logic inside the View.If any behavior added to one obect then it do not disturb the behavior of other objects.This pattern is similiar to Presenter pattern but instead of adding additional logic it alrers the origional class without affecting the origional class behavior.
+...
+3.Form Object :: This pattern is used to thinner the Active Record Model.This encapsulatethe code related to validation and it persist to data into a single unit. We can create the record in the multiple places and every place has its own validation Rules.
+...
+4.Interactor :: This pattern is all about interactions.This is the set of actions performed one by one and if one action is stop then other actions do not perform. This is just like the transactions as rollback of the previous actions is alsopossible.If we want to implement interactor pattern in the rails application with the help of great interactor gem.
+...
+5. Null Object :: This pattern provide the value to nn existing records.null object pattern is simple like the value objects just like these are plain old ruby objects.
+...
+6.Observer :: This is a behavioral Design Pattern.Which allow some objects to notify other objects without changing in their state.It defines a one-to-many dependency between objects so that when object changes state,all of its dependencies are nullfied and updated automatically.
+...
+7.Policy Object :: This pattern is used where we have to check the multiple conditions before performing a given action.This is like the service objects where policy object responsible for read objects and service object pattern is responsible for write operations.
+...
+8.Query Object :: This pattern decompose fat active record model and keep your code slim and readabl.We can keep simple queries in the model but if the query is complex then it is handled by query objects or queries.If scope interact with more than one join/columns in other tables.Then we move it in the query object m but its side effect is that we can limit amount of scopes defined in our models to a necessary minimum.
+...
+9. Service Object :: Service object is the PORO-Plain old ruby object.This is created for Specific business action.This contains the code that usually does not fit in the model or view layer e.g. actions via a third part of api like posting a tweet.
+...
+10. Value Object :: This is the pattern which encourages the small simple objects,and allow the comparison based on given topic or specific attributes.This pattern focuses to provide the values so this is very simple. This return only a value.A value object return a simple entity whose eqaulity is based on its value meaning that the two objects are equal if they have the equal value.
+Ex- A Small simple object like money or a data range whose equality is not based on its identity.
+...
+11.View Object or Presenter ::
+With this help we encapsulate all logic related to views and kepp model and views organised.These are just classes.So we can be easily testd.
+If code is simple - put it in the helper and can share insiide view.
+If code is comples - make it in the view object or presenter.
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+5.2. Diff other design patterns in ruby :: 
+
+...  ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 
+
+
+Types of Types of Design Pattern in Rails ??
+1.AbstractFactory
+2.Builder
+3.FactoryMethod
+4.Prototype
+5.SingleTon
+6.Adapter
+7.Bridge
+8.Composite
+9.Decorator
+10.Facade
+11.Flyweight
+12.Proxy
+13.ChainofResponsibility
+14.Command
+15.Iterator
+16.Mediator
+17.Observer
+18.State
+19.Strategy
+20.TemplateMethod
+21.Visitor
+
+...  ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 
+
+...........................
+Types of Types of Design Pattern in Rails ??
+1.AbstractFactory ::  Lets you produce families of related objects without specifying their concrete classes
+2.Builder :: Lets you construct complex objects step by step. The pattern allows you to produce different types and representations of an object using the same construction code.
+3.FactoryMethod :: Provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created.
+4.Prototype :: Lets you copy existing objects without making your code dependent on their classes.
+5.SingleTon :: Lets you ensure that a class has only one instance, while providing a global access point to this instance.
+6.Adapter :: Allows objects with incompatible interfaces to collaborate.
+7.Bridge :: Lets you split a large class or a set of closely related classes into two separate hierarchies—abstraction and implementation—which can be developed independently of each other.
+8.Composite :: Lets you compose objects into tree structures and then work with these structures as if they were individual objects.
+9.Decorator :: Lets you attach new behaviors to objects by placing these objects inside special wrapper objects that contain the behaviors.
+10.Facade :: Provides a simplified interface to a library, a framework, or any other complex set of classes.
+11.Flyweight :: Lets you fit more objects into the available amount of RAM by sharing common parts of state between multiple objects instead of keeping all of the data in each object.
+12.Proxy :: Lets you provide a substitute or placeholder for another object. A proxy controls access to the original object, allowing you to perform something either before or after the request gets through to the original object.
+13.ChainofResponsibility :: Lets you pass requests along a chain of handlers. Upon receiving a request, each handler decides either to process the request or to pass it to the next handler in the chain.
+14.Command :: Turns a request into a stand-alone object that contains all information about the request. This transformation lets you pass requests as a method arguments, delay or queue a request's execution, and support undoable operations.
+15.Iterator :: Lets you traverse elements of a collection without exposing its underlying representation (list, stack, tree, etc.). 
+16.Mediator :: Lets you reduce chaotic dependencies between objects. The pattern restricts direct communications between the objects and forces them to collaborate only via a mediator object.
+16.Memento ::  Lets you save and restore the previous state of an object without revealing the details of its implementation.
+17.Observer :: Lets you define a subscription mechanism to notify multiple objects about any events that happen to the object they're observing.
+18.State ::  Lets an object alter its behavior when its internal state changes. It appears as if the object changed its class.
+19.Strategy :: Lets you define a family of algorithms, put each of them into a separate class, and make their objects interchangeable.
+20.TemplateMethod :: Defines the skeleton of an algorithm in the superclass but lets subclasses override specific steps of the algorithm without changing its structure.
+21.Visitor :: Lets you separate algorithms from the objects on which they operate.
+
+
+Types of Design Patterns ??
+
+1. Design Pattern 
+...............................
+2. Creational Pattern ::
+A. Abstract Factory Design PAttern in Ruby 
+B. Factory Method Design Pattern
+C. Prototype Design Pattern
+D. Singleton Design Pattern
+...............................
+3. Structural Pattern :: 
+Bridge Structure
+Composite Structure
+Decorator
+Facade
+Flyweight
+Proxy 
+...............................
+4. Behavioral Pattern :: 
+Responsibility Structure
+Interpreter 
+Iterator
+Mediator
+Memento
+Observer
+State
+Strategy
+Template
+Visitor
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+6. Ruby Versions Differences ::  
+
+Features of Ruby 3.0 :: Ruby 2 and Ruby 3 Differences ::
+1. Full seperation of keyword arguments.
+2. Ractors
+3. Non Blocking IO with Fibers
+4. Type Declarations (In seperate Files)
+5. "Endless" Methods
+6. GC AutoCompaction
+7. Pattern Matching :: 
+A. No Longer Experimental
+B. Two flowers for the one line pattern matching.
+C. Find Patterns 
+..
+
+
+Features of Ruby 2.5.0 ::
+1. Top level Constant lokup is removed
+2. yield_self
+3. rescue/else/ensure are allowed inside do/end blocks
+4. Print back - trace and error message in reverse order if STDERR is unchanged and 
+...
+
+Features of Ruby 2.7.0 ::
+1. Pattrn Matching
+2. REPL Improvements REPL: Read Eval Print Loop
+3. Compaction GC
+4. Speration of positional and keyword arguments.
+...
+
+Features of Ruby 3.0.1 ::
+1. Performance - MJIT :: CPU Optimization Memory Optimization
+2. Concurrency - Ractor,Fiber Scheduler
+3. Typing Estatic Analysing - RBS Type of 
+...
+
+Features Ruby 2.0 ::
+
+.........................
+New Features
+Lazy enumerators
+Keyword Arguments
+UTF-8 as default encoding
+Refinements (experimental)
+New regular expression engine
+`%i` and `%I` for symbol list creation (similar to `%w` and `%W`)
+
+Methods
+Kernel#__dir__
+Array#bsearch
+Module#prepend
+Module.prepended
+Module.prepend_features
+Return an Array instead of an Enumerator:
+String#chars
+String#bytes
+​String#lines
+String#codepoints
+...
+
+Features Ruby 2.1 ::
+Ruby 2.1
+New Features
+Required Keyword Arguments
+Generational GC
+New GC environment variables
+Refinements
+
+Methods
+String#scrub and String#scrub!
+Binding#local_variable_get(symbol)
+Binding#local_variable_set(symbol, obj)
+Binding#local_variable_defined?(symbol)
+...
+
+Features Ruby 2.2 ::
+New Features
+Symbol GC
+Incremental GC
+Support Unicode 7.0
+
+Methods
+Method#curry
+Kernel#itself
+Enumerable#slice_after
+Enumerable#slice_when
+Float#next_float, Float#prev_float (#9834)
+...
+
+Features Ruby 2.3 ::
+Ruby 2.3
+New Features
+Frozen strings pragma
+Safe navigator operator (&.)
+Squiggly heredoc (<<~)
+'Did you mean?' gem included by default
+Methods
+Hash#dig
+Array#dig
+File.mkfifo
+Hash#fetch_values
+Enumerable#chunk_while
+...
+
+Features Ruby 2.4 ::
+New Features
+Fixnum + Bignum merge into Integer
+Better Thread error reporting
+Refinements now work with Kernel#send & Symbol#to_proc
+Methods
+Dir.empty?
+File.empty?
+Regexp#match?
+Enumerable#sum
+Integer#digits
+Hash#compact / Hash#compact!
+Hash#transform_values / Hash#transform_values!
+Kernel#clone now takes an optional keyword argument (freeze)
+...
+
+Features Ruby 2.5 ::
+New Features
+Reversed stack trace
+About 5-10% performance improvement
+You can now use rescue / else / ensure with a do / end block
+Methods
+Kernel#yield_self
+Hash#transform_keys / Hash#transform_keys!
+Hash#slice
+String#delete_prefix / String#delete_suffix
+Enumerable#any?, all?, none?, and one? accept a pattern argument
+Struct
+...
+
+Features Ruby 2.6 ::
+New Features
+Endless ranges
+Transient heap (performance increase for small objects)
+JIT compiler (experimental)
+Methods
+Array#union & Array#difference
+TracePoint#parameters
+Range#%
+Integer() & Float() now take an optional "exception" keyword argument
+Array#merge accepts multiple arguments
+Kernel#then is a new alias for Kernel#yield_self
+Enumerable#filter is a new alias for Enumerable#select
+...
+
+Features Ruby 2.7 ::
+New Features
+Pattern Matching (experimental)
+Numbered block parameters (experimental)
+IRB updates
+Methods
+Enumerable#tally
+Enumerator#produce
+Arrary#intersection
+...
+
+Ruby 3 New Features ::
+As Ruby 3 is going to be a whole new era in the timeline of the language, it brings a great number of updates. Also, it brings the question “Ruby 2 vs Ruby 3” in the scene for Ruby and Ruby on Rails developers all around the world. Let’s take a bird’s eye view of the major differences between the two versions before we dive in and analyze each improvement individually.
+
+1. Performance: Ruby 3 is supposedly 3 times faster than Ruby 2. Although the preview version has not shown this specific update in its full strength, we are still hoping that the final version will live up to the expectations.
+2. Parallel Computing: Ruby 3 now supports parallel computing with the help of Ractors. (More on ractors later.)
+3. Type Checking: Ruby 3 introduces RBS, a gem that allows parsing and processing type definitions written in it. This also brings with itself support for duck typing, allowing interfaces to be integrated seamlessly in development routines.
+4. Scheduler: An experimental scheduler is bundled with Ruby 3 to intercept blocking operations and defer them to other threads.
+5. Rightward assignment statements: As mentioned by Matz himself, the addition of rightward assignment statements is a small yet crucial change in the way syntax is formulated for Ruby code. This finally allows writing natural-looking code in places where left assignment looks weird.
+6. Better Garbage Collection: With the addition of Garbage Compactor, most objects will automatically be transferred to the heap and compacted to improve memory usage and performance.
+7. The list is long, and instead of continuing this way, let’s now dive deeper into individual updates and find out what importance they hold in the future of Ruby development!
+
+...
+New Features and Functions added to Ruby 2.5::
+
+
+New Features and Functions added to Ruby 2.5
+Features
+#1 Reverse Stack Trace:
+One of the major feature that was introduced in Ruby 2.5.0 is Reverse Stack Trace.
+
+Before Ruby 2.5, the printed backtrace contained the exception class and the error message at the top. Next lines will contain the location of the various cascaded method calls. This made it difficult to read the error message as it is difficult to display the whole backtrace in the visible viewport of the terminal.
+
+So from Ruby 2.5 onwards, the backtrace was printed in reverse order. That is an error message and exception class is printed last at the backtrace. Also, a frame number was also added with each line.
+
+Example
+
+irb(main):001:0>1/0
+Traceback (most recent call last):
+5: from /home/arun/.rbenv/versions/2.5.3/bin/irb:23:in `<main>’
+4: from /home/arun/.rbenv/versions/2.5.3/bin/irb:23:in `load’
+3: from /home/arun/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.3/gems/irb-1.0.0/exe/irb:11:in `<top (required)>’
+2: from (irb):1
+1: from (irb):1:in `/’
+ZeroDivisionError (divided by 0)
+
+#2 Allows rescue/else/ensure inside do/end blocks:
+Before Ruby 2.5.0 it was not possible to add rescue/else/ensure blocks inside do/end blocks. If it was added an error will be thrown.
+
+SyntaxError: (irb):4: syntax error, unexpected keyword_rescue,
+expecting keyword_end
+
+This was fixed in 2.5.0 and the rescue/else/ensure can be written in a do/end block.
+
+Example Code
+
+array.each do |number|
+  p 10 / number
+  rescue ZeroDivisionError => exception
+     p exception
+     next
+  end
+end
+#3. Significant Performance Improvement
+According to docs Ruby 2.5,0 brought about 5–10% performance improvement. Some observations related are
+
+String interpolation will be around 72% faster when a large string is created
+String#prepend will be around 42% faster if only one argument is given
+Enumerable#sort_by, Enumerable#min_by & Enumerable#max_by will be about 50% faster
+Mutex is rewritten to be smaller and faster
+ERB now generates code from a template twice as fast as Ruby 2.4
+One of the optimizations done is to use OPTIMIZED_CMP() to compare the objects instead of <=> method.
+
+Functions
+#1 Kernel#yield_self
+Kernel#yield_self works similarly to the method Object#tap, but they return different values.
+
+Object#tap yields self to the block and then returns self.
+
+Example
+
+(1..10).tap { |x| puts “original: #{x}” }
+ .to_a.tap { |x| puts “array: #{x}” }
+Returns
+# => original: 1..10
+# => array: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+Kernel#yield_self yields self to the block and then returns the result of the block execution.
+
+(1..10).yield_self{|x| puts “original: #{x}”
+Returns
+
+original: 1..10
+=> nil
+
+#2 Hash#transform_keys/Hash#transform_keys!
+Hash#transform_keys is added for transforming keys of the hash., which is similar to the transform_values function present in Ruby 2.4.
+
+Example
+
+h = { name: “arun”, email: “arun@example.com” }
+=> {:name=>”arun”, :email=>”arun@example.com”}
+h.transform_keys { |k| k.to_s }
+=> {“name”=>”arun”, “email”=>”arun@example.com”}
+Hash#transform_keys! is also added which changes the hash in place.
+
+#3 Hash#slice
+Hash#slice is a simple method to select key-value pairs from a hash with specified keys.
+
+Example
+
+blog = { id: 1, name: ‘Ruby 2.5’, description: ‘Blog’ }
+To get name and description from this hash.
+
+Before 2.5
+
+blog.select { |key, value| [:name, :description].include?(key) }
+=> {:name=>”Ruby 2.5", :description=>”Blog”}
+
+After
+
+blog.slice(:name, :description)
+=> {:name=>”Ruby 2.5", :description=>”Blog”}
+
+#4 String#delete_prefix / String#delete_suffix
+Earlier in Ruby inorder to delete suffix part we were using the method chomp. However there was no method to delete prefix part this was fixed by adding two methods String#delete_prefix and String#delete_suffix
+
+Usage
+
+Projects::CategoriesController”.delete_prefix(“Projects::”)
+ => “CategoriesController”
+Projects::CategoriesController”.delete_suffix(“Controller”)
+ 
+=> “Projects::Categories”
+#5 Enumerable#any?, all?, none?, and one? accept a pattern argument
+Ruby has sequence predicates such as all?, none?, one? and any? which take a block and evaluate that by passing every element of the sequence to it.
+
+The usage before 2.5 was
+
+queries.any? { |sql| /LEFT OUTER JOIN/i =~ sql }
+Ruby 2.5 introduced a shorthand for this, which is as follows.
+
+queries.any?(/LEFT OUTER JOIN/i)
+Internally case equality operator(===) is used against every element of the sequence and the pattern argument.
+
+So this translates to
+
+queries.any? { |sql| /LEFT OUTER JOIN/i === sql }
+This feature is applicable to all?, none?, one? and any? Methods.
+
+#6 Struct.new can create classes that accept keyword arguments
+Before Ruby 2.5 it was not possible to declare Ruby Structs using keyword params. With Ruby 2.5 this can be done using the keyword_init option
+
+Usage:
+
+Struct.new(:fname, :lname, keyword_init: true)
+my_struct = MyStruct.new(fname: ‘first’, lname: ‘last’)
+
+
+
+.........................
+.........................
+
+New Features and Functions added to Ruby 2.6
+Features
+#1 Just In Time Compiler
+Ruby 2.6 introduces an initial implementation of a JIT (Just-In-Time) compiler.
+
+The JIT compiler aims to improve the performance of Ruby programs. Unlike traditional JIT compilers which operate in-process, Ruby’s JIT compiler writes out C code to disk and spawns a common C compiler to generate native code
+
+In order to enable the JIT compiler, specify — jit on the command line or in the $RUBYOPT environment variable. Specifying — jit-verbose=1 will cause the JIT compiler to print additional information
+
+#2 Performance Improvement
+Transient Heap support added for ruby reduces the footprint of short-living memory objects which reduced the memory consumption of short living Hash objects by about 7%.
+
+Also, it has been noted that Proc#call is now around 1.4x faster. This is done by removing the temporary allocation for $SAFE. $SAFE is now a process global state and it can be set back to 0
+
+Combined with improvements around block handling introduced in Ruby 2.5, block evaluation now performs 2.6x faster in a micro-benchmark in Ruby 2.6.
+
+#3 Range#=== now uses cover? rather than include?
+This makes it possible for case statements like
+
+case DateTime.now 
+when Date.today..Date.today + 1 
+ ‘win!’
+else 
+ ‘fail’ 
+End
+#4 Bundler is now installed as a default gem.
+#5 Syntax Error when else without rescue
+In exception handling blocks, else without rescue now causes a syntax error
+
+#6 Constant names may start with a non-ASCII capital letter
+Functions
+#1 Endless Ranges
+Ruby introduces the (0..) range.
+
+ary[1..] # identical to ary[1..-1]
+(1..).each {|index| … } # infinite loop from index 1
+#2 Array#union and Array#difference
+An easier way to find the difference and union multiple arrays.
+
+[1, 1, 2, 2, 3, 3, 4, 5 ].difference([1, 2, 4])
+#=> [ 3, 3, 5 ]
+[“a”, “b”, “c”].union([“c”, “d”, “a”])
+
+#=> [ “a”, “b”, “c”, “d” ]
+
+#3 Array#filter is a new alias for Array#select
+[:foo, :bar].filter { |x| x == :foo } # => [:foo]
+#4 Enumerable#to_h now accepts a block that maps keys to values
+Before 2.6 in order to convert an array into hash, an intermediate array was required.
+
+(1..5).each_with_object({}) { |x, h| h[x] = x ** 2 }
+(1..5).map { |x| [x, x ** 2] }.to_h
+From 2.6 onwards the to_h allow to use a block which eliminates the intermediate array,
+
+(1..5).to_h { |x| [x, x ** 2] } #=> {1=>1, 2=>4, 3=>9, 4=>16, 5=>25}
+#5 Hash#merge, merge! now accept multiple arguments
+A variable amount of arguments when merging hashes
+
+hash1.merge(hash2, hash3)
+#6 The #then method
+The then method is an alias to yield_self. This was introduced to improve readability.
+
+Usage
+
+events = Event.upcoming
+events = events.limit(params[:limit]) if params[:limit]
+events = events.where(status: params[:status]) if params[:status]
+Events
+becomes
+
+Event.upcoming
+ .then { |events| params[:limit] ? events.limit(params[:limit]) : events }
+ .then { |events| params[:status] ? events.where(status: status) : events }
+# or
+Event.upcoming
+ .then(&method(:with_limit))
+ .then(&method(:with_status))
+#7 Random.bytes
+This function can be used to generate random bytes
+
+Usage
+
+Random.bytes(8) # => “\xAA\xC4\x97u\xA6\x16\xB7\xC0\xCC”
+#8 Binding#source_location
+This method returns the source location of the binding, a 2-element array of __FILE__ and __LINE__. It is recommended to use Binding#source_location instead of Kernel#eval
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+
+7. Rails Versions Differences :: 
+
+Rails 7 Features ::
+
+1. Background Jobs 
+2. Byebug Change :: byebug - debugger 
+3. Association Check :: Check association absence and presence
+4. Ruby Version :: Use rvm 2.7.0 or greater
+5. Importmap :: node and webpacker is not required use importmap - use importmap-rails gem 
+6. Asynchronous Querying ::  load_async(asynchronous query) - Post.load_assync - use multiple queries ::     load_async method
+7. Hotwire ::  turbolink and ujs are replaced by turbo and stimulous ::
+8. Encrypted Database Layer :: 
+9. Assert a Single Record with Sole ::  Call sole or find_sole_by ::
+10.Stream Generated Files from Controller Actions ::
+11.ZeitWork Mode for Rails 7 
+12.Invert Where Method 
+13.Comparison Validator
+14. Named Variants 
+15. Add missing Method 
+16. Association Previously Changed Method 
+17. Disable partial_inserts as default
+18. Active storage pre-defined variants
+19. Add tracking of belongs_to association
+20. PostgreSQL custom enum types
+21. PostgreSQL generated columnsPostgreSQL custom enum types
+22. A new #update_attribute! method was added
+23. db:prepare can load the schema of an empty database.
+24. Specify the parent class of a job with a job generator
+25. A new #stub_const method was added.
+26. ActiveRecord::ConnectionPool is now Fiber-safe
+27. Merged
+
+...
+
+Rails 6 Features ::
+
+B.Diff bet rails 5 and 6 ::
+
+1.Multiple Databases :: Use multiple databases and switching between multiple databases
+2.Bulk :: bulk_insert ,bulk_upsert and update_all
+3.Ruby Version :: rvm 2.5.0 or greater
+4.Gems Compatibility :: can check all gems compatiable with rails-6
+5.Default Bundler :: Webpacker 
+6.Parellel Testing :: 
+7.Action Mailbox 
+8.Action Text 
+9.Action Cable Easy Access 
+
+
+Rails 5 Features :: 
+.......................  .......................  .......................
+
+C. Diff bet rails 4 and 5 ::
+
+1. Active Job is here
+2. Action Cable is here
+3. Use Rails instead of Rake 
+4. Rails api only application 
+5. Active Record Improvements.
+6. Ruby 2.2.1+ support only
+7. Advantages of Symbol GC available in Ruby
+8. Remove Array allocation if not needed 
+9. Active Record Improvements ::
+10. Ajax Library :: 
+11. Customized URL
+12. Render From Anywhere
+13. ActionPack Assertions
+14. Keyword Arguments
+15. Module #prepend
+16. Symbol Garbage Collector
+...........................
+
+
+Features of Rails 3 :::::::::::::::::::
+
+D. Diff between Rails 2 and Rails 3 :::
+
+Ans: I found 7 major Difference between rails 2 and rails 3 has: New Router Api, New mailer, New Active Record Query interface, Assets pipeline, Security Improvements, Unobtrusive JavaScript (UJS) , Dependency management with bundler.
+
+
+1. Introduction to Bundler (New Way to manage em dependencies
+2. Gemfile and Gemfile.lock - where all your gem dependencies lies ,instead of enviornment.rb 
+3. A new.rb file in config/folder named as application.rb, (which has previously enviornment.rb had)
+4. Change in SQL Structure : Model.where(:activated=>true)
+5. All the mailer Script will now be in the app/mailers folders,earlier we kept inside the app/models.
+6. Rails3-UJS Support .for links and forms to work as AJAX, instead of writing complex line of code ,we write 
+:remote => true 
+7. HTML 5 Support 
+8. Change in the model based validation syntax : 
+valdiates:name,presence => true 
+9. Ability to install 
+
+...
+
+RAILS 7 FEATURES ::  
+
+
+
+
+Rails 7 Features ::
+
+
+
+1.
+
+.......................  .......................  .......................
+
+Rails 7 Features ::
+
+A. Diff bet rails 6 and 7 ::
+
+1. BackgroundJobs :: Infinite Runtime with Background jobs :: 
+
+Now in Rails 7 Passing the :unlimited flag as the attempts parameter on retry_on which allows for a job to retry continuously until it succeeds.Before this it was not possible . 
+
+Ex ::  
+
+class MyJob < ActiveJob::Base
+  retry_on(AlwaysRetryException, attempts: :unlimited)
+ 
+  def perform
+    raise "KABOOM"
+  end
+end
+
+...............
+
+
+2. Byebug Change :: byebug - debugger 
+................
+
+3. Association Check :: Check association absence and presence :: Add Association Method ::
+
+Ex1:: 
+
+# Before:
+account.users.joins(:contact).where.not(contact_id: nil)
+ 
+# After:
+account.users.where.associated(:contact)
+
+....
+Ex2:: 
+
+Before
+User.where.not(contact_id: nil)
+
+After
+User.where.associated(:contact)
+
+
+...............
+
+4. Ruby Version :: Use rvm 2.7.0 or greater
+
+
+...............
+
+5. Importmap :: node and webpacker is not required use importmap - use importmap-rails gem ::
+
+JavaScript in Rails 7 will no longer require NodeJS or Webpack. And you can still use npm packages.
+
+importmaps-rails gem::
+
+A. Install date-fns 
+
+$ ./bin/importmap pin date-fns
+This will add a line in config/importmap.rb like:
+
+pin "date-fns", to: "https://ga.jspm.io/npm:date-fns@2.27.0/esm/index.js"
+
+In your JavaScript code, you can continue using everything as you used to:
+import { formatDistance, subDays } from "date-fns";
+ 
+formatDistance(subDays(new Date(), 3), new Date(), { addSuffix: true });
+//=> "3 days ago"
+
+...............
+
+6. Asynchronous Querying ::  load_async(asynchronous query) - Post.load_assync - use multiple queries ::     load_async method 
+
+There is now a load_async method that you can use when querying data to fetch results in the background. This is especially important when you need to load several un-related queries from a controller action. You can run:
+
+Ex :: 
+
+def PostsController
+  def index
+    @posts = Post.load_async
+    @categories = Category.load_async
+  end
+end
+
+This will fire both queries in the background at the same time. So, if each query takes 200ms, the total time spent fetching the data is ~200ms instead of 400ms, if they are fetched serially.
+
+...............
+
+7. Hotwire ::  turbolink and ujs are replaced by turbo and stimulous ::
+
+There are 3 main connections for hotwire ::
+1. Turbo
+2. Stimulus
+3. Strada
+
+...............
+
+8. Encrypted Database Layer :: 
+
+Encryption at Database Layer
+Rails 7 allows marking certain database fields as encrypted using the encrypts method on ActiveRecord::Base. This means that after an initial setup, you can write code like this:
+
+class Message < ApplicationRecord
+  encrypts :text
+end
+You can continue using the encrypted attributes like you would any other attribute. Rails 7 will encrypt and decrypt it automatically between the database and your application.
+
+But this comes with a slight quirk: you cannot query the database by that field unless you pass a deterministic: true option to the encrypts method. The deterministic mode is less secure than the default non-deterministic mode, so only use it for attributes you absolutely need to query.
+
+
+...............
+
+9. Assert a Single Record with Sole ::  Call sole or find_sole_by ::
+
+When querying records, you can now call sole or find_sole_by (instead of first or find_by) when you want to assert that the query should only match a single record.
+
+Product.where(["price = %?", price]).sole
+# => ActiveRecord::RecordNotFound      (if no Product with given price)
+# => #<Product ...>                    (if one Product with given price)
+# => ActiveRecord::SoleRecordExceeded  (if more than one Product with given price)
+ 
+user.api_keys.find_sole_by(key: key)
+# as above
+
+...............
+
+10.Stream Generated Files from Controller Actions ::
+
+Rail on Ruby 7 allows you to streamline a file generated on the fly using send_stream inside controller action.
+
+send_stream(filename: "subscribers.csv") do |stream|
+stream.write "email_address,updated_at\n"
+@subscribers.find_each do |subscriber|
+stream.write "#{subscriber.email_address},#{subscriber.updated_at}\n"
+end
+end
+This provides developers with an immediate/ partial response to know that something is happening, which will benefit when deployed on Heroku.
+
+...............
+
+11.ZeitWork Mode for Rails 7 ::
+
+All Rail 7 applications will now run in the Zeitwerk mode. The management has ensured that this transformation will be smooth for the developers. Zeitwerk is a code loader for Ruby on Rails. The developers can easily load your project's module and classes using this.
+
+This is launched so that any gem dependency, project, application etc., can have its loader. Each loader has its inflector, configuration, and logger. Zeitwerk has all features of the Classic mode; the only difference is that it provides a better strategy for loading elements.
+
+...............
+
+
+12.Invert Where Method :: 
+
+Invert_where method to the ApplicationRecord used to invert all the defined scope conditions.
+
+Before
+
+class User < ApplicationRecord
+    scope :verified, -> { where(email_verified: true, phone_verified: 
+true) }
+    scope :unverified, -> { where.not(email_verified: true,
+ phone_verified:true) }
+
+    scope :with_verified_email, -> { where(email_verified: true) }
+    scope :with_unverified_email, -> { where.not(email_verified: true) }
+end
+After Rails 7 :
+
+class User < ApplicationRecord
+    scope :verified, -> { where(email_verified: true, phone_verified: true)
+ }
+
+    scope :with_verified_email, -> { where(email_verified: true) }
+end
+Instead of creating unverified and with_unverified_email scopes with negating conditions, we can just chain invert_where to verified and with_verified_email scopes.
+
+
+
+...............
+
+
+13.Comparison Validator ::
+
+The comparison validator validates the state of the object before it is going to store in the database. Considering all its presence, uniqueness, numerical properties, and validity of the particular data it has been checked properly.
+
+class Post < ApplicationRecord
+    validates :end_date, date: { after: Proc.new { Date.today } }
+    validates :end_date, date: { after: :start_date }
+end
+If we want to validate the end_date, we have to use the custom_validator or otherwise we can use gem_validator.
+
+After Rails 7 onwards :
+
+class Post < ApplicationRecord
+    validates_comparison_of :end_date, greater_than: -> { Date.today }
+    validates :end_date, greater_than: :start_date
+end
+
+
+...............
+
+
+14. Named Variants :: 
+
+You can name variants using ActiveStorage in the latest Ruby on Rails 7.
+
+class User < ApplicationRecord
+    has_one_attached :avatar do |attachable|
+        attachable.variant :thumb, resize: "100x100"
+    end
+end
+
+#Call avatar.variant(:thumb) to get a thumb variant of an avatar:
+<%= image_tag user.avatar.variant(:thumb) %>
+
+...............
+
+15. Add missing Method 
+
+It returns the list of all records that don't have an association. opposite of associated
+
+Before
+User.where(contact_id: nil)
+
+After
+User.where.missing(:contact)
+
+...............
+
+16. Association Previously Changed Method ::
+
+The association_previously_changed? method tells if the previous save updated the association to reference a different associated object.
+
+> event.organizer
+=> #<Organizer id: 1, name: "Organization 1">
+
+> event.organizer = Organizer.second
+=> #<Organizer id: 2, name: "Organization 2">
+
+> event.organizer_changed?
+=> true
+
+> event.organizer_previously_changed?
+=> false
+
+> event.save!
+=> true
+
+> event.organizer_changed?
+=> false
+
+> event.organizer_previously_changed?
+=> true
+
+...............
+
+17. Disable partial_inserts as default :: 
+
+# == Schema Information
+#
+# Table name: posts
+#
+#  id                     :bigint
+#  title                  :string
+#  description            :text
+#  created_at             :datetime
+#  updated_at             :datetime
+
+class Post < ApplicationRecord
+end
+Before
+It's enabled as default
+
+Rails.configuration.active_record.partial_inserts => true
+
+The INSERT command does not include description as we are just passing title to the Post.new command
+
+> Post.new(title: 'Rails 7').save
+
+Post Create (1.7ms)  INSERT INTO "posts" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Rails 7"], ["created_at", "2021-12-25 20:31:01.420712"], ["updated_at", "2021-12-25 20:31:01.420712"]]
+After
+It's disabled as default
+
+Rails.configuration.active_record.partial_inserts => false
+
+The INSERT command includes description too, even when we don't pass description to the Post.new command
+
+> Post.new(title: 'Rails 7').save
+
+Post Create (1.7ms)  INSERT INTO "posts" ("title", "description", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Rails 7"], ["description", ""], ["created_at", "2021-12-25 20:31:01.420712"], ["updated_at", "2021-12-25 20:31:01.420712"]]
+More details: https://blog.kiprosh.com/rails-7-introduces-partial-inserts-config-for-activerecord/
+
+............
+
+18. Disable partial_inserts as default :: 
+
+Before
+class Puppy < ApplicationRecord
+  has_one_attached :photo
+end
+<%= image_tag puppy.photo.variant(resize_to_fill: [250, 250]) %>
+
+After
+class Puppy < ApplicationRecord
+  has_one_attached :photo do |attachable|
+    attachable.variant :thumb, resize: "100x100"
+    attachable.variant :medium, resize: "300x300", monochrome: true
+  end
+end
+<%= image_tag puppy.photo.variant(:thumb) %>
+
+............
+
+
+19. Add tracking of belongs_to association ::
+
+class Event
+  belongs_to :organizer
+end
+
+class Organizer
+  has_many :events
+end
+
+
+............
+
+22. A new #update_attribute! method was added ::
+
+Rails added a new ActiveRecord::Persistence#update_attribute!method. This method is similar to update_attribute, but calls save! instead of save.
+
+class Topic < ActiveRecord::Base
+  before_save :check_title
+
+  def check_title
+    throw(:abort) if title == "abort"
+  end
+end
+
+topic = Topic.create(title: "Test Title")
+# => #<Topic title: "Test Title">
+
+topic.update_attribute!(:title, "Another Title")
+# => #<Topic title: "Another Title">
+
+topic.update_attribute!(:title, "abort")
+# raises ActiveRecord::RecordNotSaved
+
+ActiveRecord::Persistence#update_attribute! raises ActiveRecord::ActiveRecordError if an attribute is marked as readonly.
+
+............
+
+23. db:prepare can load the schema of an empty database.
+Previously, if a database existed but had not been populated with tables, db:prepare would run all migrations. Now db:prepare will load the schema when an uninitialized database exists and dump schema after migrations.
+
+............
+
+24. Specify the parent class of a job with a job generator.
+Rails added a --parent option to the job generator to specify the parent class of a job. There’s now a superclass option in the job generator.
+
+It’s possible now to do:
+
+bin/rails g job process_payment --parent=payment_job
+to get:
+
+class ProcessPaymentJob < PaymentJob
+  # your stuff here
+end
+
+............
+
+ 25. A new #stub_const method was added ::
+
+ A new #stub_const method was added to easily change the value of a constant for the duration of a block, silencing warnings. The implementation is not thread-safe if you have parallel testing enabled though.
+
+# World::List::Import::LARGE_IMPORT_THRESHOLD = 5000
+
+stub_const(World::List::Import, :LARGE_IMPORT_THRESHOLD, 1) do
+  assert_equal 1, World::List::Import::LARGE_IMPORT_THRESHOLD
+end
+
+assert_equal 5000, World::List::Import::LARGE_IMPORT_THRESHOLD = 5000
+In the example above, by using this method instead of setting World::List::Import::LARGE_IMPORT_THRESHOLD to 5000, we can prevent warnings from being thrown and ensure that the original value is restored after the test has finished.
+
+Take note, however, that stubbing a constant can have unintended consequences when used in a multithreaded environment. If multiple threads depend on the same constant and each thread attempts to stub the constant, it can lead to conflicting stubs and unpredictable behaviour. To avoid this issue, it is important to carefully consider the impact of stubbing constants in concurrent threads, such as when running separate test suites in parallel.
+
+..............
+26. ActiveRecord::ConnectionPool is now Fiber-safe ::
+
+Rails made ActiveRecord::ConnectionPool Fiber-safe. Rails has a lot of thread-centric code and does I/O with databases with threads inherently, this pull request makes it possible to switch how the connection pool is interacted with. For instance, if you use a fiber-based job processor or server like falcon, you should set config.active_support.isolation_level to :fiber, in which case multiple fibers in the same thread will be used to manage connections.
+
+..............
+
+27. Merged:- The default skeleton of Rails shouldn't require the whole JavaScript toolchain with Webpack by default. If needed, we can easily go from Hotwire to Webpack with an import mapped Hotwire. The webpack option will still be available for those who know they'll need the full JS chain (like when using React). 
+
+
+
+............................
+
+Rails 6 Features :: 
+
+
+
+
+
+
+.......................
+
+1. 
+
+Multiple Databases :: Use multiple databases and switching between multiple databases ::
+To meet this purpose, Rails 6 provides an API for multiple databases support, which is going to enable you do it without digging deep in Active Record.
+
+How to Connect to multiple databases ::
+1. Add the extra databases to your database.yml config file like this:
+2. You can then specify at the model-level which database(s) you want to use:
+3.And then it’s just one line of code to temporarily switch between databases inside a block!
+.........
+
+
+
+1.Add the extra databases to your database.yml config file like this:
+
+development:
+  main:
+    <<: *defaults
+    database: main_db
+  slow_queries:
+    <<: *defaults
+    database: readonly_main_db
+
+2. You can then specify at the model-level which database(s) you want to use:
+
+class User < ApplicationRecord
+  connects_to database: { writing: main, reading: slow_queries }
+end
+
+3. User.connected_to(role: :reading) do
+  # Do something that you know will take a long time
+end
+
+.......................
+
+2.Bulk :: bulk_insert ,bulk_upsert and update_all
+
+1. insert_all, similar to update_all.
+2. upsert_all. This option allows users to do upsert activities in their tasks. 
+
+.......................
+
+3.Ruby Version :: rvm 2.5.0 or greater
+
+.......................
+
+4. 
+RailsBump
+Check your Ruby gems for compatibility with all major Rails versions.
+
+.......................
+
+5.Default Bundler :: Webpacker ::
+
+Webpacker is a gem which allows easy integration of JavaScript pre-processor and bundler with Rails. It provides various helpers and configuration options to use webpack easily with Rails.
+
+The app/javascript directory contains,
+
+app/javascript:
+  ├── channels:
+  │   # action cable channel files here
+  │   └── consumer.js
+  │   └── index.js
+  ├── packs:
+  │   # only webpack entry files here
+  │   └── application.js
+
+  How to use Webpacker with packs?
+
+   the app/javascript/packs/application.js pack will be included by default in app/views/layouts/application.html.erb layout as follows,
+
+<%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+How to configure Webpacker?
+The configuration information for Webpacker lies in config/webpacker.yml. We can change options like source path, packs path and many more from the configuration file.
+
+Keeping the process similar to the previous assets pipeline, the JavaScript compilation happens along with the request while running the Rails server in development mode.
+
+In production mode rake assets:precompile does the job. The assets:precompile rake task runs webpacker:compile by default to generate webpack compiled assets.
+
+We can also use live reloading and hot module replacement in development mode with the help of binstubs provided by Webpacker. More on that can be found here.
+
+.......................
+
+
+
+6. Parellel Testing in Rails :: 
+
+Can Run test cases in parrellel not in series after rails-6 features. takes more advantage of the cpu and its performacne ex- mac book with core 10 cpu base
+
+How to run test cases in parellel ::
+
+1.  It's as easy as adding parallelize to your tests:
+
+class ActiveSupport::TestCase
+  parallelize(workers: :number_of_processors)
+end
+
+Using this configuration, Rails will automatically spawn worker processes based on the number of processors in your machine. Rails will also create namespaced databases (e.g. database-test-0, database-test-1, etc.) to run your tests against.
+
+
+2. Sometimes, you may have to perform a specific setup or cleanup for parallel tests. Rails provides two hooks for you to use — 
+parallelize_setup and 
+parallelize_teardown. 
+
+class ActiveSupport::TestCase
+  parallelize_setup do |worker|
+    # setup
+  end
+ 
+  parallelize_teardown do |worker|
+    # cleanup
+  end
+
+  3. You can also manually set the number of workers:
+
+  class ActiveSupport::TestCase
+  parallelize(workers: 4) # Use 4 worker processes
+end
+Alternatively, use the PARALLEL_WORKERS environment variable to override an existing configuration:
+
+PARALLEL_WORKERS=4 rails test
+
+4. There is also the option to use threads instead of workers to parallelize your test suite.
+
+class ActiveSupport::TestCase
+  parallelize(workers: :number_of_processors, with: :threads)
+end
+with: :threads is the default option when using JRuby or TruffleRuby. Using threads, in theory, provides slightly better performance. Threads require less overhead than processes, after all. In practice, however, I never found using threads all too useful, and you should be fine just sticking to process-based parallelization for the most part.
+
+.......................
+
+
+
+6. Zeitwerk :: 
+
+Zeitwerk, a new and improved, thread-safe code loader for Rails.
+Zeitwerk is the latest code loader for Ruby on Rails. It’s a conventional file structure. Moreover, the Zeitwerk loads the project classes and modules on demand by the users. It means the user doesn’t need to write the necessary calls require for their files. It can overcome the limitations that a traditional loader generally has. This can; Autoload code, Eager Load code, Reload code, and can also work with both applications and gems. Thus, it makes it robust to perform better for achieving results. Moreover, this is built with the intention to eliminate all known use cases of a classic loader.
+
+.......................
+
+
+7.Action Mailbox ::
+Link ::  
+
+Action Mailbox routes incoming emails to controller-like mailboxes for processing in Rails. It supports all major platforms or ingresses like Amazon SES, Mailgun, Mandrill, Postmark, and SendGrid. You can also handle inbound mails directly via the built-in Exim, Postfix, and Qmail ingresses.
+
+Installation of ActionMailBox ::
+
+0.   $ rails new action_mailbox -d postgresql
+1.   $ gem install rails --pre           ::  should be greater than rvm use 2.6
+2.   Create the gemsets file and Add this line in the root directory 
+	.ruby-version and .ruby-gemset
+3.   Run bellow generator to create mailbox related migration and files ::
+	 $ rails action_mailbox:install  ::   it would have created ApplicationMailbox.rb.
+4.   $ rails db:migrate +  $ rails webpacker:install (for install assets file) +  
+5.   You would need to configure your email service provider to post JSON data to your rails webhook when someone sends email to you.
+
+
+
+.......................
+
+8. 
+
+Action Text :: 
+Action Text is going to make writing, editing and displaying text in a Rails app 'super easy' or 'take it to the next level'.Action Text includes the Trix editor that handles:
+1. formatting,
+2. quotes,
+3. and adding links and lists to embedded images and galleries.
+Active Storage is, again, required for this framework to work properly.
+
+The Trix editor will capture rich-text information (such as bold text, headings, images etc.) and save this data into your desired storage solution, along with saving associated metadata into some new tables (note that this means that ActionText requires you to be using ActiveStorage).
+
+
+.......................
+
+
+9.Action Cable Easy Access 
+
+This may be a great feature in Rails 6 update where users can easily test “Action Cables” for different functionalities and at any level. This consists of the following features;
+Channels- It maintains the channel’s subscribers to a specific stream.
+Connections- This feature tests whether the connections identifiers are properly allotted.
+Broadcast- It checks whether the message has been transmitted within other components or not.
+On the basis of the above details on updates, we can say that Rails 6 framework helps the users very much. It improves the process of common development tasks faster and easier. This is also very significant for its extensive usage of JavaScript libraries, prototypes, etc. for agile actions. It could be definitely the best solution for the business world in performing certain actions.
+It became a power-packed solution for the business needs with the latest updates and there are still upcoming.
+
+.......................
+
+
+
+.......................  .......................  .......................
+
+C. Diff bet rails 4 and 5 ::
+
+1. Active Job is here
+2. Action Cable is here
+3. Use Rails instead of Rake 
+4. Rails api only application 
+5. Active Record Improvements.
+6. Ruby 2.2.1+ support only
+7. Advantages of Symbol GC available in Ruby
+8. Remove Array allocation if not needed 
+Array should not be allocated if not needed. Basically if you are initializing a variable by an empty array and there are conditions below which would add values to array or something then just delay initialization of variable to a array as possible as you can.
+var = []
+some_object = 54
+
+if some_object == 54
+  var << 'found'
+end
+var = nil
+some_object = 54
+
+if some_object == 54
+  var ||= []
+  var << 'found'
+end
+Basically we have delayed initialization i.e. allocation until needed.
+
+9. ActiveRecord Improvements ::
+
+With Rails 5 - ActiveRecord::Base#where.or is introduced. Y
+Post.where('id = 1').or(Post.where('id = 2'))
+# => SELECT * FROM posts WHERE (id = 1) OR (id = 2)
+
+10. Ajax Library :: 
+
+Rails provide you an extensive library of AJAX functions. The associated java scripting required for AJAX gets generated automatically.
+
+11. Customized URL
+Search engine friendly URLs can be developed in Rails.
+
+12. Render From Anywhere
+Earlier we used gem render_anywhere to render views outside controller. In Rails 5, you can render your views from anywhere.
+
+13. ActionPack Assertions
+The assertions assert_template and assigns() are deprecated and moved into its own gem.
+
+14. Keyword Arguments
+It supports keyword arguments which helps to reduce memory consumption by Rails application.
+
+15. Module #prepend
+It allows you to insert a module in front of the class it was prepended.
+
+16. Symbol Garbage Collector
+Passing symbols opens the possibility of several attacks in your system. The symbol garbage collector collects the symbols which prevents your system from several attacks.
+
+
+...
+
+
+Features of Rails 3 :::::::::::::::::::
+
+D. Diff between Rails 2 and Rails 3 :::
+
+.......................................
+
+Q.Difference Between Rails 2 And Rails 3 ?
+Ans: I found 7 major Difference between rails 2 and rails 3 has: New Router Api, New mailer, New Active Record Query interface, Assets pipeline, Security Improvements, Unobtrusive JavaScript (UJS) , Dependency management with bundler.
+
+
+1. Introduction to Bundler (New Way to manage em dependencies
+2. Gemfile and Gemfile.lock - where all your gem dependencies lies ,instead of enviornment.rb 
+3. A new.rb file in config/folder named as application.rb, (which has previously enviornment.rb had)
+4. Change in SQL Structure : Model.where(:activated=>true)
+5. All the mailer Script will now be in the app/mailers folders,earlier we kept inside the app/models.
+6. Rails3-UJS Support .for links and forms to work as AJAX, instead of writing complex line of code ,we write 
+:remote => true 
+7. HTML 5 Support 
+8. Change in the model based validation syntax : 
+valdiates:name,presence => true 
+9. Ability to install 
+
+.....
+
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+8. Git commands ::: Different Git commands ::: 
+
+
+8. What are different Git Commands and differences please explain :: 
+..............
+
+A. git rebase :: Rebase is the git utility designed to integrate changes from one branch onto another.Rebasing is the process of combining or moving a sequence of commits on top of a new base commit. Git rbase is the linear process of merging.
+
+command : 
+
+..............
+
+B. git fetch :: Git fetch is a primary command used to download contents from remote repository. git fetch is used in conjunction with git remote, git branch, git checkout, and git reset to update a local repository to the state of a remote. The git fetch command is a critical piece of colaborative git work flows.
+Git fetch command retrieves commits,files,branches,and tags from a remote repository.
+
+command : git fetch <options> <remote name> <branch name>
+
+...............
+
+C. git delete ::  Once the work os dpme on a branch and merged with the main branch, one can delete the branch.
+this command deletes the copy of the branch , but the original branch can still exist in remote repositories.
+
+...............
+
+D. Explain the basic git workflow ::
+
+The git files are from the procedure :: 1. Untracked 2. Tracked
+Untracked :: This is the default working directory where we are at first.
+Tracked :: Every File goes from 3 areas from this :: 1.Stages 2.Commited 3.Modified.
+This tracked is going through the process ::
+
+There are 4 Pillors :: 1.Working Directory 2.Staging Area 3.Local Repo 4.Remote Repo
+........................................................
+
+1.Stages::STAGING AREA :: git add. - after this command a file is added and goes to the 'staging-area'
+
+2.Commited::LOCAL REPO :: git commit -m "commit-name" - after this command files are commited and saved in the local repository. 
+
+3.Modified ::REMOTE REPO ::  Send the commit to the Remote Repository.
+
+...............
+
+Which command can be run in which pillor/stages ::
+
+git add - From working directory to staging area 
+git commit - From staging area to local repo
+git push - From local repo to remote repo
+git fetch - From Remote repo to local repo 
+git checkout - From Remote repo to working directory
+git merge - From Remote repo to working directory
+
+...............
+
+What is the difference between git fetch and git pull ::
+
+git fetch is the command that tells your local git to retrieve the latest meta-data info from the original (yet doesn't do any file transferring. It's more like just checking to see if there are any changes available). git pull on the other hand does that AND brings (copy) those changes from the remote repository.
+
+git fetch :: see if there are any changes in the remote repository
+git pull :: copy changes in the remote repository to local repository
+
+................
+
+What is cherry pick command in git ?
+
+Cherry picking is the act of picking a commit from a branch and applying it to another. git cherry-pick can be useful for undoing changes.
+
+................
+
+What is git stash command ?
+
+Git stash can be used in cases where we need to switch in between branches and at the same time not wanting to lose edits in the current branch. Running the git stash command basically pushes the current working directory state and index to the stack for future use and thereby providing a clean working directory for other tasks.
+
+.................
+
+What differentiates between the commands git remote and git clone?
+
+git remote command creates an entry in  git config that specifies a name for a particular URL. Whereas git clone creates a new git repository by copying an existing one located at the URL.
+
+..................
+
+What differentiates between the git revert and git reset ?
+
+git revert:this command is used for creating a new commit that undoes the changes of the previous commit.
+git reset:This command is used for undoing the local changes done in the git repository
+git revert:Using this command adds a new history to the project without modifying the existing history
+git reset: This command operates on the commit history, git index, and the working directory.
+..................
+
+What are the functionalities of git reset --mixed and git merge --abort?
+
+git reset --mixed command is used for undoing changes of the working directory and the git index.
+git merge --abort command is used for stopping the merge process and returning back to the state before the merging occurred.
+
+................
+
+ How will you resolve conflict in Git?
+Conflicts occur whenever there are multiple people working on the same file across multiple branches. In such cases, git won't be able to resolve it automatically as it is not capable of deciding what changes has to get the precedence.
+Following are the steps are done in order to resolve git conflicts:
+1. Identify the files that have conflicts.
+2. Discuss with members who have worked on the file and ensure that the required changes are done in the file.
+3. Add these files to the staged section by using the git add command.
+4. Commit these changes using the git commit command.
+5. Finally, push the changes to the branch using the git.
+
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+9. Some short questions :: 
+
+
+1. What are the Access Specifiers/Modifiers in Ruby ?  :: Public, Protected and Private
+Diff between private and protected Method ?
+
+Private vs Protected Methods
+That's the difference, the fact that protected keeps the method private , but it also allows you to call that method on an object. With private you can only do name , with protected you can do object.name .
+There is a small difference between protected and private methods. You can always call a protected method inside the class or with an implicit receiver, just like private, but in addition you can call a protected method with an explicit receiver as long as this receiver is self or an object of the same class as self.
+...
+
+
+2. What is the differnce between Scopes and Class Methods ?
+A scope will always return an ActiveRecord::Relation object, even if the conditional evaluates to false , whereas a class method, will return nil . This can cause NoMethodError when chaining class methods with conditionals, if any of the conditionals return false .
+
+...
+
+
+3. What is Asset Pipeline, What are its Uses ?
+
+...
+
+4. What are Strong Paramaters ?
+
+
+...
+
+5. What is Duck Typing ? 
+Duck Typing is a way of programming in which an object passed into a function or method supports all method signatures and attributes expected of that object at run time. The object's type itself is not important. Rather, the object should support all methods/attributes called on it.
+...
+
+6.What is pluck? :: Query a single column from the model of table
+Pluck can be used to query a single column from the underlying table of a model.It accepts a column name as argument and return an array of values of the specified column wih the corresponding data type.
+Ex: 
+Client.where(:active=>true).pluck(:id) = Select id from clients where active=1
+Client.uniq.pluck(:role) = Select distinct roles from the clients.
+
+...
+
+7.What is the diff between dup and clone in Rails ?
+In general, clone and dup may have different semantics in descendant classes. While clone is used to duplicate an object, including its internal state, dup typically uses the class of the descendant object to create the new instance. When using dup, any modules that the object has been extended with will not be copied.
+
+If you want to change an object but keep a copy of the original then you can clone it.
+Ex of Clone ::  
+a = [1,2,3,4,5]
+a[1..-1]       # [2,3,4,5]
+Ex of Clone ::
+b = a.clone
+b.shift  # [1] 
+b  # [2,3,4,5]
+.....
+Ex of dup and clone ::
+a = Object.new.freeze
+b = a.dup
+b.frozen?   # false
+b = a.clone 
+b.frozen?   # true
+Exp :: 
+...
+
+8. What is Flash ?
+Flash is a special part of a session which clear with each request.Means which value is stored will be available in the next request.Which is useful for storing error messages etc.It is accessed in much the same way as the session likes a hash.Flash is a object of action dispatch class.
+
+...
+
+9. Does Ruby support STI or MTI ? Single table inheritance or Multi Table Inheritance ?
+Ruby only support single table inheirtance.
+
+...
+
+10.What is the diff between Hash#fetch & Hash#[]?
+Hash#fetch provides options for handling the case where a key does not exist in hash.
+
+...
+
+11.How to check an error in Ror Application?
+in below 2 files errors are shown ::
+1. log/apache.log
+2. log/error.log
+
+...
+
+12.What is Request.xhr?
+It tells the controller that new AJAX request has come.This always return the boolean values - TRUE or FALSE.
+
+...
+
+13. What is the diff between static and dynamic scaffolding ?
+syntax for static scaffolding : $ rails g scaffold User Comment # here comment is model and user is controller.All n static scaffold takes 2 parameters -
+1. controller name .  2.model name. 
+In dynamic scaffolding we define the controller and model one by one.
+
+...
+
+14. How we can serialize the data from yaml ?
+yaml is the straight forward machine,of parsable data serialization format.which is design by human readability and interaction with scripting language.Such as perl and python.
+We optimize the yaml for - 1. data serialization. 2. format dumping. 3. configration files. 4. log files. 5. internet messaging and filtering.
+
+...
+
+15. What is the difference between throw/catch & railse/rescue ?
+Throw and catch accept matching symbols as arguments and should be considered a control flow structure where raise and rescue is used to raise and handle exceptions.Throw and catch are not commonly used where raise and rescue are commonly used.
+
+...
+
+16. How can you run your rails application without creating database ?
+uncomment the line in enviornment.rb-
+path => rootpath config/enviornment.rb
+config.frameworks -= [action_web_service:action_mailer,:active-record]
+
+...
+17.How to find out the second maximum element in the database ?
+Rails query - Model.order("YourFieldDesc".limit(1).offset(1))
+
+...
+18.Diff bet application and web server ?
+web servers are the servers which can take the request from browser.
+App servers sack the functionalities of web server
+web server handles http requests,where app server serves - through business logic to application through any no of protocol.
+
+...
+19. Diff between #== && #equal ?
+#==    performs general comparison and implements differently across classes.
+equal? is defined basic object and compares object identity
+#equal? show not be overridden in subclasses.
+
+...
+20. Diff bet Dig,Float,Max ?
+Float Class :: is used when the meaning changes constantly
+Dig :: When there is an enormous need for float.
+Max:: is used whenever you want to symbolize or float in decimal digits.
+
+...
+21.How to Send the Mails through Rails App?
+1.First create the mailer - $ rails g mailer_name
+2.Define the mailer function
+3.Add the Content of this email and store in corresponding view folder.
+4.Finally add the deliver method to call the mailer function in the controller.
+
+...
+22. What is Caching in Rails ?
+Caching is used in any web technologies.It speed up the performance by storing previous results for subsequent requests.By default caching is disabled in Rails.Rails caching available at 3 levels:: 1. Page, 2. Action, 3. Fragment.
+
+...
+23. What are the purpose of RJs in Rails ?
+Rjs are the patterns that produces javascript which is run in an eval chunk by the browser in reply to an Ajax request.It is something used to classify Javascript, prototype & helpers provide by rails.
+
+...
+24. What ae the limitation of Ruby on Rails ?
+1. Databases with foreign keys
+2. Linking to many databases at the same time.
+3. Web services for soap
+4. Multiple databases servers are connected at the same time.
+
+...
+25.What is DSL and haw does it pertain to Ruby ?
+A DSL-Domain Specific language is an API that allows a developer to solve a problem or represent data more naturally than they might otherwise.The flexible nature of Ruby's syntax and the ability to alias and alter existing methods and classses makes it conductive to creating rich DSL's
+
+...
+26. How to find out the duplicate entries in the database tables?
+User.group(:email).having("count(email)>1") 
+
+...
+27.What does it mean to coerce a object ?
+To coerce an object means to force it into an expected type.one might do this in order to try and force an unknown object type into an expected type or format required by the operation. This is the common practice involved in the duck typing.
+...
+
+28.What is the highest level in the object model ?
+BasicObject 
+
+...
+29.Ruby is a strongly or weekly typed language?
+Ruby is an strongly typed language since an object is checked before an operation is perform on it.
+
+...
+30.Ruby is Stastically or dynamically typed language?
+Dynamic type since type checking is done at runtime.
+
+...
+31.What is object_id in Ruby?
+Each object has many public methods we use .object id is also one of the method in this.One random id is generate for a specific object. This value is a reference of the address in the memory where the object is store.every object has unique object id which is not changed throughout the lifecycle of the object.Each variable is getting a different location in memory to store their value when they are declared so even when we assigned the same string,they are not sharing the same address location in memory,therefore there object id is different.
+
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+convert_app_to_api.txt
+
+1. clone the project :: 
+
+$ git clone https://github.com/mhartl/sample_app_6th_ed.git
+$ cd sample_app_6th_ed
+
+2. follow the project setup instructions ::
+$ yarn add jquery@3.4.1 bootstrap@3.4.1
+$ bundle install --without production
+
+3. 
+$ rails db:migrate
+$ rails test
+$ rails db:seed
+
+4. $ rails s  +  http://localhost:3000
+
+5. Api Module and Authentication :: 
+create the directory with name v1 
+app/controllers/v1  ==  Create  a  v1 folder 
+app/controllers/v1/api_controller.rb  ==  Create  a  api controller 
+
+6. Contain and add the Authentication Code ::
+
+
+module Api
+  module V1
+    class ApiController < ActionController::Base
+      before_action :check_basic_auth
+      skip_before_action :verify_authenticity_token
+
+      private
+
+      def check_basic_auth
+        unless request.authorization.present?
+          head :unauthorized
+          return
+        end
+
+        authenticate_with_http_basic do |email, password|
+          user = User.find_by(email: email.downcase)
+
+          if user && user.authenticate(password)
+            @current_user = user
+          else
+            head :unauthorized
+          end
+        end
+      end
+
+      def current_user
+        @current_user
+      end
+    end
+  end
+end
+
+7. 
+continue after some time 
+
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+10. What is cron job tell about this ??
+
+
+Cron Job Special Strings
+@hourly. The job will run once an hour.
+@daily or @midnight. These strings will run the task every day at midnight.
+@weekly. Use this to run jobs once a week at midnight on Sunday.
+@monthly. This special string runs a command once on the first day of every month.
+@yearly. ...
+@reboot.
+
+
+cron jobs are great for computers that work 24/7, such as servers.
+
+ Like any other program, cron has limitations you should consider before using it:
+ 
+ The shortest interval between jobs is 60 seconds. With cron, you won’t be able to repeat a job every 59 seconds or less.
+
+ Centralized on one computer. Cron jobs can’t be distributed to multiple computers on a network. So if the computer running cron crashes, the scheduled tasks won’t be executed, and the missed jobs will only be able to be run manually.
+
+ No auto-retry mechanism. Cron is designed to run at strictly specified times. If a task fails, it won’t run again until the next scheduled time. This makes cron unsuitable for incremental tasks.
+
+..................................................
+
+
+there are two types of configration files for cron Job :
+
+The system crontab. Use it to schedule system-wide, essential jobs that can only be changed with root privileges.
+
+The user crontab. This file lets users create and edit cron jobs that only apply at the user level.
+
+..................................................
+
+
+Cron tab syntax ::
+
+The crontab syntax consists of five fields with the following possible values:
+
+Minute. The minute of the hour the command will run on, ranging from 0-59.
+
+Hour. The hour the command will run at, ranging from 0-23 in the 24-hour notation.
+
+Day of the month. The day of the month the user wants the command to run on, ranging from 1-31.
+Month. The month that the user wants the command to run in, ranging from 1-12, thus representing January-December.
+
+Day of the week. The day of the week for a command to run on, ranging from 0-6, representing Sunday-Saturday. In some systems, the value 7 represents Sunday.
+
+
+
+.....................................................
+
+To set the correct time for your cron command, knowledge of cron job operators is essential. They allow you to specify which values you want to enter in each field. You need to use proper operators in all crontab files.
+
+
+
+To set the correct time for your cron command, knowledge of cron job operators is essential. They allow you to specify which values you want to enter in each field. You need to use proper operators in all crontab files.
+
+Asterisk (*). Use this operator to signify all possible values in a field. For example, if you want your cron job to run every minute, write an asterisk in the Minute field.
+Comma (,). Use this operator to list multiple values. For example, writing 1,5 in the Day of the week field will schedule the task to be performed every Monday and Friday.
+Hyphen (-). Use this operator to determine a range of values. For example, if you want to set up a cron job from June to September, writing 6-9 in the Month field will do the job.
+Separator (/). Use this operator to divide a value. For example, if you want to make a script run every twelve hours, write */12 in the Hour field.
+Last (L). This operator can be used in the day-of-month and day-of-week fields. For example, writing 3L in the day-of-week field means the last Wednesday of a month.
+Weekday (W). Use this operator to determine the closest weekday from a given time. For example, if the 1st of a month is a Saturday, writing 1W in the day-of-month field will run the command on the following Monday (the 3rd).
+Hash (#). Use this operator to determine the day of the week, followed by a number ranging from 1 to 5. For example, 1#2 means the second Monday of the month.
+Question mark (?). Use this operator to input “no specific value” for the “day of the month” and “day of the week” fields.
+
+.........................................................
+
+
+
+Cron Job Special Strings
+Special strings are used to schedule cron jobs at time intervals without the user having to figure out the logical set of numbers to input. To use them, write an @ followed by a simple phrase.
+
+Here are some useful special strings that you can use in commands:
+
+
+
+
+@hourly. The job will run once an hour.
+@daily or @midnight. These strings will run the task every day at midnight.
+@weekly. Use this to run jobs once a week at midnight on Sunday.
+@monthly. This special string runs a command once on the first day of every month.
+@yearly. Use this to run a task once a year at midnight on January 1st.
+@reboot. With this string, the job will run only once at startup.
+
+
+.........................................................
+
+
+Cron Permissions
+The following two files can be created or edited to allow or restrict users from using the system’s cron file:
+
+/etc/cron.allow – if cron.allow exists, it should contain a user’s name to permit them to use cron jobs.
+/etc/cron.deny – if cron.allow doesn’t exist but cron.deny does, the user who wants to use cron jobs must not be listed within the file.
+
+
+.........................................................
+
+
+
+Take a look at the following sample commands to get a better understanding of the cron syntax:
+
+
+Example	Explanation
+
+0 0 * * 0 /root/backup.sh	Perform a backup every Sunday at midnight.
+
+0 * * * 1 /root/clearcache.sh	Clear the cache every hour on Mondays.
+
+0 6,18 * * * /root/backup.sh	Backup data twice a day at 6am and 6pm.
+
+*/10 * * * * /scripts/monitor.sh	Perform monitoring every 10 minutes.
+
+*/15 * * * * /root/backup.sh	Perform a backup every 15 minutes.
+
+* * 20 7 * /root/backup.sh	Perform a backup every minute on July 20.
+
+0 22 * * 1-5 /root/clearcache.sh	Clear the cache every weekday (Monday to Friday) at 10pm.
+
+0 0 * * 2 * /root/backup.sh	Perform a backup at midnight every Tuesday.
+* * * 1,2,5 * /scripts/monitor.sh	Perform monitoring every minute during January, February, and May.
+10-59/10 5 * * * /root/clearcache.sh	Clear the cache every 10 minutes at 5am, starting from 5:10am.
+0 8 1 */3 * /home/user/script.sh	Make the task run quarterly on the first day of the month at 8am.
+0 * * * * /root/backup.sh	Create a backup every hour.
+* * * * * /scripts/script.sh; /scripts/scrit2.sh	Include multiple tasks on a single cron job. Useful for scheduling multiple tasks to run at the same time.
+@reboot /root/clearcache.sh	Clear cache every time you turn on the system.
+0 8 1-7 * 1 /scripts/script.sh	Run a script on the first Monday of each month, at 8 am.
+5 4 * * 0 /root/backup.sh	Create a backup every Sunday at 4:05 am.
+15 9 1,20 * * /scripts/monitor.sh	Perform monitoring at 9:15 pm on the 1st and 20th of every month.
+@hourly /scripts/monitor.sh	Perform monitoring every hour.
+0 0 1,15 * 3 /scripts/script.sh	Run a script at midnight every Wednesday between the 1st and 15th of every month.
+15 14 1 * * /root/clearcache.sh	Clear the cache on the first day of every month at 2:15 pm.
+00 08-17 * * 1-5 bin/check-db-status	Check database status every day from Monday to Friday every hour from 8 to 5 pm.
+15 6 1 1 * /root/backup.sh	Perform a backup every January 1st at 6:15am.
+0 0 * * * /scripts/monitor.sh	Run the monitoring script once a day at midnight.
+0 0 15 * * /root/clearcache.sh	Clear the cache at midnight on the 15th of every month.
+* * * * 1,5 /scripts/monitor.sh	Performing monitoring every Monday and Friday.
+
+
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+11.What is delayed job ?
+
+synchronous - happen at same time
+asynchronous - does not happen at same time.
+
+
+write_background_job.txt
+
+Delayed Job ::
+It is using for executing the longer tasks in background in the queue(one after another).
+This is directly taking from the Shopify where the job table is responsible for a multitude of 
+core tasks.These tasks are ::
+
+1. Sending Massive NewsLetters
+2. Image Resizing 
+3. http Downloads
+4. Updating Smart Collections
+5. Batch Imports
+6. Spam Check
+7.Updating Solr,our search server,after product changes.
+
+Supported Versions :: 
+
+delayed_job 3.0.0 only supports Rails 3.0+.
+
+PRocess of Add Delayed Job ::
+
+1.  gem 'delayed_job_active_record'   +  bundle   :: If using with Rails Active Record
+2.  gem 'delayed_job_mongoid' + bundle :: If using with mongoid
+3.  Create the Active Record Table for running the delayed Jobs ::
+	rails generate delayed_job:active_record + rake db:migrate 
+
+
+Note :: In development mode, if you are using Rails 3.1+, your application code will automatically reload every 100 jobs or when the queue finishes. You no longer need to restart Delayed Job every time you update your code in development.
+
+4. Configure the queue adapter :: config/application.rb
+	config.active_job.queue_adapter = :delayed_job
+
+5. Tell your application to process jobs put into your job queue, you can do that by adding this to your Procfile:
+
+	worker: rake jobs:work
+
+6. Queuig Jobs :: 
+
+Add a Delay Method to ActiveRecord Objects :: 
+
+ class Post < ActiveRecord::Base
+   def send_to_twitter!
+     Twitter.update("#{self.title} #{self.url}")
+   end
+ end
+
+ Post.find(9).send_to_twitter!
+ Post.find(9).delay.send_to_twitter!
+
+ 7. Queing Emails :: 
+
+ UserMailer.send_registration_mail(email, name).deliver
+ UserMailer.delay.send_registration_mail(email, name)
+
+8. Deploy code to Heroku :: 
+
+ $ git push heroku master 
+ $ heroku run rake db:migrate
+ $ heroku ps
+ $ heroku ps:scale worker=1
+
+ 9. Debugging ::
+ $ heroku run rails console
+ $ heroku ps
+ $ heroku logs -p worker -t
+ $ heroku run rake jobs:work
+
+ 10. How to know that a Job is failed :: 
+
+ job = Delayed::Job.where("last_error is not null").last
+ puts job.last_error
+ "{OAuthException: Error validating access token: ...
+
+ 
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+12. Deployment :: 
+
+
+
+Prerequisites﻿
+In this tutorial, we'll use two machines to demonstrate the application's deployment:
+
+Local machine: Mac with macOS, with RubyMine installed and the created command-line launcher. The command-line launcher will be required to specify the editor when generating credentials.
+
+Web server: The Ubuntu machine with enabled SSH access and Git installed. In this tutorial, the web server has the sample-web-server name and has the deploy user with sudo permissions.
+
+
+..........................................................................
+
+Initials ::
+
+A. Install Rubymine ::
+
+A. nvm install 12.14.1
+B. npm install --global yarn
+C. Download Toolbox .tar.gz from :  https://www.jetbrains.com/toolbox-app/
+D. Run this command ::
+sudo tar -xzf jetbrains-toolbox-1.17.7391.tar.gz -C /opt
+E. $  sudo snap install rubymine --classic OR  sudo snap install rubymine --classic --edge
+F. 
+
+
+1. Install rbenv and Ruby on the web server
+2. Install and Configure Passenger & Nginx 
+3. Install Capistrano Gems 
+4. Capify the Application 
+5. Provide Custom Credentials 
+6. Deploy your App
+7. Capistrano Run/Debug Configrtion 
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+13. example  of design Patterns in Rails ?
+
+
+..................................
+..................................
+
+1.Builder :: 
+
+It construct complex objects without much effort.It also called as Adapter. The pattern’s main purpose is to provide a simple way of returning a given class or instance depending on the case. 
+
+Example of Builder Pattern ::
+If you are parsing files to get their contents you can create the following builder:
+
+class FileParser
+  def self.build(file_path)
+    case File.extname(file_path)
+      when '.csv' then CsvFileParser.new(file_path)
+      when '.xls' then XlsFileParser.new(file_path)
+      else
+        raise(UnknownFileFormat)
+      end
+  end
+end
+
+class BaseParser
+  def initialize(file_path)
+    @file_path = file_path
+  end
+end
+
+class CsvFileParser < BaseParser
+  def rows
+    # parse rows
+  end
+end
+
+class XlsFileParser < BaseParser
+  def rows
+    # parse rows
+  end
+end
+
+............
+
+Now, if you have the file_path, you can access the rows without worrying about selecting a good class that will be able to parse the given format:
+
+parser = FileParser.build(file_path)
+rows = parser.rows
+
+..................................
+
+2. Decorator ::
+
+The decorator pattern is similar to the presenter pattern, but instead of adding additional logic, it alters the original class without affecting the original class’s behavior.
+
+We have the Post model that provides a content attribute that contains the post’s content. On the single post page, we would like to render the full content, but on the list, we would like to render just a few words of it:
+
+Example1 ::
+
+class PostListDecorator < SimpleDelegator
+  def content
+    model.content.truncate(50)
+  end
+
+  def self.decorate(posts)
+    posts.map { |post| new(post) }
+  end
+
+  private
+
+  def model
+    __getobj__
+  end
+end
+
+@posts = Post.all
+@posts = PostListDecorator.decorate(@posts)
+
+Example2 ::
+
+class SongDecorator < Draper::Decorator
+  delegate_all
+ 
+  def includes_profanities?
+    object.text.scan_for_profanities.any?
+  end
+ 
+  def user_downloaded?(user)
+    object.user.library.has_song?(self)
+  end
+end
+
+Then, you would call decorate in your controller, for example:
+
+def show
+  @song = Song.find(params[:id]).decorate
+end
+And use it in your views like so:
+
+<%= @song.includes_profanities? %>
+<%= @song.user_downloaded?(user) %>
+
+
+..................................  .................................. ..................................  ..................................
+
+3. Form Object
+
+The form object pattern was created to make the ActiveRecord’s models thinner. 
+
+We can often create a given record in multiple places, and each place has its rules regarding the validation rules, etc.
+
+Let’s assume that we have the User model that consists of the following fields: first_name, last_name, email, and password. When we are creating the user, we would like to validate the presence of all attributes, but when the user wants to sign in, we would like only to validate the presence of email and password:
+
+module Users
+  class SignInForm
+    include ActiveModel::Model
+
+    attr_accessor :email, :password
+    validates_presence_of :email, :password
+  end
+end
+
+module Users
+  class SignUpForm
+    include ActiveModel::Model
+
+    attr_accessor :email, :password, :first_name, :last_name
+    validates_presence_of :email, :password, :first_name, :last_name
+
+    def save
+      return false unless valid?
+
+      # save user
+    end
+  end
+end
+
+# Sign in
+user = Users::SignInForm.new(user_params)
+sign_in(user) if user.valid?
+
+# Sign up
+user = Users::SignUpForm.new(user_params)
+user.save
+Thanks to this pattern, we can keep the User model as simple as possible and put only the logic shared across all places in the application.
+
+..................................  .................................. ..................................  ..................................
+
+
+4. Interactor :: 
+
+The interactor pattern is all about interactions. Interaction is a set of actions performed one by one. When one of the actions is stopped, then other actions should not be performed. Interactions are similar to transactions, as the rollback of previous actions is also possible.
+
+To implement the interactor pattern in the Rails application, you can use a great interactor gem. If you are implementing the process of making a bank transfer, you can create the following structure:
+
+class VerifyAccountBalance
+  include Interactor
+
+  def call
+    return if context.user.enabled? && context.account.balance >= context.amount
+
+    context.fail!(message: 'not enough money')
+  end
+end
+
+class VerifyRecipient
+  include Interactor
+
+  def call
+    return if context.recipient.enabled? && some_other_procedure
+
+    context.fail!(message: 'recipient is invalid')
+  end
+end
+
+class SendMoney
+  include Interactor
+
+  def call
+    # perform the bank transfer
+  end
+end
+Each class represents one interaction and can now be grouped:
+
+class MakeTheBankTransfer
+  include Interactor::Organizer
+
+  organize VerifyAccountBalance, VerifyRecipient, SendMoney
+end
+We can now perform the whole interaction by calling the organizer along with the context data. When one of the interactors fail, the next interactors won’t be executed, and you will receive a meaningful output:
+
+outcome = MakeTheBankTransfer.call(
+  user: user, amount: 100.0, recipient: other_user, account: account
+)
+outcome.success? # => false
+outcome.message # => "recipient is invalid"
+The interactor pattern is a perfect solution for complex procedures where you would like to have full control over the steps and receive meaningful feedback when one of the procedures fail to execute.
+
+
+
+..................................  .................................. ..................................  ..................................
+
+
+5. Null Object 
+
+The idea behind this pattern is to provide a value for non-existing records.
+The null object pattern is as simple as the value object as they are based on plain Ruby objects. 
+If in your application the user can set its location, and you want to display information when it’s not set, you can achieve it by using the if condition or creating the NullLocation object:
+
+class NullLocation
+  def full
+    "not set yet"
+  end
+end
+Inside the User model, you can make usage of it:
+
+class User < ApplicationRecord
+  has_one :location
+
+  def address
+    location || NullLocation.new
+  end
+end
+You can now fetch the full version of the address without worrying about the object persistence:
+
+user = User.find(1)
+user.address.full
+
+
+
+
+..................................  .................................. ..................................  ..................................
+
+
+6. Observer 
+
+The observer pattern was supported by Rails out of the box before version 4, and now it’s available as a gem. It allows performing a given action each time an event is called on a model. If you would like to log information each time the new user is created, you can write the following code:
+
+class UserObserver < ActiveRecord::Observer
+  def after_create(user)
+    UserLogger.log("created user with email #{user.email}")
+  end
+end
+It is crucial to disable observers when running tests unless you test the observers’ behavior as you can slow down all tests.
+
+
+
+
+..................................  .................................. ..................................  ..................................
+
+7. Policy Object
+
+The policy object pattern is useful when you have to check multiple conditions before performing a given action. Let’s assume that we have a bank application, and we would like to check if the user can transfer a given amount of money:
+
+class BankTransferPolicy
+  def self.allowed?(user, recipient, amount)
+    user.account_balance >= amount &&
+      user.transfers_enabled &&
+      user != recipient &&
+      amount.positive?
+  end
+end
+..................................  .................................. ..................................  ..................................
+true parllism 
+csrf n xss attack
+preload  imclude eagerload
+
+8. Query Object 
+
+As the name suggests, the class following the query object pattern isolates the logic for querying the database. We can keep the simple queries inside the model, but we can put more complex queries or group of similar queries inside one separated class:
+
+class UsersListQuery
+  def self.inactive
+    User.where(sign_in_count: 0, verified: false)
+  end
+
+  def self.active
+    User.where(verified: true).where('users.sign_in_count > 0')
+  end
+
+  def self.most_active
+    # some more complex query
+  end
+end
+Of course, the query object doesn’t have to implement only class methods; it can also provide instance methods that can be chained when needed.
+
+..................................  .................................. ..................................  ..................................
+
+
+9. Service Object ::
+
+1. Service ::
+
+class WebsiteTitleScraper
+  def self.call(url)
+    response = RestClient.get(url)
+    Nokogiri::HTML(response.body).at('title').text
+  end
+end
+The above class is responsible only for scraping the website title.
+
+
+
+..................................  .................................. ..................................  ..................................
+
+
+10. Value Object
+
+2. Value Object ::
+
+The main idea behind the value object pattern is to create a simple and plain Ruby class that will be responsible for providing methods that return only values:
+
+class Email
+  def initialize(value)
+    @value = value
+  end
+
+  def domain
+    @value.split('@').last
+  end
+end
+The above class is responsible for parsing the email’s value and returning the data related to it.
+
+
+..................................  .................................. ..................................  ..................................
+
+11. View Object  (Presenter)
+3. Presenter 
+
+This design pattern is responsible for isolating more advanced logic that is used inside the Rails’ views:
+
+class UserPresenter
+  def initialize(user)
+    @user = user
+  end
+
+  def status
+    @user.sign_in_count.positive? ? 'active' : 'inactive'
+  end
+end
+We should keep the views as simple as possible and avoid putting the business logic inside of them. Presenters are a good solution for code isolation that makes the code more testable and readable.
+
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+14. diff bet method overloading and method overriding ?
+
+
+Diff between Method Overloading  and Method Overriding ?
+
+Method Overloading ::
+It allows a class to have more than one method with same name but different number of arguments.
+
+Ex 1 , 2 ,3  ,4 ,5 Are Method Overloading :: 
+......................
+Ex: 1 
+
+class MethodOverloadingExample
+	def display_message(message)
+		puts message
+	end 
+
+	def display_message(message,user)
+		puts "Hello #{user},#{message}"
+	end 
+end 
+
+obj1 = MethodOverloadingExample.new
+obj1.display_message('Welcome to the Ruby World')
+$ ruby method_overloading_example.rb
+#Output :: Wrong Number of Arguments (given1,expected2)-Arguments Error
+
+......................
+Ex: 2 
+
+class MethodOverloadingExample
+	def display_message(message)
+		puts message
+	end 
+
+	def display_message(message,user)
+		puts "Hello #{user},#{message}"
+	end 
+
+	def display_message
+		puts "Welcome to the Ruby World"
+	end 
+end 
+
+obj1 = MethodOverloadingExample.new
+obj1.display_message('Welcome to the Ruby World')
+$ ruby method_overloading_example.rb
+#Output :: Wrong Number of Arguments (given1,expected0)-Arguments Error
+
+......................
+Ex: 3
+
+class MethodOverloadingExample
+	def display_message(message)
+		puts message
+	end 
+
+	def display_message(message,user)
+		puts "Hello #{user},#{message}"
+	end 
+
+	def display_message
+		puts "Welcome to the Ruby World"
+	end 
+end 
+
+obj1 = MethodOverloadingExample.new
+obj1.display_message('Welcome to the Ruby World','Chetan Singh')
+$ ruby method_overloading_example.rb
+#Output :: Wrong Number of Arguments (given1,expected0)-Arguments Error
+
+
+......................
+Ex: 4
+
+class MethodOverloadingExample
+	def display_message(message)
+		puts message
+	end 
+
+	def display_message(message,user)
+		puts "Hello #{user},#{message}"
+	end 
+end 
+
+obj1 = MethodOverloadingExample.new
+obj1.display_message('Welcome to the Ruby World','Chetan Singh')
+$ ruby method_overloading_example.rb
+#Output :: 'Welcome to the Ruby World','Chetan Singh'
+
+
+......................
+
+Ex: 5 :: Can support the variable no of arguments by * ,we take these variable no of arguments in the array list but this will be 
+
+class MethodOverloadingExample
+	def display_message(*message)
+		puts message
+	end 
+
+	def display_message(message,user)
+		puts "Hello #{user},#{message}"
+	end 
+
+	def display_message
+		puts "Welcome to the Ruby World"
+	end 
+end 
+
+obj1 = MethodOverloadingExample.new
+obj1.display_message('Welcome to the Ruby World','Chetan Singh')
+$ ruby method_overloading_example.rb
+#Output :: 'Welcome to the Ruby World','Chetan Singh'
+
+......................  ......................  ......................  ......................
+
+Example of Method Overriding :: 
+
+
+The below example is for the method overriding 
+..........................
+
+Ex.
+
+method_overriding_example.rb 
+
+....
+
+class MethodOverridingExample
+
+def display_message 
+	message = "Welcome to the Ruby Progamming World"
+	puts message
+end 
+
+def display_message
+	user = 'Chetan Singh'
+	message = 'Welcome to the Ruby World'
+	puts "Hello #{user} #{message}"
+end
+
+def display_message
+	puts "Welcome to the Ruby World"
+end 
+
+end 
+
+....
+........................
+
+Execute :: 
+
+ruby method_overriding_example.rb 
+obj1 = MethodOverridingExample.new
+obj1.display_message
+
+Output :: Last method will be used because ruby is the interpretd language so it execute the code line by line .
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+15.Imp ques ::
+
+
+.......................................................................................
+How to use two databass in ror app ?
+.......................................................................................
+1.  Ruby on Rails sets up default connection based on your database.yml, configration to automatically select development,test or production.
+But what if we want to access two or more databases having 2+ connections open at the same time.Active Record requires that you subclass ActiveRecord::Base. That prevents you doing migrations from one database to another.It prevents you using one set of model classes on two or more databases with the same schema.
+Magic multi-connectuib allows you to write your models once and use them for multiple Rails databases at the same time.Have use magical namespacing.
+
+2. $ sudo gem install magic_multi_connection  :: This gem command allow us to write your model once and use that for multiple rails databases.
+
+
+
+
+.......................................................................................
+What is Garbage Collector ? How does we used it ?
+.......................................................................................
+
+
+
+
+
+
+
+
+
+
+.......................................................................................
+How to improve the Ruby Code ?
+.......................................................................................
+
+1.Avoid Hidden Structures
+2.Avoid While!(not)
+3.Avoid Functions that do not work well with Iterators  
+4.Patch the GC::Garbage Collector
+5.USe Double pipe ||= for your Methods
+6.Use loop do over while true 
+7.Use Hash [...] to create a Hash from a list of Values 
+
+.......................................................................................
+How to improve the Speed of Rails Application?
+.......................................................................................
+
+Avoid : 1 ,2 ,3 
+1.Avoid :: Avoid Creating Unnecessary Objects.
+2.Avoid :: Method Interations on large Collections
+3.Avoid :: Two Methods find_by and find_by_all
+4.Beware of Pagination 
+5. Call only What you need 
+6. Correctly Indexing database 
+7. Eager or Preloaded queries 
+8. Eliminate N+1 queries
+9. Minimize the no of database request
+Reduce : 10,11
+10.Reduce:: Reduce Garbage Collections Call Amounts
+11.Reduce:: Reduce size of images and tables 
+12.Render Partials Properly
+13.Select the Right Session Storage 
+14.Turn Caching On 
+15.Try Jruby
+Use :: 16,17,18,19,20
+16.Use Background Processing::Sidekiq
+17.Use Bullet Gem
+18.Use cdn for your Assets
+19.Use proper indexes for full text search 
+20.Use String Method :: << 
+21. Write less code use more gem 
+
+
+.......................................................................................
+What are the Features of Rails ?
+.......................................................................................
+
+
+
+
+
+
+.......................................................................................
+What are the Features of Ruby ?
+.......................................................................................
+
+
+
+
+
+
+
+
+
+
+
+
+.......................................................................................
+What are the Scopes and how we can use the scopes?what are its types ?
+.......................................................................................
+Scopes are custom queries that defined inside rails models with the scope method.
+Scoping allow us that we specify common used queries that we reference as method calls at association objects or models.You can cover where,join and include.All Scope bodies should return an ActiveRecord::Relation or nil to allow for further methods(such as other scopes) to be called on it.Every Scope takes 2 Arguments:: name and lambda 
+A name :: Which you use to call this scope
+A Lambda :: Which implements the query 
+
+Example of Scope ::   
+scope:active_users,->{where(active:true)}
+
+class Book < ApplicationRecord
+	scope:out_of_print,->{where(out_of_print:true)}
+end 
+
+
+Features of Scopes ::
+1.How to call the scopes
+2.Call the scope at the Association
+3.Scopes are also chainable with Scopes 
+...
+
+1. How to call the Scopes :: Book.out_of_print
+
+2. Call the scope at Association :: Call the scope at association which has the Book Object
+author = Author.first
+author.first.out_of_print  :: This will take record of - All out of print books by customer.
+
+3. Scopes are also chainable with Scopes 
+class Book < ApplicationRecord
+	scope:out_of_print,->{}
+	scope:out_of_print_and_expressive,->{out_of_print.where("price>500")}
+end 
+...
+We can use the Scope by the below ways ::
+1.Passing in Arguments
+2.Using Conditionals
+3.Applying Default Scope
+4.Merging of Scopes
+5.Remove all Scoping 
+...
+
+Remove all Scoping ::
+
+
+Diff between scope and class methods ::
+There is one notable difference between the scope method and a class method: scope-defined scopes will always return an ActiveRecord::Relation, even if the logic within returns nil. Class methods, however, have no such safety net and can break chainability if they return something else.
+...
+
+Diff between scope and class methods ::With Example ::
+
+1. When we define a scope on an ActiveRecord model
+ class Vehicle < ActiveRecord::Base
+    scope :red, -> { where(color: 'red') }
+  end
+
+2.A class method is added to the Model. It is simply like this
+class Vehicle < ActiveRecord::Base
+    def self.red
+      where(color:'red')
+    end
+  end
+...
+Explanation of the difference between scope and class method by this example :: 
+
+The object returned by scope is always an ActiveRecord::Relation not Array. And this is the greatest benefit, because you can call all the queries on this object just like any other Relation object.
+
+  Vehicle.red
+  Vehicle.red.count
+  Vehicle.red.where(type: 'Hatchback')
+You should always pass a callable object to the scopes defined with #scope. This ensures that the scope is re-evaluated each time it is called.
+
+...
+
+How to call the Scopes ::
+
+
+..........................................
+
+Types of Scopes ::
+1.Default Scopes 
+2.Extended Scopes 
+
+Example of Scope with arguments ::
+scope :graduated_after, ->(date) { where('graduation_date > ?', date) }
+
+...
+Remove all Scoping :: Use unscope method to remove the scope 
+Ex:: Book.uscoped.load   
+Exp :: This unscope method will call at some method not at any query 
+
+Remove All Scoping ::
+Ex:: Book.unscoped.all
+Book.where(out_of_print:true).unscoped.all
+
+Unscope will accept the block ::
+Book.unscoped{Book.out_of_print}
+
+..........................................
+
+
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+

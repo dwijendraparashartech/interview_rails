@@ -1,0 +1,615 @@
+template_integration.txt ::
+
+ Repository Link ::
+https://github.com/dwijendraparashartech/integrating_template.git
+
+How to Integrate a template in a new rails application :: 
+..........................................................................................................................
+
+1. index.html file hoti hai kisi bhi theme mein usse  browser open karte hein
+
+
+2. kuch folder dalne hein theme ke project ke andar ::
+app/assets/stylesheets ke andar css
+
+app/assets/js ke andar js 
+public ke andar fonts dalna hai 
+
+3.  kuch css dalne hein theme ke ::
+application.html.erb ke layout mein dalna hai isko :: 
+
+
+..........................................................................................................................
+
+
+
+1.  Copy paste css folder in app/assets/stylesheets/ 
+
+2.  Copy paste js folder in app/javascript 
+
+3. Copy paste img folder in images
+
+4. Copy paste font folder in public
+
+5. Correct the paths of css fonts ::  Remove ../fonts from starting 
+
+6. Copy paste the source code for create the new file and paste it ::
+
+A. open the index.html of the template - it will be open at the browser +  ctrl+ U at the browser 
+
+new source will be open then search click at the particular file and copy paste its code in the seperate file make in the project 
+
+7. Can add the image path of this type ::
+
+<img src="<%= asset_path(/img/abc.png)%>">
+
+8. Add jqquery cdn library in the layout ::
+
+Can use it if required 
+
+9. This link is useful for sometimes but did not use it ::
+
+https://stackoverflow.com/questions/70548841/how-to-add-custom-js-file-to-new-rails-7-project
+
+ye link follow kar lo
+
+10. In config/importmap.rb - use this file -- 
+
+# Pin npm packages by running ./bin/importmap
+
+Add the last file 
+
+pin "application", preload: true
+
+pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
+
+pin "@hotwired/stimulus", to: "stimulus.min.js", preload: true
+
+pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
+
+pin_all_from "app/javascript/controllers", under: "controllers"
+
+pin_all_from "app/javascript/js", under: "js"
+
+
+11. Import js file name in rails 
+import js/filename 
+
+in javascript/js/application.js ::
+
+// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
+import "@hotwired/turbo-rails"
+import "controllers"
+import "js/calender-event"
+import "js/chart.chartjs"
+import "js/chart.flot"
+import "js/chart.flot.sampledata"
+import "js/chart.morris"
+import "js/chart.peity"
+import "js/chart.sparkline"
+import "js/chart.dashboard-four"
+import "js/chart.dashboard-three"
+import "js/chart.dashboard-two"
+import "js/chart.dashboard-one"
+import "js/chart.dashforge.aside"
+import "js/chart.dashforge.calender"
+import "js/chart.dashforge.chat"
+import "js/dashforge.contact"
+import "js/dashforge.filemgr"
+import "js/dashforge"
+import "js/dashforge.mail"
+import "js/dashforge.sampledata"
+import "js/dashforge.settings"
+import "js/jquery.vmap.sampledata"
+
+12. Use this application.html.erb in project ---
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+    <title>Theme</title>
+
+<!--   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.js" integrity="sha512-nO7wgHUoWPYGCNriyGzcFwPSF+bPDOR+NvtOYy2wMcWkrnCNPKBcFEkU80XIN14UVja0Gdnff9EmydyLlOL7mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+
+    <!-- Required meta tags -->
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Twitter -->
+
+    <meta name="twitter:site" content="@themepixels">
+
+    <meta name="twitter:creator" content="@themepixels">
+
+    <meta name="twitter:card" content="summary_large_image">
+
+    <meta name="twitter:title" content="DashForge">
+
+    <meta name="twitter:description" content="Responsive Bootstrap 4 Dashboard Template">
+
+    <meta name="twitter:image" content="http://themepixels.me/dashforge/img/dashforge-social.png">
+
+    <!-- Facebook -->
+
+    <meta property="og:url" content="http://themepixels.me/dashforge">
+
+    <meta property="og:title" content="DashForge">
+
+    <meta property="og:description" content="Responsive Bootstrap 4 Dashboard Template">
+
+    <meta property="og:image" content="http://themepixels.me/dashforge/img/dashforge-social.png">
+
+    <meta property="og:image:secure_url" content="http://themepixels.me/dashforge/img/dashforge-social.png">
+
+    <meta property="og:image:type" content="image/png">
+
+    <meta property="og:image:width" content="1200">
+
+    <meta property="og:image:height" content="600">
+
+    <!-- Meta -->
+
+    <meta name="description" content="Responsive Bootstrap 4 Dashboard Template">
+
+    <meta name="author" content="ThemePixels">
+
+    <!-- Favicon -->
+
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+
+    <title>DashForge Responsive Bootstrap 4 Dashboard Template</title>
+
+    <!-- vendor css -->
+
+    <link href="/assets/lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+
+    <link href="/assets/lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+
+    <!-- DashForge CSS -->
+
+    <link rel="stylesheet" href="assets/css/dashforge.css">
+
+    <link rel="stylesheet" href="assets/css/dashforge.landing.css">
+
+    <link rel="stylesheet" href="assets/css/dashforge.calendar.css">
+
+    <link rel="stylesheet" href="assets/css/dashforge.auth.css">
+
+    <link rel="stylesheet" href="assets/css/dashforge.chat.css">
+
+    <link rel="stylesheet" href="assets/css/dashforge.contacts.css">
+
+    <link rel="stylesheet" href="assets/css/dashforge.dashboard.css">
+
+    <link rel="stylesheet" href="assets/css/dashforge.demo.css">
+
+    <link rel="stylesheet" href="assets/css/dashforge.filemgr.css">
+
+    <link rel="stylesheet" href="assets/css/dashforge.landing.css">
+
+    <link rel="stylesheet" href="assets/css/dashforge.mail.css">
+
+    <link rel="stylesheet" href="assets/css/dashforge.min.css">
+
+    <link rel="stylesheet" href="assets/css/dashforge.profile.css">
+
+    <link rel="stylesheet" href="assets/css/skin.cool.css">
+
+    <link rel="stylesheet" href="assets/css/skin.light.css"> 
+
+  </head>
+
+  <body class="home-body">
+
+    <header class="navbar navbar-header navbar-header-fixed bd-b-0">
+
+      <a href="" id="mainMenuOpen" class="burger-menu"><i data-feather="menu"></i></a>
+
+      <div class="navbar-brand">
+
+        <a href="../index.html" class="df-logo">dash<span>forge</span></a>
+
+      </div><!-- navbar-brand -->
+
+      <div id="navbarMenu" class="navbar-menu-wrapper">
+
+        <div class="navbar-menu-header">
+
+          <a href="../index.html" class="df-logo">dash<span>forge</span></a>
+
+          <a id="mainMenuClose" href=""><i data-feather="x"></i></a>
+
+        </div><!-- navbar-menu-header -->
+
+        <ul class="nav navbar-menu">
+
+          <li class="nav-label pd-l-15 pd-lg-l-25 d-lg-none">Main Navigation</li>
+
+          <li class="nav-item with-sub">
+
+            <a href="" class="nav-link"><i data-feather="pie-chart"></i> Dashboard</a>
+
+            <ul class="navbar-menu-sub">
+
+              <li class="nav-sub-item"><a href="dashboard-one.html" class="nav-sub-link"><i data-feather="bar-chart-2"></i>Sales Monitoring</a></li>
+
+              <li class="nav-sub-item"><a href="dashboard-two.html" class="nav-sub-link"><i data-feather="bar-chart-2"></i>Website Analytics</a></li>
+
+              <li class="nav-sub-item"><a href="dashboard-three.html" class="nav-sub-link"><i data-feather="bar-chart-2"></i>Cryptocurrency</a></li>
+
+              <li class="nav-sub-item"><a href="dashboard-four.html" class="nav-sub-link"><i data-feather="bar-chart-2"></i>Helpdesk Management</a></li>
+
+            </ul>
+
+          </li>
+
+          <li class="nav-item with-sub">
+
+            <a href="#" class="nav-link"><i data-feather="package"></i> Apps</a>
+
+            <ul class="navbar-menu-sub">
+
+              <li class="nav-sub-item"><a href="app-calendar.html" class="nav-sub-link"><i data-feather="calendar"></i>Calendar</a></li>
+
+              <li class="nav-sub-item"><a href="app-chat.html" class="nav-sub-link"><i data-feather="message-square"></i>Chat</a></li>
+
+              <li class="nav-sub-item"><a href="app-contacts.html" class="nav-sub-link"><i data-feather="users"></i>Contacts</a></li>
+
+              <li class="nav-sub-item"><a href="app-file-manager.html" class="nav-sub-link"><i data-feather="file-text"></i>File Manager</a></li>
+
+              <li class="nav-sub-item"><a href="app-mail.html" class="nav-sub-link"><i data-feather="mail"></i>Mail</a></li>
+
+            </ul>
+
+          </li>
+
+          <li class="nav-item with-sub">
+
+            <a href="" class="nav-link"><i data-feather="layers"></i> Pages</a>
+
+            <div class="navbar-menu-sub">
+
+              <div class="d-lg-flex">
+
+                <ul>
+
+                  <li class="nav-label">Authentication</li>
+
+                  <li class="nav-sub-item"><a href="page-signin.html" class="nav-sub-link"><i data-feather="log-in"></i> Sign In</a></li>
+
+                  <li class="nav-sub-item"><a href="page-signup.html" class="nav-sub-link"><i data-feather="user-plus"></i> Sign Up</a></li>
+
+                  <li class="nav-sub-item"><a href="page-verify.html" class="nav-sub-link"><i data-feather="user-check"></i> Verify Account</a></li>
+
+                  <li class="nav-sub-item"><a href="page-forgot.html" class="nav-sub-link"><i data-feather="shield-off"></i> Forgot Password</a></li>
+
+                  <li class="nav-label mg-t-20">User Pages</li>
+
+                  <li class="nav-sub-item"><a href="page-profile-view.html" class="nav-sub-link"><i data-feather="user"></i> View Profile</a></li>
+
+                  <li class="nav-sub-item"><a href="page-connections.html" class="nav-sub-link"><i data-feather="user"></i> Connections</a></li>
+
+                  <li class="nav-sub-item"><a href="page-groups.html" class="nav-sub-link"><i data-feather="users"></i> Groups</a></li>
+
+                  <li class="nav-sub-item"><a href="page-events.html" class="nav-sub-link"><i data-feather="calendar"></i> Events</a></li>
+
+                </ul>
+
+                <ul>
+
+                  <li class="nav-label">Error Pages</li>
+
+                  <li class="nav-sub-item"><a href="page-404.html" class="nav-sub-link"><i data-feather="file"></i> 404 Page Not Found</a></li>
+
+                  <li class="nav-sub-item"><a href="page-500.html" class="nav-sub-link"><i data-feather="file"></i> 500 Internal Server</a></li>
+
+                  <li class="nav-sub-item"><a href="page-503.html" class="nav-sub-link"><i data-feather="file"></i> 503 Service Unavailable</a></li>
+
+                  <li class="nav-sub-item"><a href="page-505.html" class="nav-sub-link"><i data-feather="file"></i> 505 Forbidden</a></li>
+
+                  <li class="nav-label mg-t-20">Other Pages</li>
+
+                  <li class="nav-sub-item"><a href="page-timeline.html" class="nav-sub-link"><i data-feather="file-text"></i> Timeline</a></li>
+
+                  <li class="nav-sub-item"><a href="page-pricing.html" class="nav-sub-link"><i data-feather="file-text"></i> Pricing</a></li>
+
+                  <li class="nav-sub-item"><a href="page-help-center.html" class="nav-sub-link"><i data-feather="file-text"></i> Help Center</a></li>
+
+                  <li class="nav-sub-item"><a href="page-invoice.html" class="nav-sub-link"><i data-feather="file-text"></i> Invoice</a></li>
+
+                </ul>
+
+              </div>
+
+            </div><!-- nav-sub -->
+
+          </li>
+
+          <li class="nav-item"><a href="components/" class="nav-link"><i data-feather="box"></i> Components</a></li>
+
+          <li class="nav-item"><a href="collections/" class="nav-link"><i data-feather="archive"></i> Collections</a></li>
+
+        </ul>
+
+      </div><!-- navbar-menu-wrapper -->
+
+      <div class="navbar-right">
+
+        <a href="http://dribbble.com/themepixels" class="btn btn-social"><i class="fab fa-dribbble"></i></a>
+
+        <a href="https://github.com/themepixels" class="btn btn-social"><i class="fab fa-github"></i></a>
+
+        <a href="https://twitter.com/themepixels" class="btn btn-social"><i class="fab fa-twitter"></i></a>
+
+        <a href="https://themeforest.net/item/dashforge-responsive-admin-dashboard-template/23725961" class="btn btn-buy"><i data-feather="shopping-bag"></i> <span>Buy Now</span></a>
+
+      </div><!-- navbar-right -->
+
+    </header><!-- navbar -->
+
+
+
+    <div class="home-slider">
+
+      <div class="home-lead">
+
+        <div class="df-logo-initial mg-b-15"><p>df</p></div>
+
+        <p class="home-text">Responsive Bootstrap 4 Dashboard Template</p>
+
+
+
+        <h6 class="home-headline">Make your dashboard app more professional with this <span>super awesome</span> and <span>premium quality</span> dashboard design template.</h6>
+
+
+
+        <div class="d-flex wd-lg-350">
+
+          <a href="https://themeforest.net/item/dashforge-responsive-admin-dashboard-template/23725961" class="btn btn-brand-01 btn-uppercase flex-fill">Buy Now - $20</a>
+
+          <a href="dashboard-one.html" class="btn btn-white btn-uppercase flex-fill mg-l-10">Explore Demo</a>
+
+        </div>
+
+
+
+        <div class="d-flex tx-20 mg-t-40">
+
+          <div class="tx-purple"><i class="fab fa-bootstrap"></i></div>
+
+          <div class="tx-orange pd-l-10"><i class="fab fa-html5"></i></div>
+
+          <div class="tx-primary pd-l-10"><i class="fab fa-css3-alt"></i></div>
+
+          <div class="tx-pink pd-l-10"><i class="fab fa-sass"></i></div>
+
+          <div class="tx-warning pd-l-10"><i class="fab fa-js"></i></div>
+
+          <div class="tx-danger pd-l-10"><i class="fab fa-npm"></i></div>
+
+          <div class="tx-danger pd-l-10"><i class="fab fa-gulp"></i></div>
+
+          <div class="bd-l mg-l-10 mg-sm-l-20 pd-l-10 pd-sm-l-20"></div>
+
+          <div class="tx-color-03" data-toggle="tooltip" data-title="Ongoing development"><i class="fab fa-angular"></i></div>
+
+          <div class="tx-color-03 pd-l-10" data-toggle="tooltip" data-title="Coming soon"><i class="fab fa-react"></i></div>
+
+          <div class="tx-color-03 pd-l-10" data-toggle="tooltip" data-title="Coming soon"><i class="fab fa-vuejs"></i></div>
+
+        </div>
+
+
+
+        <div class="tx-12 mg-t-40">
+
+          <a href="docs.html" class="link-03">Documentation<span class="d-none d-sm-inline"></span><span class="d-sm-none">s</span></a>
+
+          <a href="changelog.html" class="link-03 mg-l-10 mg-sm-l-20">Changelog</a>
+
+          <a href="https://themeforest.net/licenses/standard" target="_blank" class="link-03 mg-l-10 mg-sm-l-20">Licenses</a>
+
+          <a href="https://themeforest.net/page/customer_refund_policy" target="_blank" class="link-03 mg-l-10 mg-sm-l-20">Refund Policy</a>
+
+        </div>
+
+      </div>
+
+      <div class="home-slider-img">
+
+        <div><img src="assets/images/img/home-1.png" alt=""></div>
+
+        <div><img src="assets/images/img/home-2.png" alt=""></div>
+
+        <div><img src="assets/images/img/home-2.png" alt=""></div>
+
+      </div>
+
+      <div class="home-slider-bg-one"></div>
+
+    </div><!-- home-slider -->
+
+
+
+    <script src="assets/lib/jquery/jquery.min.js"></script>
+
+    <script src="assets/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="assets/lib/feather-icons/feather.min.js"></script>
+
+    <script src="assets/lib/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+
+    <script src="assets/js/dashforge.js"></script>
+
+    <script>
+
+      $(document).ready(function() {
+
+        'use strict'
+
+        $('[data-toggle="tooltip"]').tooltip()
+
+      });
+
+    </script>
+
+  </body>
+
+</html>
+
+ 13. 
+ 
+Copy paste lib folder of the theme  in the stylesheet folder inside assets in project 
+and give the path inside application.html.erb ::
+
+A. 
+
+Change the vendor css path ::
+ <!-- vendor css -->
+    <link href="/assets/lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="/assets/lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+
+B. 
+Add the css in dashForge --
+ <!-- DashForge CSS -->
+    <link rel="stylesheet" href="assets/css/dashforge.css">
+    <link rel="stylesheet" href="assets/css/dashforge.landing.css">
+    <link rel="stylesheet" href="assets/css/dashforge.calendar.css">
+    <link rel="stylesheet" href="assets/css/dashforge.auth.css">
+    <link rel="stylesheet" href="assets/css/dashforge.chat.css">
+    <link rel="stylesheet" href="assets/css/dashforge.contacts.css">
+    <link rel="stylesheet" href="assets/css/dashforge.dashboard.css">
+    <link rel="stylesheet" href="assets/css/dashforge.demo.css">
+    <link rel="stylesheet" href="assets/css/dashforge.filemgr.css">
+    <link rel="stylesheet" href="assets/css/dashforge.landing.css">
+    <link rel="stylesheet" href="assets/css/dashforge.mail.css">
+    <link rel="stylesheet" href="assets/css/dashforge.min.css">
+    <link rel="stylesheet" href="assets/css/dashforge.profile.css">
+    <link rel="stylesheet" href="assets/css/skin.cool.css">
+    <link rel="stylesheet" href="assets/css/skin.light.css"> 
+
+Note :: Which css is distorting the design remove that css -- 
+
+...............................................................................................................
+
+14.
+Use the html link in the href path --
+copy paste all pages from components and templates (from theme) to the public folder of the project and give the direct path :::  Like this :: 
+
+
+ <ul class="navbar-menu-sub">
+              <li class="nav-sub-item"><a href="dashboard-one.html" class="nav-sub-link"><i data-feather="bar-chart-2"></i>Sales Monitoring</a></li>
+              <li class="nav-sub-item"><a href="dashboard-two.html" class="nav-sub-link"><i data-feather="bar-chart-2"></i>Website Analytics</a></li>
+              <li class="nav-sub-item"><a href="dashboard-three.html" class="nav-sub-link"><i data-feather="bar-chart-2"></i>Cryptocurrency</a></li>
+              <li class="nav-sub-item"><a href="dashboard-four.html" class="nav-sub-link"><i data-feather="bar-chart-2"></i>Helpdesk Management</a></li>
+            </ul>
+
+
+...............................................................................................................
+
+15. Also update yarn , node js ,npm ,nvm with the correct version , this is very much required .
+
+
+16. Repository Link ::
+https://github.com/dwijendraparashartech/integrating_template.git
+
+17. Can Run the commands to check the css -basically external css --
+
+rake assets:precompile 
+
+18.
+Require anything with the correct path - example -- 
+
+Before ::
+
+ <script src="/lib/jquery/jquery.min.js"></script>
+
+After ::
+
+ <script src="assets/lib/jquery/jquery.min.js"></script>
+
+...........................................
+19.
+
+Check the jquery or css  is require or not ::::
+
+For this open the particular page - Ctrl-U  and open the View Page Source in another tab of the window ::
+
+if click at the jquery link and that is open then means jquery is working 
+if it gives the error in red mark page then means jquery is not working 
+
+...........................................
+20.
+
+Sometimes  you have to referesh the particular page to run the particular jquery or css 
+
+
+...........................................
+21.
+
+Note :: If you have push the code and delete the files in a partcular folder 
+then when you check the  git status before again submit the code -
+then u can delete the complete folder 
+by this command --
+$  git add -u 'foldername' or $ git add -u 'filename'
+for example 
+
+$ git add -u lib/
+
+
+...........................................
+22. In Rails 7 there is no need of webpacker or yarn - we require the importmap file to do import the files.
+
+Import Maps is a new feature that we can find on Rails 7 and that allows us to load third-party javascript libraries in a default way, by simply referencing those libraries to their bare module specifiers. This means we can now get rid of Webpack and Node. js from our package.2
+
+........................................
+23.
+Important Links ::
+
+........................................
+
+
+https://medium.com/@adamzerner/rails-asset-pipeline-982f3ea75596
+https://www.promptcloud.com/blog/understanding-the-rails-asset-pipeline/
+https://gorails.com/forum/how-to-load-jquery-and-other-vendor-js-css-files-through-importmap-in-rails-7
+https://www.sitepoint.com/asset-precompile-works-part/
+https://www.sitepoint.com/asset-precompile-works-part-ii/
+https://dev.to/wasabigeek/asset-compilation-in-rails-51b5
+https://testsuite.io/ruby-on-rails-asset-pipeline
+https://www.codingninjas.com/codestudio/library/asset-pipeline-in-ruby-on-rails  ----- Very very very goood link it is , very good link .
+https://code.tutsplus.com/articles/getting-started-with-the-asset-pipeline-2--cms-27367
+https://www.codingninjas.com/codestudio/library/asset-pipeline-in-ruby-on-rails
+https://reinteractive.com/articles/12-Tips-for-the-Rails-Asset-Pipeline
+
+........................................
+
+
+........................................
+24. Run the Rails assets in the development enviornment :: 
+
+
+RAILS_ENV=development bundle exec rake assets:precompile
+
+
+25. 
+ How can I use a css with the Ruby on rails application ???? 
+
+...........................................................................................................................
+
+
+
+1. Put the CSS files in public/stylesheets and then use:
+
+<%= stylesheet_link_tag "filename" %>
+<%= stylesheet_link_tag "main" %>
+2. Go to ::   config/initializers/assets.rb  :: Add this below main css file in the assets.rb 
+Rails.application.config.assets.version = '1.0'
+Rails.application.config.assets.precompile += %w( main.css )
+
+
+

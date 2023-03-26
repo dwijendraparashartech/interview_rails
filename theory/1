@@ -1,0 +1,552 @@
+my_questions ::
+
+
+0.How to call a method in ruby ?
+link ::  https://www.notonlycode.org/12-ways-to-call-a-method-in-ruby/
+1.the obvious way ::
+user.hello()  - it will work
+user .  hello - it will also work
+
+2.skip the brackets ::
+user.hello 
+
+3.using send and public_send
+user.send(:hello)
+user.public_send(:hello)
+
+4.using "method" and "call"
+user.method(:hello).call
+user.method(:hello).()
+user.method(:hello)[]
+
+5.
+
+
+
+
+
+
+
+
+
+
+
+
+................................................................
+................................................................
+
+1. how to use two databass in ror app ?
+Ans :: Active Record allowed one connection to a database at a time. Ruby on rails per class.
+Ruby on Rails sets up default connection based on your database.yml, configration to automatically select development,test or production.
+But what if we want to access two or more databases having 2+ connections open at the same time.Active Record requires that you subclass ActiveRecord::Base. That prevents you doing migrations from one database to another.It prevents you using one set of model classes on two or more databases with the same schema.
+Magic multi-connectuib allows you to write your models once and use them for multiple Rails databases at the same time.Have use magical namespacing.
+................................................................
+
+2. How many types of Joins are there ? What is the difference between these Joins ?
+............................
+1. Inner Join :: This Join Returns those records which have matching values in both the tables.
+2. Full Join :: This Join Returns those records which either have a match in the left or the right table.
+3. Left Join :: This Joins Returns records from the left table,and also those records which satisfy the condition from the right table. 
+4. Right Join :: This joins Returns records from the right table, and also those records which satisfy the condition from the left table.
+.................................................................
+
+3. What is Normalization in SQL ??
+Normalization is the process to eliminate data redundancy and enhance data integrity in the table. Normalization also helps to organize the data in the database. It is a multi-step process that sets the data into tabular form and removes the duplicated data from the relational tables.
+.................................................................
+
+4. What is De-Normalization in SQL ??
+Denormalization is the process of adding precomputed redundant data to an otherwise normalized relational database to improve read performance of the database. Normalizing a database involves removing redundancy so only a single copy exists of each piece of information.
+.................................................................
+
+5. What are Design Pattern in Rails ??
+...
+1. Builder :: This is a creational Design Pattern.Complex Objects can be created step by step without much effort.Also called this Adapter.Its main purpose is to entangle the complexity of Objects.This pattern provides a simple way of returning a given class or instance depending on te class.
+...
+2.Decorator :: This Pattern is used to clean up the code/logic inside the View.If any behavior added to one obect then it do not disturb the behavior of other objects.This pattern is similiar to Presenter pattern but instead of adding additional logic it alrers the origional class without affecting the origional class behavior.
+...
+3.Form Object :: This pattern is used to thinner the Active Record Model.This encapsulatethe code related to validation and it persist to data into a single unit. We can create the record in the multiple places and every place has its own validation Rules.
+...
+4.Interactor :: This pattern is all about interactions.This is the set of actions performed one by one and if one action is stop then other actions do not perform. This is just like the transactions as rollback of the previous actions is alsopossible.If we want to implement interactor pattern in the rails application with the help of great interactor gem.
+...
+5. Null Object :: This pattern provide the value to nn existing records.null object pattern is simple like the value objects just like these are plain old ruby objects.
+...
+6.Observer :: This is a behavioral Design Pattern.Which allow some objects to notify other objects without changing in their state.It defines a one-to-many dependency between objects so that when object changes state,all of its dependencies are nullfied and updated automatically.
+...
+7.Policy Object :: This pattern is used where we have to check the multiple conditions before performing a given action.This is like the service objects where policy object responsible for read objects and service object pattern is responsible for write operations.
+...
+8.Query Object :: This pattern decompose fat active record model and keep your code slim and readabl.We can keep simple queries in the model but if the query is complex then it is handled by query objects or queries.If scope interact with more than one join/columns in other tables.Then we move it in the query object m but its side effect is that we can limit amount of scopes defined in our models to a necessary minimum.
+...
+9. Service Object :: Service object is the PORO-Plain old ruby object.This is created for Specific business action.This contains the code that usually does not fit in the model or view layer e.g. actions via a third part of api like posting a tweet.
+...
+10. Value Object :: This is the pattern which encourages the small simple objects,and allow the comparison based on given topic or specific attributes.This pattern focuses to provide the values so this is very simple. This return only a value.A value object return a simple entity whose eqaulity is based on its value meaning that the two objects are equal if they have the equal value.
+Ex- A Small simple object like money or a data range whose equality is not based on its identity.
+...
+11.View Object or Presenter ::
+With this help we encapsulate all logic related to views and kepp model and views organised.These are just classes.So we can be easily testd.
+If code is simple - put it in the helper and can share insiide view.
+If code is comples - make it in the view object or presenter.
+
+...  ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 
+
+Different Other Pattern in Ruby ??
+1. adapter  , 2. builder , 3. command , 4. composite , 5. convention_over_configration , 6. decorator , 7. dsl , 8. factory, 9. interpreter , 10. iterator , 11. meta_programming.
+12. observer . 13. proxy . 14. singleton, 15. template_method ,16. strategy 
+
+...  ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 
+
+
+Types of Types of Design Pattern in Rails ??
+1.AbstractFactory
+2.Builder
+3.FactoryMethod
+4.Prototype
+5.SingleTon
+6.Adapter
+7.Bridge
+8.Composite
+9.Decorator
+10.Facade
+11.Flyweight
+12.Proxy
+13.ChainofResponsibility
+14.Command
+15.Iterator
+16.Mediator
+17.Observer
+18.State
+19.Strategy
+20.TemplateMethod
+21.Visitor
+
+...  ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... ... 
+
+...........................
+Types of Types of Design Pattern in Rails ??
+1.AbstractFactory ::  Lets you produce families of related objects without specifying their concrete classes
+2.Builder :: Lets you construct complex objects step by step. The pattern allows you to produce different types and representations of an object using the same construction code.
+3.FactoryMethod :: Provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created.
+4.Prototype :: Lets you copy existing objects without making your code dependent on their classes.
+5.SingleTon :: Lets you ensure that a class has only one instance, while providing a global access point to this instance.
+6.Adapter :: Allows objects with incompatible interfaces to collaborate.
+7.Bridge :: Lets you split a large class or a set of closely related classes into two separate hierarchies—abstraction and implementation—which can be developed independently of each other.
+8.Composite :: Lets you compose objects into tree structures and then work with these structures as if they were individual objects.
+9.Decorator :: Lets you attach new behaviors to objects by placing these objects inside special wrapper objects that contain the behaviors.
+10.Facade :: Provides a simplified interface to a library, a framework, or any other complex set of classes.
+11.Flyweight :: Lets you fit more objects into the available amount of RAM by sharing common parts of state between multiple objects instead of keeping all of the data in each object.
+12.Proxy :: Lets you provide a substitute or placeholder for another object. A proxy controls access to the original object, allowing you to perform something either before or after the request gets through to the original object.
+13.ChainofResponsibility :: Lets you pass requests along a chain of handlers. Upon receiving a request, each handler decides either to process the request or to pass it to the next handler in the chain.
+14.Command :: Turns a request into a stand-alone object that contains all information about the request. This transformation lets you pass requests as a method arguments, delay or queue a request's execution, and support undoable operations.
+15.Iterator :: Lets you traverse elements of a collection without exposing its underlying representation (list, stack, tree, etc.). 
+16.Mediator :: Lets you reduce chaotic dependencies between objects. The pattern restricts direct communications between the objects and forces them to collaborate only via a mediator object.
+16.Memento ::  Lets you save and restore the previous state of an object without revealing the details of its implementation.
+17.Observer :: Lets you define a subscription mechanism to notify multiple objects about any events that happen to the object they're observing.
+18.State ::  Lets an object alter its behavior when its internal state changes. It appears as if the object changed its class.
+19.Strategy :: Lets you define a family of algorithms, put each of them into a separate class, and make their objects interchangeable.
+20.TemplateMethod :: Defines the skeleton of an algorithm in the superclass but lets subclasses override specific steps of the algorithm without changing its structure.
+21.Visitor :: Lets you separate algorithms from the objects on which they operate.
+..............
+
+6. Ruby Versions Differences :: 
+..............
+
+7. Rails Versions Differences :: 
+..............
+
+8. What are different Git Commands and differences please explain :: 
+..............
+
+A. git rebase :: Rebase is the git utility designed to integrate changes from one branch onto another.Rebasing is the process of combining or moving a sequence of commits on top of a new base commit. Git rbase is the linear process of merging.
+
+command : 
+
+..............
+
+B. git fetch :: Git fetch is a primary command used to download contents from remote repository. git fetch is used in conjunction with git remote, git branch, git checkout, and git reset to update a local repository to the state of a remote. The git fetch command is a critical piece of colaborative git work flows.
+Git fetch command retrieves commits,files,branches,and tags from a remote repository.
+
+command : git fetch <options> <remote name> <branch name>
+
+...............
+
+C. git delete ::  Once the work os dpme on a branch and merged with the main branch, one can delete the branch.
+this command deletes the copy of the branch , but the original branch can still exist in remote repositories.
+
+...............
+
+D. Explain the basic git workflow ::
+
+The git files are from the procedure :: 1. Untracked 2. Tracked
+Untracked :: This is the default working directory where we are at first.
+Tracked :: Every File goes from 3 areas from this :: 1.Stages 2.Commited 3.Modified.
+This tracked is going through the process ::
+
+There are 4 Pillors :: 1.Working Directory 2.Staging Area 3.Local Repo 4.Remote Repo
+........................................................
+
+1.Stages::STAGING AREA :: git add. - after this command a file is added and goes to the 'staging-area'
+
+2.Commited::LOCAL REPO :: git commit -m "commit-name" - after this command files are commited and saved in the local repository. 
+
+3.Modified ::REMOTE REPO ::  Send the commit to the Remote Repository.
+
+...............
+
+Which command can be run in which pillor/stages ::
+
+git add - From working directory to staging area 
+git commit - From staging area to local repo
+git push - From local repo to remote repo
+git fetch - From Remote repo to local repo 
+git checkout - From Remote repo to working directory
+git merge - From Remote repo to working directory
+
+...............
+
+What is the difference between git fetch and git pull ::
+
+git fetch is the command that tells your local git to retrieve the latest meta-data info from the original (yet doesn't do any file transferring. It's more like just checking to see if there are any changes available). git pull on the other hand does that AND brings (copy) those changes from the remote repository.
+
+git fetch :: see if there are any changes in the remote repository
+git pull :: copy changes in the remote repository to local repository
+
+................
+
+What is cherry pick command in git ?
+
+Cherry picking is the act of picking a commit from a branch and applying it to another. git cherry-pick can be useful for undoing changes.
+
+................
+
+What is git stash command ?
+
+Git stash can be used in cases where we need to switch in between branches and at the same time not wanting to lose edits in the current branch. Running the git stash command basically pushes the current working directory state and index to the stack for future use and thereby providing a clean working directory for other tasks.
+
+.................
+
+What differentiates between the commands git remote and git clone?
+
+git remote command creates an entry in  git config that specifies a name for a particular URL. Whereas git clone creates a new git repository by copying an existing one located at the URL.
+
+..................
+
+What differentiates between the git revert and git reset ?
+
+git revert:this command is used for creating a new commit that undoes the changes of the previous commit.
+git reset:This command is used for undoing the local changes done in the git repository
+git revert:Using this command adds a new history to the project without modifying the existing history
+git reset: This command operates on the commit history, git index, and the working directory.
+..................
+
+What are the functionalities of git reset --mixed and git merge --abort?
+
+git reset --mixed command is used for undoing changes of the working directory and the git index.
+git merge --abort command is used for stopping the merge process and returning back to the state before the merging occurred.
+
+................
+
+ How will you resolve conflict in Git?
+Conflicts occur whenever there are multiple people working on the same file across multiple branches. In such cases, git won't be able to resolve it automatically as it is not capable of deciding what changes has to get the precedence.
+Following are the steps are done in order to resolve git conflicts:
+1. Identify the files that have conflicts.
+2. Discuss with members who have worked on the file and ensure that the required changes are done in the file.
+3. Add these files to the staged section by using the git add command.
+4. Commit these changes using the git commit command.
+5. Finally, push the changes to the branch using the git.
+
+
+
+
+
+9. What is the deployment Procedure in Rails ??
+
+
+
+
+
+
+...............
+
+10. What are the ways through which we deploy the Rails Application ??
+
+
+...............
+
+11. Duck Typing :: 
+
+Duck Typing is a way of programming in which an object passed into a function or method supports all method signatures and attributes expected of that object at run time. The object's type itself is not important. Rather, the object should support all methods/attributes called on it.
+
+
+...............
+
+12. 
+
+
+Short ::
+
+theory_1.rb::  
+
+
+1. What are the Access Specifiers/Modifiers in Ruby ?  :: Public, Protected and Private
+
+...
+
+
+2. What is the differnce between Scopes and Class Methods ?
+A scope will always return an ActiveRecord::Relation object, even if the conditional evaluates to false , whereas a class method, will return nil . This can cause NoMethodError when chaining class methods with conditionals, if any of the conditionals return false .
+
+...
+
+
+3. What is Asset Pipeline, What are its Uses ?
+
+...
+
+4. What are Strong Paramaters ?
+
+
+...
+
+5. What is Duck Typing ? 
+Duck Typing is a way of programming in which an object passed into a function or method supports all method signatures and attributes expected of that object at run time. The object's type itself is not important. Rather, the object should support all methods/attributes called on it.
+...
+
+6.What is pluck? :: Query a single column from the model of table
+Pluck can be used to query a single column from the underlying table of a model.It accepts a column name as argument and return an array of values of the specified column wih the corresponding data type.
+Ex: 
+Client.where(:active=>true).pluck(:id) = Select id from clients where active=1
+Client.uniq.pluck(:role) = Select distinct roles from the clients.
+
+...
+
+7.What is the diff between dup and clone in Rails ?
+In general, clone and dup may have different semantics in descendant classes. While clone is used to duplicate an object, including its internal state, dup typically uses the class of the descendant object to create the new instance. When using dup, any modules that the object has been extended with will not be copied.
+
+If you want to change an object but keep a copy of the original then you can clone it.
+Ex of Clone ::  
+a = [1,2,3,4,5]
+a[1..-1]       # [2,3,4,5]
+Ex of Clone ::
+b = a.clone
+b.shift  # [1] 
+b  # [2,3,4,5]
+.....
+Ex of dup and clone ::
+a = Object.new.freeze
+b = a.dup
+b.frozen?   # false
+b = a.clone 
+b.frozen?   # true
+Exp :: 
+...
+
+8. What is Flash ?
+Flash is a special part of a session which clear with each request.Means which value is stored will be available in the next request.Which is useful for storing error messages etc.It is accessed in much the same way as the session likes a hash.Flash is a object of action dispatch class.
+
+...
+
+9. Does Ruby support STI or MTI ? Single table inheritance or Multi Table Inheritance ?
+Ruby only support single table inheirtance.
+
+...
+
+10.What is the diff between Hash#fetch & Hash#[]?
+Hash#fetch provides options for handling the case where a key does not exist in hash.
+
+...
+
+11.How to check an error in Ror Application?
+in below 2 files errors are shown ::
+1. log/apache.log
+2. log/error.log
+
+...
+
+12.What is Request.xhr?
+It tells the controller that new AJAX request has come.This always return the boolean values - TRUE or FALSE.
+
+...
+
+13. What is the diff between static and dynamic scaffolding ?
+syntax for static scaffolding : $ rails g scaffold User Comment # here comment is model and user is controller.All n static scaffold takes 2 parameters -
+1. controller name .  2.model name. 
+In dynamic scaffolding we define the controller and model one by one.
+
+...
+
+14. How we can serialize the data from yaml ?
+yaml is the straight forward machine,of parsable data serialization format.which is design by human readability and interaction with scripting language.Such as perl and python.
+We optimize the yaml for - 1. data serialization. 2. format dumping. 3. configration files. 4. log files. 5. internet messaging and filtering.
+
+...
+
+15. What is the difference between throw/catch & railse/rescue ?
+Throw and catch accept matching symbols as arguments and should be considered a control flow structure where raise and rescue is used to raise and handle exceptions.Throw and catch are not commonly used where raise and rescue are commonly used.
+
+...
+
+16. How can you run your rails application without creating database ?
+uncomment the line in enviornment.rb-
+path => rootpath config/enviornment.rb
+config.frameworks -= [action_web_service:action_mailer,:active-record]
+
+...
+17.How to find out the second maximum element in the database ?
+Rails query - Model.order("YourFieldDesc".limit(1).offset(1))
+
+...
+18.Diff bet application and web server ?
+web servers are the servers which can take the request from browser.
+App servers sack the functionalities of web server
+web server handles http requests,where app server serves - through business logic to application through any no of protocol.
+
+...
+19. Diff between #== && #equal ?
+#==    performs general comparison and implements differently across classes.
+equal? is defined basic object and compares object identity
+#equal? show not be overridden in subclasses.
+
+...
+20. Diff bet Dig,Float,Max ?
+Float Class :: is used when the meaning changes constantly
+Dig :: When there is an enormous need for float.
+Max:: is used whenever you want to symbolize or float in decimal digits.
+
+...
+21.How to Send the Mails through Rails App?
+1.First create the mailer - $ rails g mailer_name
+2.Define the mailer function
+3.Add the Content of this email and store in corresponding view folder.
+4.Finally add the deliver method to call the mailer function in the controller.
+
+...
+22. What is Caching in Rails ?
+Caching is used in any web technologies.It speed up the performance by storing previous results for subsequent requests.By default caching is disabled in Rails.Rails caching available at 3 levels:: 1. Page, 2. Action, 3. Fragment.
+
+...
+23. What are the purpose of RJs in Rails ?
+Rjs are the patterns that produces javascript which is run in an eval chunk by the browser in reply to an Ajax request.It is something used to classify Javascript, prototype & helpers provide by rails.
+
+...
+24. What ae the limitation of Ruby on Rails ?
+1. Databases with foreign keys
+2. Linking to many databases at the same time.
+3. Web services for soap
+4. Multiple databases servers are connected at the same time.
+
+...
+25.What is DSL and haw does it pertain to Ruby ?
+A DSL-Domain Specific language is an API that allows a developer to solve a problem or represent data more naturally than they might otherwise.The flexible nature of Ruby's syntax and the ability to alias and alter existing methods and classses makes it conductive to creating rich DSL's
+
+...
+26. How to find out the duplicate entries in the database tables?
+User.group(:email).having("count(email)>1") 
+
+...
+27.What does it mean to coerce a object ?
+To coerce an object means to force it into an expected type.one might do this in order to try and force an unknown object type into an expected type or format required by the operation. This is the common practice involved in the duck typing.
+...
+
+28.What is the highest level in the object model ?
+BasicObject 
+
+...
+29.Ruby is a strongly or weekly typed language?
+Ruby is an strongly typed language since an object is checked before an operation is perform on it.
+
+...
+30.Ruby is Stastically or dynamically typed language?
+Dynamic type since type checking is done at runtime.
+
+...
+31.What is object_id in Ruby?
+Each object has many public methods we use .object id is also one of the method in this.One random id is generate for a specific object. This value is a reference of the address in the memory where the object is store.every object has unique object id which is not changed throughout the lifecycle of the object.Each variable is getting a different location in memory to store their value when they are declared so even when we assigned the same string,they are not sharing the same address location in memory,therefore there object id is different.
+
+...
+32. How we can use sqldb or mysql db ?
+
+
+...
+33.What is Indexing in Rails?
+Index is used to speed up the performance of queries in a database.With Migration help We can create the column index,by default index sort is ascending but this consider the case where we fetch the Record in the database.
+
+...
+34. Use of Index ::
+1. Use for large tables.
+2. It create for the most occurent column in the table.
+3. Its main work is to increase the performance.
+
+...
+
+35.How many types of indexing are available in postgres ?
+1. B-Tree Index
+2. Hash Index
+3. BRIN Index-Block Range Index 
+4. GIN- Generated Inverted Index
+5. GIST - Generalized Inverted Tree Index
+
+...
+
+36.What are the Pseudo Variables?
+These are the special variables that have no apperance of local variables but behave like constants.You can assign ay value to these variables ::
+1.Self -  The receiver object of the current method.
+2.true - Value representing true.
+3.false - Value representing false.
+4.nil - value representing undefined.
+5.FILE - name of current file
+6.-Line - the current line no in source file.
+
+
+
+...
+37.What is Spring in Rails ?
+Developer use the Spring as a preloader for applications to speed up the development.
+They can use it to keep the application running in the background when running tests,rake tasks or migrations.With spring developers do not have to restart the server when they make changes.
+
+...
+38.What is the diff between Hash and String ?
+Hash :: Hash is a Ruby class,a collection of key value pair that allows accessing values by keys.
+JSON :: JSON is a string in specific format for sending data.
+
+...
+What is the meaning of aliasing the Method in Ruby ?
+Alis to a variable or method means to create a second name for the method or variable.
+We can use aliasing to provide more expressive options to programmer using the class or to help overriding options to programer using the class or to help override methods and change the bevaior of class or object.
+
+...
+
+When Rails server run then which files are executes ::
+1.  config/boot.rb
+2.  config/application.rb
+3.  config/route.rb
+
+...
+
+
+What are the Rules and Regulations to write the code in Rails ?
+1. Follow the coding standards 
+2. Make your code SOLOD
+3. Everything should be skinny :: Small classes and light functionality and use PORO.
+4. Find concise name for everything
+5. Avoid Metaprogramming.
+6. Audit your Code:: Use Rubocop-for coding standards and RubyCritic-for code quality
+
+...
+
+What is CORS in Rails ?
+CORS is the great security mechanism,CORS is the HTTP header based security mechanism which define who is allow to interact with your api.
+CORS check all requests from different origin than api.
+
+...
+
+Diff between rails and ensure statement?
+raise:: you can use raise statement to raise an exception.
+ensure:: this is an ensure clause which guarentee some processing at theend of code.The ensure blosck always executed as the block terminates.
+
+...
+
+Diff between load and require ?
+
+
+
+
+

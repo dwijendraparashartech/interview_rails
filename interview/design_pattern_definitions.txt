@@ -1,0 +1,174 @@
+design_pattern_definitions ::  
+
+
+
+
+One Line Precise ::
+1. Builder 
+2. Decorator
+3. Form Object 
+4. Interactor 
+5. Observer
+6. Policy
+7. Query
+8. Service
+9.Value 
+
+
+Q. What is the diff between Creational , Structural and behaviour Pattern of the design PAttern ? 
+
+
+Precise ::
+
+........................................
+
+1. Builder :: Builder is a creational design pattern that lets you construct complex objects step by step without much effort.It also called as Adapter,whose main purpose is to untangle the complexity of the object instantiation process.The pattern’s main purpose is to provide a simple way of returning a given class or instance depending on the case.Whenever you are dealing with a highly customized product and its complexity the Builder pattern helps to clear the clutter to create the basic concept. 
+Generally it gives answering these questions:
+What classes does it consist of?
+What roles do these classes play?
+In what way the elements of the pattern are related?
+When to use the Builder pattern?
+When you are creating new objects and you need many permutations of that particular feature
+When you are focused on the process of creating objects and how to assemble them, rather than being dependent on just constructors.
+
+........................................
+
+2. Decorator ::  The decorator is a design pattern that allows the behavior to be added to an object, dynamically, without disturbing the behavior of other objects of the same class.Decorators can be useful for cleaning up logic/code written inside the view and controller in an RoR application.The Decorator pattern is similar to the presenter pattern, but instead of adding additional logic, it alters the original class without affecting the original class’s behavior.decorator gives us ability to extend particular object’s behavior by equipping it with some additional methods. In Rails ecosystem I’ve usually seen this design pattern being used with draper gem.Draper is useful when we have methods in models, which are used only in views. Using decorator design pattern means putting in them every bit of logic which is used only in views. 
+
+........................................
+
+3.Form Object :: 
+The form object pattern was created to make the ActiveRecord’s models thinner. We can often create a given record in multiple places, and each place has its rules regarding the validation rules, etc.The form object is a design pattern that is used to encapsulate the code related to validation and persisting data into a single unit. 
+
+........................................
+
+4. Interactor ::
+The interactor pattern is all about interactions. Interaction is a set of actions performed one by one. When one of the actions is stopped, then other actions should not be performed. Interactions are similar to transactions, as the rollback of previous actions is also possible.
+To implement the interactor pattern in the Rails application, you can use a great interactor gem. 
+
+........................................
+
+5. Null Object :: 
+The idea behind this pattern is to provide a value for non-existing records.The null object pattern is as simple as the value object as they are based on plain Ruby objects. 
+
+........................................
+
+6. Observer ::
+
+Observer is a behavioral design pattern that allows some objects to notify other objects about changes in their state.The observer pattern is used when you are building a system where the state of one object effects the state of other objects.“Define a one-to-many dependency between objects so that when one object changes state, all of its dependents are notified and updated automatically.”Observer pattern is used when there is one to many relationship between objects such as if one object is modified, then its dependent objects are to be notified and updated automatically.
+
+........................................
+
+7. Policy object ::
+
+The Policy Objects design pattern is similar to Service Objects, but is responsible for read operations while Service Objects are responsible for write operations. Policy Objects encapsulate complex business rules and can easily be replaced by other Policy Objects with different rules.The policy object pattern is useful when you have to check multiple conditions before performing a given action.
+
+........................................
+
+8. Query object ::
+
+https://medium.com/selleo/essential-rubyonrails-patterns-part-2-query-objects-4b253f4f4539
+
+Query Objects (also referred to as queries) is another pattern that helps in decomposing your fat ActiveRecord models and keeping your code both slim and readable. While this article is written with Ruby On Rails in mind, it easily applies to other frameworks, especially MVC based and applying ActiveRecord pattern.One should consider using query objects pattern when in need of performing complex queries on ActiveRecord relation. Usually using scopes for such purposes is not recommended. As a rule of thumb.
+
+As the name suggests, the class following the query object pattern isolates the logic for querying the database. We can keep the simple queries inside the model, but we can put more complex queries or group of similar queries inside one separated class:
+
+As a rule of thumb, if scope interacts with more than one column and/or joins in other tables, it should be considered to be moved to query object — as a side-effect we can limit amount of scopes defined in our models to a necessary minimum. 
+
+........................................
+
+
+9. Service Object ::
+What is a service object in Rails? A service object in Rails is a plain old Ruby object created for a specific business action. It usually contains code that doesn't fit in the model or view layer, e.g., actions via a third-party API like posting a tweet.
+
+
+........................................
+
+
+10. Value Object ::
+Value object are types of Ruby patterns that encourage small, simple objects and allow comparison based on given logic or specific attributes.
+
+A value object does not represent something specific to your system like a user object. There is only one value returned by a Value Object.
+A value object represents a simple entity whose equality is based on its value, meaning that two different objects are equal when they have the same value. Value objects should be immutable, so when two value objects are created equal they should remain equal.
+Regardless of the type of architecture do you like the most in Rails, you will find value objects design pattern useful and, which is just as important, easy to maintain, implement and test. The pattern itself doesn't introduce any unneeded level of abstraction and aims to make your code more isolated, easier to understand and less complicated.
+A quick look at the pattern's name
+Let's just quickly analyze its name before we move on:
+
+value - in your application there are many classes, some of them are complex which means that they have a lot of lines of code or performs many actions and some of them are simple which means the opposite. This design pattern focuses on providing values that's why it is so simple - it don't care about connecting to the database or external APIs.
+
+object - you know what is an object in objected programming and similarly, value object is an object that provides some attributes and accepts some initialization params.
+
+A small simple object, like money or a date range, whose equality isn't based on identity.
+
+The Value design pattern isolates static, constant values from the active code of an application. You use a separate class or module for storing constant values at one place and access them wherever and whenever needed.
+
+
+........................................
+
+
+11. View Object (Presenter)  ::
+By using view object, we are able to encapsulate all logic related to views and keep both models and views organized. 
+Rails patterns such as view object are easily tested since they are just classes. Using rails helper, we can solve the calculation logic problem, however, if the code is complex, the Presenter should be used instead. It is advisable to keep the views as simple as possible without including any business logic
+........................................
+
+
+.....................................................
+
+designs_patterns_rails.txt 
+
+..............................
+
+Links ::  https://www.udemy.com/course/design-patterns-through-ruby/
+Very very good link ::  https://github.com/davidgf/design-patterns-in-ruby
+https://www.udemy.com/course/design-patterns-through-ruby/
+
+processor model pattern ::
+
+https://www.educative.io/answers/what-is-the-processor-model-design-pattern-in-rails
+
+
+Types of Design Patterns ??
+
+1. Design Pattern 
+...............................
+2. Creational Pattern ::
+A. Abstract Factory Design PAttern in Ruby 
+B. Factory Method Design Pattern
+C. Prototype Design Pattern
+D. Singleton Design Pattern
+...............................
+3. Structural Pattern :: 
+Bridge Structure
+Composite Structure
+Decorator
+Facade
+Flyweight
+Proxy 
+...............................
+4. Behavioral Pattern :: 
+Responsibility Structure
+Interpreter 
+Iterator
+Mediator
+Memento
+Observer
+State
+Strategy
+Template
+Visitor
+
+
+
+.....................................................................................
+.....................................................................................
+
+Different Other Pattern in Ruby ??
+
+
+1. adapter  , 2. builder , 3. command , 4. composite , 5. convention_over_configration , 6. decorator , 7. dsl , 8. factory, 9. interpreter , 10. iterator , 11. meta_programming.
+12. observer . 13. proxy . 14. singleton, 15. template_method ,16. strategy 
+
+.....................................................................................
+.....................................................................................
+
+

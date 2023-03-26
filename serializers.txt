@@ -1,0 +1,86 @@
+serializers.txt 
+...................
+
+a. add attributes :: 
+.......................................................
+.......................................................
+
+  attributes *[
+      :id,
+      :customer_type,
+      :individual_customer_id,
+      :business_customer,
+      :secondary_detail_id,
+      :first_name,
+      :last_name,
+      :email,
+      :phone_number,
+      :billto,
+      :account_id,
+      :gst_treatment_id,
+      :gstin_number,
+      :invoice_number,
+      :order_number,
+      :place_of_supply,
+      :invoice_date,
+      :payment_term_id,
+      :due_date,
+      :billing_street,
+      :billing_address,
+      :shiping_street,
+      :shiping_address,
+      :terms_conditions,
+      :is_recevied_payment,
+      :payment_option,
+      :invoice_template_id,
+      :email_template_id,
+      :is_save_as_draft
+    ] 
+  end
+
+.......................................................
+.......................................................
+
+  b. structure of the serializer ::
+
+  module BxBlockInvoice
+  class InvoiceSerializer < BuilderBase::BaseSerializer
+    include FastJsonapi::ObjectSerializer
+    attributes *[
+      :id,
+      :customer_type,
+      :individual_customer_id,
+      :business_customer,
+      :secondary_detail_id,
+      :first_name,
+      :last_name,
+      :email,
+      :phone_number,
+      :billto,
+      :account_id,
+      :gst_treatment_id,
+      :gstin_number,
+      :invoice_number,
+      :order_number,
+      :place_of_supply,
+      :invoice_date,
+      :payment_term_id,
+      :due_date,
+      :billing_street,
+      :billing_address,
+      :shiping_street,
+      :shiping_address,
+      :terms_conditions,
+      :is_recevied_payment,
+      :payment_option,
+      :invoice_template_id,
+      :email_template_id,
+      :is_save_as_draft
+    ] 
+  end
+end
+
+.......................................................
+.......................................................
+
+c. 

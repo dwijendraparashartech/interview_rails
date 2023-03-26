@@ -1,0 +1,473 @@
+gems.txt ::::::::::::
+
+Link :: https://auth0.com/blog/five-ruby-gems-for-authentication-and-authorization/
+
+
+Gems ::::::::::::::::::::
+
+
+
+ActiveRecord
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+1.ActiveRecord Import ::
+Bulks of records can be easily inserted using ActiveRecord-import. It works according to the ActiveRecord associations while generating minimal SQL insert statements as required. With this gem in, if you hire a dedicated RoR developer with enough knowledge, they won’t have to deal with the N+1 insert problem. ActiveRecord is an ideal choice to upload ten records.
+Uploading hundreds of records with this gem can prove out to be a daunting task. However, it is beneficial for the import of external data. The conversion time is significantly reduced with ActiveRecord-import.
+
+
+2.Kaminari Gem :: 
+You can paginate anything using this gem. Pagination can be carried from ActiveRecord imports to easy arrays using an easy-to-use scope-based API.
+
+3.Paronia ::
+This gem helps you to soft delete on a record. Once you have destroyed a record, it is difficult to use it. Hence, to bring a solution, Paranoia hides the object by scoping queries on the model. However, to strictly delete a record, you need to use the really_destroy gem.
+
+4. PaperTrial ::
+You are often so irritated with using the undo and redo actions because of the changes in your model. The PaperTrial gem helps you retain all the changes by naming all the versions with every change, and hence it becomes easy to work with your model.
+
+5. Globalize
+The Globalize gem makes it easy for you to add foreign languages in your application, i.e., to adapt to internationalization. Globalize gem is powered by Google’s i18n API. This gem helps with the translation of non-static database content.
+
+6.AASM
+State machines for Ruby classes. This gem enables ruby on rails developers to add finite states to their ruby classes. It is a generic library that provides adapters for various ORMs.
+
+
+7.Pagy
+Pagy is a high-performant pagination gem. Its speed is because of its size, independence, and simplicity. This RoR gem works in all types of environments and supports all pagination. It supports all CSS frameworks and works with all collections.
+
+8. Cells
+Cells is a standalone Ruby & Rails gem that works without trailblazer. It enables you to encapsulate your UI components into view-models.
+
+
+
+
+View Helpers
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+9. Draper
+With Draper, developers can easily build decorators around their models. Using Draper Gem In Your Ruby on Rails App adds views much cleaner. There is no need to write helpers with the Draper in use. Developers can easily define a decorator instead of calling helpers procedurally with models. They are also provided a list of attributes and extended methods for the object.
+
+10. Simple Form
+As the name suggests, the Simple Form gem enables you to use forms in your rails application with efficient and clear code. The gem offers exceptional flexibility when working with form elements like checklists, radio buttons, dropdown lists, etc.
+
+11. Meta Tags
+A ruby on rails gem that helps you create an SEO-friendly application by sticking to SEO best-practices and creating efficient meta tags.
+
+12. Slim
+This template engine transforms your heavy-weight syntax code into a slim-trim code structure. You can maintain simplicity in your application code using the Slim gem.
+
+13. Haml
+This gem stands for HTML Abstraction Markup Language. Developers use it to enhance the structure and design of their HTML/XML documents.
+
+
+
+Debugging 
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+14. Pry
+
+Developers usually face library integration issues or difficulties in binding the gems while generating the code. During that time, they have to deal with a lot of errors. So, it is always better to Hire Dedicated ROR Developers with good enough experience. To eliminate these issues and debug the errors, rails PRY gem turns out to be an ideal choice.
+This gem allows the developers to set the breakpoints and implement code debugging step-by-step. Pry comes with a unique set of features, including Syntax highlighting, Runtime invocation, Command shell integration, Exotic object support, flexible and powerful command system.
+
+15. Better Errors
+When your users come across a not-so-appealing error page, they might abandon your application. The better errors gem replaces the clumsy and rejecting RoR error pages with quite improved and better error pages.
+
+16. Letter Opener
+This gem lets you see the preview of the mails that your Rails application sends- on your browser screen. It eases your effort of checking and editing in your mailbox.
+
+
+
+Testing
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+17. RSpec Rails
+The gem RSPEC RAILS is a perfect choice for the developers who are into writing unit test cases. This gem facilitates application developers with the integration of the RSpec framework into any of the Rails projects. Users simply have to generate the required spec helpers and configuration files. The framework is used in TDD and BDD environments. In simple words, gem install RSPEC RAILS features descriptive and neat syntax.
+
+18. Capybara
+The gem that integrates tests for helping users by guiding them through the ongoing process in short phrases. Developers use it mostly in authorization scenarios. Capybara is often used along with RSPEC gem.
+
+19. Database Cleaner
+This gem cleans your testing database, and you can set the time of the cleanup- either before launching the test or before and after running tests. It is supported for Ruby 1.9+ versions.
+
+20. Shoulda_Matchers
+This fantastic gem writes validation/association one-line tests that are compatible with Rspec. RoR developers can quickly test the functionality of their application real quick using matchers.
+
+21. SimpleCov
+This gem shows you how much code (percentage) you have covered by testing it and how much yet remains.
+
+22. Factory_bot
+Factory bot is a library gem, previously known as Factory girl. It provides fake data for test cases. This eases your testing process because then you do not have to enter data every time manually.
+
+23. Faker
+As the anem says, another gem to generate fake data such as name, address, and contact numbers.
+
+
+
+Authentication and Authorization
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+24. CANCANCAN
+CANCANCAN Gem is perfect for developing complex applications. It allows the users to have numerous rules, but developers need to restrict access for some users. This gem offers the ease of setting up the user access restrictions, and everything is manageable in one place. The “Authorizations definition library” module of CANCANCAN allows developers to set the rules for users. Also, it offers the ease of accessing different objects to the helpers, given they need to check those permissions before access.
+
+25. DEVISE
+When creating an application on any of the social networks or building an e-commerce solution, developers usually need to log into the social media page. They’ll need to provide authorization and authentication for the particular application. Some developers prefer using their code for the purpose; others prefer using Ruby gems for authentication. DEVISE gem ruby on rails turns out one of the best rails gems 2021. It makes work effective and easy.
+
+DEVISE includes 10 modules, namely- Omniauthable, Database Authenticatable, Registrable, Confirmable, Trackable, Recoverable, Lockable, Timeoutable, Rememberable, FriendlyId, and Validatable. The resource URLs are easily identified by the primary key (database ID) of each module. However, developers may have to deal with the unoptimized URLs of the web page. FriendlyId easily transforms the URLs to an easy to remember and much friendlier web page URLs. The best part is that it doesn’t require any code modifications in the web application, making it a famous Ruby gem.
+
+26. OmniAuth
+OmniAuth is a ruby on rails authentication gem which is flexible and uses the Rack middleware. This gem enables authentication through your social media accounts like Facebook and Google. There are several ready-to-use authentication-providers in this gem for you to use.
+
+GitHub: 7.5k Stars
+
+27. Ruby-JWT
+A unique rails token authentication gem is the ruby-JWT which implements the RFC 7519 OAuth JSON Web Token (JWT) standard. It is a useful rails jwt authentication gem.
+
+GitHub: 3.3k Stars
+
+28. Rolify
+Rolify is a rails gem that is a role management library that doesn’t enforce any supporting scope on the resource object.
+
+GitHub: 3k Stars
+
+29. Pundit
+An amazing Rails gem that provides Authorization. It is very easy to use as it provides strong, scalable, and simple authorization by merely using the basic Ruby classes and object-oriented OO design.
+
+GitHub: 7.6k Stars
+
+
+
+
+Authentication and Authorization
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+26. OmniAuth
+OmniAuth is a ruby on rails authentication gem which is flexible and uses the Rack middleware. This gem enables authentication through your social media accounts like Facebook and Google. There are several ready-to-use authentication-providers in this gem for you to use.
+
+GitHub: 7.5k Stars
+
+27. Ruby-JWT
+A unique rails token authentication gem is the ruby-JWT which implements the RFC 7519 OAuth JSON Web Token (JWT) standard. It is a useful rails jwt authentication gem.
+
+GitHub: 3.3k Stars
+
+28. Rolify
+Rolify is a rails gem that is a role management library that doesn’t enforce any supporting scope on the resource object.
+
+GitHub: 3k Stars
+
+29. Pundit
+An amazing Rails gem that provides Authorization. It is very easy to use as it provides strong, scalable, and simple authorization by merely using the basic Ruby classes and object-oriented OO design.
+
+GitHub: 7.6k Stars
+
+
+
+
+Admin Panel
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+30. ACTIVE ADMIN
+This framework is for building interfaces of administration style. Active Admin abstracts the business application patterns and makes it easy for developers to implement elegant and beautiful interfaces with less effort. Its various features include Scopes, User Authentication, Global Navigation, Action Items, Sidebar Sections, Index Styles, Filters, Downloads, and APIS.
+
+GitHub: 9.2k Stars
+
+31. Rails Admin
+A rails engine to manage your data having a friendly user-interface. Developers leverage the features like data export to CSV, custom search, filtering, custom authentication, and authorization. Once you install the rails admin gem, you are good to go with using it.
+
+GitHub: 7.6k Stars
+
+32. Administrate
+Create a responsive admin panel using the Administrate rails gem. When you do not prefer to use the above two gems, Active admin and rails admin, then administrate rails gem is the best alternative.
+
+GitHub: 5.4k Stars
+
+
+
+Admin Panel
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+30. ACTIVE ADMIN
+This framework is for building interfaces of administration style. Active Admin abstracts the business application patterns and makes it easy for developers to implement elegant and beautiful interfaces with less effort. Its various features include Scopes, User Authentication, Global Navigation, Action Items, Sidebar Sections, Index Styles, Filters, Downloads, and APIS.
+
+GitHub: 9.2k Stars
+
+31. Rails Admin
+A rails engine to manage your data having a friendly user-interface. Developers leverage the features like data export to CSV, custom search, filtering, custom authentication, and authorization. Once you install the rails admin gem, you are good to go with using it.
+
+GitHub: 7.6k Stars
+
+32. Administrate
+Create a responsive admin panel using the Administrate rails gem. When you do not prefer to use the above two gems, Active admin and rails admin, then administrate rails gem is the best alternative.
+
+GitHub: 5.4k Stars
+
+
+
+Payments
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+33. Active Merchant
+This Ruby Gem is maintained and written by Shopify. The main goal of Active Merchant is to facilitate the users with a unified API that offers access the multiple payment gateways using different internal API’s. Developed especially for Ruby on Rails web applications, Active Merchant can also be integrated as a plugin. In addition, it offers support when used as a stand-alone library.
+
+GitHub: 4.4k Stars
+
+
+Also Read:
+How to Implement Cocoon Gem in Rails 6?
+34. Stripe Ruby Bindings
+Installing Stripe gen will help you to interact with Stripe.com. This particular site has splendid features that make it simpler and easier to process all the payments. While Stripe checkout offers personalized and custom-built payment flow for both mobile users and desktop users, stripe.js stores credit cards’ details and secures them throughout the transmission process. Stripe supports android pay, apple pay, and Amex Express checkout, thereby building a robust and strong eCommerce site. You can consider Stripe as the best ruby on rails eCommerce gem.
+
+
+Code Quality
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+35. Robocop
+Rubocop is basically a code formatter and a Ruby static code analyzer that is based on the Ruby style guide. It auto-corrects all the code offenses on the detection and owns strong and robust formatting capabilities from your pieces of code. Rubocop almost gets along well with any of the major Ruby implementations. As it offers brilliant features, many of the online services use Rubocop as it is simple and hassle-free to expand Rubocop with the formatters and custom cops.
+
+GitHub: 11.8k Stars
+
+36. Robocop Rails
+This gem is an extension to the above robocop gem for enforcing rails best-practices and coding conventions. It automatically checks the rails code style with its checking tool.
+
+GitHub: 608 Stars
+
+37. Ruby Style Guide
+This one is a gem for the community and by the community of RoR developers that recommends the ruby coding style best practices. This guideline is a collaboration of the Ruby on Rails experts’, professionals, and editors’ suggestions, feedback, and recommendations.
+
+GitHub: 16k Stars
+
+38. Overcommit
+The overcommit ruby on rails gem is a manager of Git hooks for your rails project. It supports various hooks and can also define your own hooks and use them across repositories.
+
+
+Code Quality
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+35. Robocop
+Rubocop is basically a code formatter and a Ruby static code analyzer that is based on the Ruby style guide. It auto-corrects all the code offenses on the detection and owns strong and robust formatting capabilities from your pieces of code. Rubocop almost gets along well with any of the major Ruby implementations. As it offers brilliant features, many of the online services use Rubocop as it is simple and hassle-free to expand Rubocop with the formatters and custom cops.
+
+GitHub: 11.8k Stars
+
+36. Robocop Rails
+This gem is an extension to the above robocop gem for enforcing rails best-practices and coding conventions. It automatically checks the rails code style with its checking tool.
+
+GitHub: 608 Stars
+
+37. Ruby Style Guide
+This one is a gem for the community and by the community of RoR developers that recommends the ruby coding style best practices. This guideline is a collaboration of the Ruby on Rails experts’, professionals, and editors’ suggestions, feedback, and recommendations.
+
+GitHub: 16k Stars
+
+38. Overcommit
+The overcommit ruby on rails gem is a manager of Git hooks for your rails project. It supports various hooks and can also define your own hooks and use them across repositories.
+
+
+
+Security
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+39. Brakeman
+Brakeman is a stable and unchanged security scanner that helps identify and spot the smallest of compulsions and vulnerabilities in rail applications. Since Brakeman is static, when Brakeman reports the vulnerabilities (even though there are no vulnerabilities), you can simply arrange and set up a list of warnings to limit and restrict the arrival of unnecessary and not-so-important notifications.
+
+GitHub: 6.4k Stars
+
+40. Bundler
+Bundler ensures the proper running of Ruby applications in the very same code on every machine. Bundler can download and install a list of gems that a particular application depends on. However, before installing, Bundler keeps a check on the latest versions of each gem’s compatibility so that they can be loaded together at the same time. After installing, Bundler also helps you to upgrade them when the new versions are available.
+
+GitHub: 4.9k Stars
+
+41. Bundler Audit
+Running on top of Bundler, Bundler audit helps you keep a check on your application’s potential vulnerabilities. With the help and assistance of the Bundler audit, you can save enormous amounts of time. As the Bundler audit effectively reviews and checks your rail applications in the gemfile.lock, you do not need to check each of the gems in your rail applications. It identifies your gem versions and stops the collection of unreliable gems.
+
+GitHub: 2.5k Stars
+
+42. Secure Headers
+Secure-headers is a gem that cares about implementing security-related HTTP headers to the responses of rail apps. Allowing you to apply the headers such as CSP helps to restrain cross-site scripting, XFO, and merged and mixed content attacks, thereby preventing your content from hitting possible clickjacking attacks.
+
+
+File Upload
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+43. Carrierwave
+When a web application is created, developers make sure that they can post or upload files of several kinds, including images, audio documents, and videos. However, when it comes to images specifically, you will not find any useful gem other than CarrierWave. Functioning as an image processor and a file uploader, CarrierWave resizes and helps in adjusting the corners of images. Additionally, CarrierWave processes and caches files so that the users can quickly parse the posted text files or extract the EXIF data.
+
+Bonus point: For keeping your code near and clean, CarrierWave saves each of your data in uploader classes.
+
+GitHub: 8.7k Stars
+
+44. Minimagick
+Another gem that manages and handles image processing is Minimagick. It serves as a tiny or mini replacement to RMagick. Similar to CarrierWave, this gem is truly a gem. It works effectively by saving all your RAM resources and vends with mixed and diverse tasks, including rotating, flipping, blurring, resizing, and converting the images to famous formats like PNG. This gem helps reduce the memory of Ruby processes and helps in availing all options of the command-line of ImageMagick.
+
+GitHub: 2.7k Stars
+
+
+Deployment
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+45. Puma
+Puma is a famous and renowned HTTP Web server that can host and deploy rail web applications. As deployment is a crucial stage in any software development cycle, these web servers help deploy the rail apps accurately.
+
+GitHub: 7.1k Stars
+
+46. Capistrano
+A regular and general web application passes several steps before being deployed. This involves various stages such as copying the files, transferring or migrating the databases and compiling and arranging the assets. For successful deployment of web applications, an automated deposit and deployment tool is required. Capistrano is an automated deployment tool that manages and handles a plethora of operations, tagging the servers for disparate roles, managing diverse stages, and implementing parallel deployments.
+
+GitHub: 12.1k Stars
+
+47. Chef
+The chef is a very effective ruby gem. When merged with Capistrano, Chef handles and sets the server by placing files in certain locations, installing the packages, and many more. However, for deploying rail applications, Chef is used on rare occasions as it owns scarce resources for automated and custom-built deployment.
+
+GitHub: 6.9k Stars
+
+APIs
+48. Grape (used for API)
+Grape is basically a REST-like API framework for Rubygems. It is created and designed specifically to run on Rack or complement web applications that already exist like Sinatra and Rails. It offers an easy DSL to develop the RESTful APIs effectively and easily. Having built-in support for regular conventions, Grape owns diverse formats, subdomain restriction, versioning, content negotiation, etc.
+
+GitHub: 9.5k Stars
+
+49. jsonapi-serializer
+This Ruby gem is also known as fast_jsonapi and is a fork of Netflix. The team of Netflix provided the initial support required. The gem offers an optimized version of serialization for compound documents.
+
+GitHub: 1.1k Stars
+
+
+Search
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+50. ElasticSearch
+The elasticseacrh gem provides a Ruby bridge to reach the Elasticsearch Ruby Client. It provides search, security, and monitoring features.
+
+GitHub: 1.9k Stars
+
+51. Ransack
+This Ruby on Rails gem- Ransack is for object-based search, using which you can search your Rails app. It also enables advanced search options such as Algolia and ElasticSearch.
+
+GitHub: 5.2k Stars
+
+
+
+Others
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+52. Bullet
+The bullet is designed for increasing the performance of an application by reducing the queries. It keeps a watch on the queries during the process of app development. This RubyGem notifies the users whenever (N+1) queries are needed. The users are also notified when the counter cache is to be used.
+
+GitHub: 6.5k Stars
+
+53. Webpacker
+This RubyGem is designed explicitly for serving JavaScript and the assets like fonts, CSS, and images related to component-based JavaScript. Webpacker can also be used for all the assets of the application. Overall, it offers a fantastic solution for Rail application development. You may find this blog interesting Ruby on Rails: Let’s Bust the Myths, Get Some Facts and Understand Why RoR Is Ideal Choice for Web App Development.
+
+GitHub: 5.3k Stars
+
+54. Sidekiq
+Sidkiq is a standard, clean and efficient tool used for processing Ruby. Specifically for scheduled jobs, Sidekiq is used. The Redis library supports this gem, and it uses Redis as a job management store. Sidekiq has made itself successful in impressing a huge number of developers as it possesses multithreading capacities. Owning these capabilities, using Sidekiq results in a remarkable speed.
+
+The significant benefit of using this gem involves monitoring jobs appropriately. The proper processing of statuses and the chance to implement jobs in parallel. Even though Sidekiq does not need Rails, it merges with Rails to clarify and ease the background processing to a great extent.
+
+GitHub: 11.8k Stars
+
+55. Figaro
+Figaro is Heroku-friendly and simple Rails best gems app configuration. It a YAML and an ENV file for secure configuration of the applications that are created using Rails. This gem introduces a convention that is potential enough to keep the configuration data and SCM separate. It parses the YAML file and loads its value into ENV.
+
+GitHub: 3.7k Stars
+
+56. AHOY
+It’s an analytics platform used for tracking events and visits in native apps like JavaScript and Ruby. Technically, Ahoy is not a gem but a Ruby engine. It is responsible for creating visit tickets that contain the traffic’s source, place of origin of the location, and the client’s device information. It also enables the users to know about the UTM parameters of the website visits. Ahoy can even track events and visits in the application.
+
+GitHub: 3.6k Stars
+
+57. Paperclip
+It is not easy to work with file attachments. Typically, they involve a massive amount of work. It’s too time-consuming for the developers to ensure proper and secure implementation of the task. Paperclip is designed to keep track of the entire process inside the Rails application. The additional benefits offered by this gem include the transformation of images into thumbnails. Unfortunately, this gemfile is now deprecated.
+
+GitHub: 9.1k Stars
+
+58. Delayed Job
+The Delayed Job gem is the best ruby gems for rails development 2022 when it comes to handling the longer-running actions for background tasks. It can be extracted directly from Shopify, where multiple tasks are handled by the job table. Some of the unique features of Delayed Job include Image resizing, sending a huge number of newsletters, updating smart collections, spam checks, HTTP downloads, batch imports, and updating some after the product changes.
+
+GitHub: 4.7k Stars
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+............................................................................
+
+Authentication and Auhorization Gems ::
+
+Authentication is the process of verifying who you are.
+Authorization is the process of verifying that you have access to resources.
+.............................................................................
+
+CanCanCan Gem ::  Simple authorization solution for Rails. All permissions are stored in a single location.
+
+pundit :: Object oriented authorization for Rails applications
+
+rolify :: Very simple Roles library without any authorization enforcement supporting scope on resource objects (instance or class). Supports ActiveRecord and Mongoid ORMs.
+
+jwt :: Dynamic JWT authentication and secrets rotation in Rails applications. JSON Web Tokens, commonly known as JWT is an open standard for representing and verifying claims securely between a client and a server. It is one of the most popular authentication and authorization techniques employed in modern applications.
+
+Authentication Gems ::
+
+OmniAuth Gem ::
+OmniAuth is a library that allows you to implement multi-provider authentication for web applications. For example, if you wanted to authenticate your users using their Google or Facebook accounts, you could use the OmniAuth gem to delegate the authentication to those providers.OmniAuth introduces the concept of strategies. A strategy is a provider who will perform the authentication. In the example above, it'll be the Google and Facebook strategies.
+
+..................................................
+
+Devise Gem ::
+The Devise gem is an authentication solution for Ruby on Rails applications; it helps you set up production-ready user authentication in your projects without having to do everything on your own.
+
+It's composed of 10 modules:
+
+Database Authenticatable: hashes and stores a password in the database to validate the authenticity of a user while signing in. The authentication can be done both through POST requests or HTTP Basic Authentication.
+Omniauthable: adds OmniAuth (https://github.com/omniauth/omniauth) support.
+Confirmable: sends emails with confirmation instructions and verifies whether an account is already confirmed during sign in.
+Recoverable: resets the user password and sends reset instructions.
+Registerable: handles signing up users through a registration process, also allowing them to edit and destroy their account.
+Rememberable: manages generating and clearing a token for remembering the user from a saved cookie.
+Trackable: tracks sign in count, timestamps and IP address.
+Timeoutable: expires sessions that have not been active in a specified period of time.
+Validatable: provides validations of email and password. It's optional and can be customized, so you're able to define your own validations.
+Lockable: locks an account after a specified number of failed sign-in attempts. Can unlock via email or after a specified time period.
+
+.............................
+
+
+
+
+Authorization Gems ::
+
+Pundit Gem :
+Pundit is a gem that provides a set of helpers that guide you to use simple Ruby objects and object-oriented design patterns to create an authorization system. It's easy to use, has minimal permissions, and is great for managing role-based authorization using policies defined in simple Ruby classes.
+
+
+CanCanCan Gem :
+CanCanCan is a gem that provides an easy way to authorize actions in your Rails application. It allows you to define abilities for different roles in your application, and then check whether a user is authorized to perform a certain action.
+
+CanCan is an authorization library for Ruby on Rails which restricts what resources a given user is allowed to access. All permissions are defined in a single location (the Ability class) and not duplicated across controllers, views, and database queries.
+
+Q- What is the diff between pundit gem and cancancan gem ::
+
+pundit :: Is about Policy
+CanCanCan :: Is about Ability 
+
+

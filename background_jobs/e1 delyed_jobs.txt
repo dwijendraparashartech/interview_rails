@@ -1,0 +1,78 @@
+synchronous - happen at same time
+asynchronous - does not happen at same time.
+
+
+write_background_job.txt
+
+Delayed Job ::
+It is using for executing the longer tasks in background in the queue(one after another).
+This is directly taking from the Shopify where the job table is responsible for a multitude of 
+core tasks.These tasks are ::
+
+1. Sending Massive NewsLetters
+2. Image Resizing 
+3. http Downloads
+4. Updating Smart Collections
+5. Batch Imports
+6. Spam Check
+7.Updating Solr,our search server,after product changes.
+
+Supported Versions :: 
+
+delayed_job 3.0.0 only supports Rails 3.0+.
+
+PRocess of Add Delayed Job ::
+
+1.  gem 'delayed_job_active_record'   +  bundle   :: If using with Rails Active Record
+2.  gem 'delayed_job_mongoid' + bundle :: If using with mongoid
+3.  Create the Active Record Table for running the delayed Jobs ::
+	rails generate delayed_job:active_record + rake db:migrate 
+
+
+Note :: In development mode, if you are using Rails 3.1+, your application code will automatically reload every 100 jobs or when the queue finishes. You no longer need to restart Delayed Job every time you update your code in development.
+
+4. Configure the queue adapter :: config/application.rb
+	config.active_job.queue_adapter = :delayed_job
+
+5. Tell your application to process jobs put into your job queue, you can do that by adding this to your Procfile:
+
+	worker: rake jobs:work
+
+6. Queuig Jobs :: 
+
+Add a Delay Method to ActiveRecord Objects :: 
+
+ class Post < ActiveRecord::Base
+   def send_to_twitter!
+     Twitter.update("#{self.title} #{self.url}")
+   end
+ end
+
+ Post.find(9).send_to_twitter!
+ Post.find(9).delay.send_to_twitter!
+
+ 7. Queing Emails :: 
+
+ UserMailer.send_registration_mail(email, name).deliver
+ UserMailer.delay.send_registration_mail(email, name)
+
+8. Deploy code to Heroku :: 
+
+ $ git push heroku master 
+ $ heroku run rake db:migrate
+ $ heroku ps
+ $ heroku ps:scale worker=1
+
+ 9. Debugging ::
+ $ heroku run rails console
+ $ heroku ps
+ $ heroku logs -p worker -t
+ $ heroku run rake jobs:work
+
+ 10. How to know that a Job is failed :: 
+
+ job = Delayed::Job.where("last_error is not null").last
+ puts job.last_error
+ "{OAuthException: Error validating access token: ...
+
+ 

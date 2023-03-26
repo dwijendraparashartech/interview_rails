@@ -1,0 +1,269 @@
+capistrano_deployment.rb 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Link :::::::::   https://www.jetbrains.com/help/ruby/capistrano.html
+
+
+What is Capistrano ::  Capistrano is a tool for deploying applications using deployment scripts. To perform deployments, you can use predefined tasks or create custom Rake tasks. RubyMine allows you to quickly run Capistrano tasks with double Ctrl and configure Capistrano run options using run configurations.
+
+
+|||||||||||||||||||||||||||||||||||||||||       ||||||||||||||||||||||||||||||||||||||||||||||
+
+Prerequisites
+In this tutorial, we'll use two machines to demonstrate the application's deployment:
+
+1. Local machine:with RubyMine installed and the created command-line launcher. The command-line launcher will be required to specify the editor when generating credentials.
+2. Web server: The Ubuntu machine with enabled SSH access and Git installed.
+
+.............................
+
+
+Steps :::;::::::::::::::
+
+Step1 ::  Install rbenv and Ruby on the web server
+Step2 ::  Install and configure Passenger & Nginx
+Step3 ::  Install Capistrano gems
+Step4 ::  Capify the application
+Step5 ::  Provide Custom Crdentials 
+Step6 ::  Deploy your App  
+Step7 ::  Capistrano run/debug configuration
+
+
+|||||||||||||||||||||||||||||||||||||||||       ||||||||||||||||||||||||||||||||||||||||||||||
+
+Step1 ::  Install rbenv and Ruby on the web server
+
+1.Start SSH Session in Select Tools
+From the main menu, select Tools | Start SSH session. In the invoked dialog, specify the web server address and credentials for your deployment user. Click OK.
+
+...........
+
+2.Install packages required for building Ruby from sources :: passenger,sqlite,nodejs,yarn
+Install packages required for building Ruby from sources, installing Passenger, working with SQLite, and so on. Also, install Node.js and Yarn to manage JavaScript dependencies.
+
+sudo apt-get update
+sudo apt-get install curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev dirmngr gnupg apt-transport-https ca-certificates nodejs yarn
+
+...........
+
+3.Install rbenv
+Install rbenv as described in the Basic GitHub Checkout chapter. Then, follow the instructions from Installation to install the ruby-build plugin required for compiling and installing Ruby.
+
+............
+
+4.Install Bundler
+Finally, install Bundler to manage the project gems.
+Install the Ruby distribution used by the application by executing the following commands.
+rbenv install 2.6.3
+rbenv global 2.6.3
+Finally, install Bundler to manage the project gems.
+
+gem install bundler
+
+|||||||||||||||||||||||||||||||||||||||||       ||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Step2 ::  Install and configure Passenger & Nginx ::
+
+2.1 . Install Passeger Packages
+
+ To Install Passenger Packages,executes the Commands Below ::
+
+#(a) Install the PGP key
+
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
+
+#(b) App the APT repository
+
+sudo sh -c 'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger bionic main > /etc/apt/sources.list.d/passenger.list'
+sudo apt-get update
+
+#(c) Install Passenger and Nginx module
+
+sudo apt-get install -y libnginx-mod-http-passenger
+
+#(d) Make sure the configuration files exist
+
+if [ ! -f /etc/nginx/modules-enabled/50-mod-http-passenger.conf ]; then sudo ln -s /usr/share/nginx/modules-available/mod-http-passenger.load /etc/nginx/modules-enabled/50-mod-http-passenger.conf ; fi
+sudo ls /etc/nginx/conf.d/mod-http-passenger.conf
+
+..............................
+
+2.2  Point out passenger to correct version of Ruby 
+
+Now we need to point Passenger to the correct version of Ruby. Open the mod-http-passenger.conf configuration file with Nano.
+
+sudo nano /etc/nginx/conf.d/mod-http-passenger.conf
+Then change the passenger_ruby option in the following way.
+
+passenger_ruby /home/deploy/.rbenv/shims/ruby;
+Save the mod-http-passenger.conf file and close it.
+
+
+2.3  Remove the default Nginx server
+
+Let's remove the default Nginx server ::
+
+sudo rm /etc/nginx/sites-enabled/default
+... and add one for our sample application.
+
+sudo nano /etc/nginx/sites-enabled/sample_rails_app
+In the opened sample_rails_app file, specify the following configuration.
+
+server {
+  listen 80;
+  listen [::]:80;
+
+  server_name _;
+  root /home/deploy/sample_rails_app/current/public;
+  passenger_enabled on;
+  passenger_app_env staging;
+}
+
+2.4 Finally Start the ngix service ::
+
+sudo service nginx start
+
+
+.....................................................................
+
+
+|||||||||||||||||||||||||||||||||||||||||       ||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Step3 ::  Install Capistrano gems ::
+
+3.1 Create Seperate Branch to Deploy the application
+
+First, we'll create a separate branch used to deploy our application. Press Alt+`, select Branches in the invoked popup, and then choose New Branch. In the Create New Branch dialog, specify the branch name (capistrano-deploy in our case) and click Create.
+
+3.2 Add Capistrano Gem :: 
+
+Open the project Gemfile and add the following Capistrano gems.
+
+gem 'capistrano',                 '3.11.2'
+gem 'capistrano-rails',           '1.4.0'
+gem 'capistrano-rbenv',           '2.1.4 '
+gem 'capistrano-passenger',       '0.2.0'
+
+
+|||||||||||||||||||||||||||||||||||||||||       ||||||||||||||||||||||||||||||||||||||||||||||
+
+Step4 ::  Capify the application ::
+
+Q- What do you mean by Capify the Application ::
+
+Capify the application
+Note that Tools | Capistrano | Capify Application executes the cap install command. After running this command, RubyMine creates the run configuration for executing the install task. If necessary, you can customize this configuration to pass specific arguments.
+
+1.Select tools in the capify application ::  
+To capify the application, select Tools | Capistrano | Capify Application from the main menu. The following files will be added to the project.
+Capfile
+config/deploy.rb
+staging.rb and production.rb in the config/environments directory
+
+Note that Tools | Capistrano | Capify Application executes the cap install command. After running this command, RubyMine creates the run configuration for executing the install task. If necessary, you can customize this configuration to pass specific arguments.
+
+2. Open the Capfile and add the following lines to load the required dependencies.
+
+require "capistrano/rails"
+require "capistrano/rbenv"
+require "capistrano/passenger"
+In the same file, specify the following settings for rbenv.
+
+set :rbenv_type, :user
+set :rbenv_ruby, '2.6.3'
+
+3.Before configuring deployment settings, commit and push changes to a remote repository. In our tutorial, it will be the capistrano-deploy branch of the sample Rails application.
+
+4.Open the config/deploy.rb file. Here you need to specify the Git repository details and the deployment path on our web server.
+
+set :application, "sample_rails_app"
+set :repo_url, "https://github.com/JetBrains/sample_rails_app"
+set :branch, "capistrano-deploy"
+set :deploy_to, "/home/deploy/#{fetch :application}"
+append :linked_files, "config/master.key"
+
+5.Finally, open config/deploy/staging.rb and modify it in the following way to point to our web server's address.
+
+server "sample-web-server", user: "deploy", roles: %w{app db web}
+
+|||||||||||||||||||||||||||||||||||||||||       ||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Step5 ::  Provide Custom Crdentials ::
+
+Since we are using the staging configuration for deployment, we need to add the staging environment in our Rails application. Then, we should provide custom credentials.
+
+1.Create the Staging Enviornment::
+Create the staging environment as described in Creating Rails Environments. In our example, the created configuration (config/environments/staging.rb) replicates the development configuration, except the following line.
+
+config.require_master_key = true
+This option specifies that the master key used to decrypt credentials should be available on our web server.
+
+2. Generate the credentials.yml.enc and master.key
+Now we need to generate the encrypted credentials.yml.enc file and master.key for encryption/decryption. Open the local terminal by selecting View | Tool Windows | Terminal from the main menu and execute the following commands.
+
+rails secret
+EDITOR="mine" bin/rails credentials:edit
+The config/master.key and config/credentials.yml.enc files will be generated. Add the config/credentials.yml.enc file to VCS as described in Add files to VCS.
+
+3.Create Custom Task
+Since the config/master.key file should be placed outside VCS, we need to create a custom task to upload this file to our web server. Open the lib/capistrano/tasks directory in the Project view Alt+1 and create a new setup.rake file with the following content.
+
+namespace :deploy do
+  namespace :check do
+    before :linked_files, :set_master_key do
+      on roles(:app), in: :sequence, wait: 10 do
+        unless test("[ -f #{shared_path}/config/master.key ]")
+          upload! 'config/master.key', "#{shared_path}/config/master.key"
+        end
+      end
+    end
+  end
+end
+4.Commit and push changes to the remote repository.
+
+
+|||||||||||||||||||||||||||||||||||||||||       ||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Step6 ::  Deploy your App ::  
+
+After all the steps above, we are ready to deploy our Rails app to the web server.
+
+1.Cap Staging Deploy
+Press Ctrl twice and type cap staging deploy in the invoked popup. Press Enter to start deploying.
+
+cap staging deploy
+
+2.Wait for the process for deploy ready
+Wait until Capistrano makes all the steps required to deploy the application. You can see the progress in the Run tool window Alt+4.
+
+Run tool window: deployment
+
+3.Specify application address ::
+Open the browser and specify the application address. In our case, it will be http://sample-web-server.
+
+Sign up page
+
+|||||||||||||||||||||||||||||||||||||||||       ||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Step7 ::  Capistrano run/debug configuration ::
+
+When you run a Capistano task (for example, install or deploy), RubyMine automatically creates a corresponding Capistrano temporary configuration, which can be saved. If necessary, you can create the Capistrano run/debug configuration manually from the predefined template.
+
+To customize the Capistrano run/debug configuration, do the following:
+
+
+1.OPen the Run/Debug Application
+2.In Run Debug application.
+
+
+
+
+|||||||||||||||||||||||||||||||||||||||||       ||||||||||||||||||||||||||||||||||||||||||||||
+
+

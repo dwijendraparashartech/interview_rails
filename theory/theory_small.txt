@@ -1,0 +1,375 @@
+small_theory ::
+
+
+.......................  .......................  .......................
+
+Rails 7 Features ::
+
+A. Diff bet rails 6 and 7 ::
+
+1. Background Jobs 
+2. Byebug Change :: byebug - debugger 
+3. Association Check :: Check association absence and presence
+4. Ruby Version :: Use rvm 2.7.0 or greater
+5. Importmap :: node and webpacker is not required use importmap - use importmap-rails gem 
+6. Asynchronous Querying ::  load_async(asynchronous query) - Post.load_assync - use multiple queries ::     load_async method
+7. Hotwire ::  turbolink and ujs are replaced by turbo and stimulous ::
+8. Encrypted Database Layer :: 
+9. Assert a Single Record with Sole ::  Call sole or find_sole_by ::
+10.Stream Generated Files from Controller Actions ::
+11.ZeitWork Mode for Rails 7 
+12.Invert Where Method 
+13.Comparison Validator
+14. Named Variants 
+15. Add missing Method 
+16. Association Previously Changed Method 
+17. Disable partial_inserts as default
+18. Active storage pre-defined variants
+19. Add tracking of belongs_to association
+20. PostgreSQL custom enum types
+21. PostgreSQL generated columnsPostgreSQL custom enum types
+22. A new #update_attribute! method was added
+23. db:prepare can load the schema of an empty database.
+24. Specify the parent class of a job with a job generator
+25. A new #stub_const method was added.
+26. ActiveRecord::ConnectionPool is now Fiber-safe
+27. Merged
+
+
+.......................  .......................  .......................
+
+Rails 6 Features ::
+
+B.Diff bet rails 5 and 6 ::
+
+1.Multiple Databases :: Use multiple databases and switching between multiple databases
+2.Bulk :: bulk_insert ,bulk_upser and update_all
+3.Ruby Version :: rvm 2.5.0 or greater
+4.Gems Compatibility :: can check all gems compatiable with rails-6
+5.Default Bundler :: Webpacker 
+6.Parellel Testing :: 
+
+.......................  .......................  .......................
+
+Rails 5 Features :: 
+
+C. Diff bet rails 4 and 5 ::
+
+1. Active Job is here
+2. Action Cable is here
+3. Use Rails instead of Rake 
+4. Rails api only application 
+5. Active Record Improvements.
+6. Ruby 2.2.1+ support only
+7. Advantages of Symbol GC available in Ruby
+8. Remove Array allocation if not needed 
+9. ActiveRecord Improvements ::
+10. Ajax Library :: 
+11. Customized URL
+12. Render From Anywhere
+13. ActionPack Assertions
+14. Keyword Arguments
+15. Module #prepend
+16. Symbol Garbage Collector
+................................
+
+
+.......................  .......................  .......................
+
+
+1.object : an object is a unit of data .that just any piece of data like the number '3' or string "hello".
+
+2.class  : a class is what kind of data it is. ruby seperates everything into classes like like integers,floats and strings.
+
+
+3.method : these are the things that you can do with an object. ex- you can add integers together so + is a method. 
+
+4. what are the mehods to converting between classes :: 
+to_s
+to_i
+to_f
+to_a
+
+
+5.PORO : 
+A basic Ruby object used in a Rails application that is not backed by ActiveRecord, or stored in the database.
+
+6. Monkey Patching : it is the process of dynamic modification of a buggy class by adding existing or overriding the new method.
+
+7.Meta Prorgramming : 
+Metaprogramming is a technique by which you can write code that writes code by itself dynamically at runtime. This means you can define methods and classes during runtime.
+
+8.Observers : 
+Observer is a behavioral design pattern that allows some objects to notify other objects about changes in their state. The Observer pattern provides a way to subscribe and unsubscribe to and from these events for any object that implements a subscriber interface.
+
+
+9. Callbacks: 
+Callbacks are methods that get called at certain moments of an object's life cycle. With callbacks it is possible to write code that will run whenever an Active Record object is created, saved, updated, deleted, validated, or loaded from the database.
+
+
+10. Dynamic typing: 
+Ruby is a dynamically typed language, which means the interpreter tries to infer the data type of variables and object properties at runtime. This generally leads to programs being more dynamic and easier (faster) to code, and the interpreter/compiler loading code faster. 
+
+
+11. Duck typing :
+Duck typing is a style of programming where it allows an object to be passed in to a method that expects a certain type even if it doesn’t inherit from that type. 
+
+In Ruby, the class is never (OK, almost never) the type. Instead, the type of an object is defined more by what that object can do. In Ruby, we call this duck typing. If an object walks like a duck and talks like a duck, then the interpreter is happy to treat it as if it were a duck.
+Unlike static and dynamic typing of variables (and expressions), duck typing is not a language feature, but a design principle which is a combination of dynamic typing and object-oriented programming. Since Ruby is a dynamically typed object-oriented programming language, it is natural for the Ruby community to encourage duck typing.
+
+
+12. Ancestors:
+ancestors is a class method in Ruby that returns an array of classes and modules commonly known as the ancestors chain. The order of the elements in this array are listed in a hierarchy of increasing parent rank. When the . ancestors method is called on the String class, its respective ancestors chain is returned.
+puts String.ancestors
+# => [String, Comparable, Object, Kernel, BasicObject]
+
+The ancestors method will return an array of classes, and modules that instances of the caller will traverse to invoke a method whenever it receives a message.
+
+In this case a Range object will first look ::
+
+A. In its own class 
+B. Then Enumerable 
+C. Object
+D. Kernel 
+E. Finally Ending with Basic Object 
+
+https://medium.com/@dseb/ruby-and-the-method-lookup-path-64b746160446
+
+....................................
+
+Kernel classes are the root of all Ruby classes and Object functionality.
+Object is the base class that all Ruby classes inherit from. 
+The Kernel module is included by the Object class,
+
+
+13. What is Enumerable ?
+Enumerable is a collection of iteration methods, a Ruby module, and a big part of what makes Ruby a great programming language.
+Enumerable includes helpful methods like:  map , select , inject 
+....................................
+
+13. What is the difference between objects and basic objects in ruby ?
+
+BasicObject does not include Kernel (for methods like puts) and BasicObject is outside of the namespace of the standard library so common classes will not be found without a using a full class path. Object mixes in the Kernel module, making the built-in kernel functions globally accessible.
+
+
+
+
+
+14. Method Lookup: 
+When you call a method in Ruby, a lot of things happen behind the scenes. The Ruby interpreter has to know where this method is declared to know what behavior it has to interpret. This process is called the method lookup. It goes through the ancestor chain of an object to see where this method is declared.
+
+....................................
+
+15 : 
+https://www.rubyguides.com/2016/03/enumerable-methods/
+
+What is each_cons :: 
+
+each_cons gives you sub-arrays of size n, so if you have [1,2,3], then each_cons(2) will give you [[1,2], [2,3]].
+
+
+16. 
+Nice examples for methods ::: and enumerables :: 
+
+https://ruby-doc.org/3.2.1/Enumerable.html
+
+
+
+
+
+17. Singleton Method: A method given only to a single object is called a singleton method.
+
+
+
+
+
+....................................
+
+
+14. Eigen Class or SingleTon Class:
+
+
+
+
+
+15.class_eval and instance_eval : 
+The instance_eval method defines a method for one object only, whereas the class_eval method defines it for ALL objects or instances of a class
+
+
+16.self in ruby : 
+
+
+
+
+
+17. Diff between Statically type,dynamically type,strongly,weakly,duck typing language means ?
+
+Statistically Type : A language is statically typed if its type system is verified at compile time. A statically typed language can be either "weakly typed" like C or strongly typed like C#.
+
+Dynamically typed : A dynamically typed language is a language where types are verified at runtime. Many languages have a mixture, of some sort, between static and dynamic typing. 
+
+Variant ::  A variant is a dynamically typed data structure that can hold a range of predefined data types, including strings, integer types, dates, and com objects.
+
+Duck Typing :: 
+
+
+
+18. Ruby Features ::
+
+1. General purpose programming language
+2. Interpreted Programming language 
+3. Object Oriented Programming language
+4. Server Side Scripting language 
+
+
+
+19. Features of Ruby :: 
+
+1.Object Oriented 
+2.Flexibility
+3.Expressive Feature 
+4.Mixins 
+5.Visual Apperance
+6.Dynamic Typing,Duck Typing
+7.Exception Handling
+8.Garbage Colelctor
+9.Portable 
+10.Keywords
+11.Statement Delimiters
+12.Variable Constants.
+13.Naming Conventions
+14.Keyword Arguments
+15.Method Names.
+16.SingleTon Method
+17.Missing Method
+18.Case Sensitive.
+
+
+20. Method Missing :: 
+method_missing is a method in Ruby that intercepts calls to methods that don't exist. It handles any messages that an object can't respond to. 
+
+21.what is eager loading methods : eager_loading, prelude and include and diff ??
+
+
+
+22 - What is struct in ruby ??
+What is a Struct in Ruby? A struct is a built-in Ruby class, it's used to create new classes which produce value objects. A value object is used to store related attributes together. Here's an example: A Point with two coordinates ( x & y ).
+
+asked in one interview ? 
+
+Q. What is the diff between scopes and namespaces in routes ?
+Q. What is shallow nesting in routes ?
+Q. What are the types of Joins in rails ?
+Q. What are the data structures in Rails ?
+Q. What is abstract Controller in Rails ?
+
+Q- what is the difference between preload,include and eager_load in rails?
+Q- how to connect to the multiple database in rails ?
+Q - what is csrf 
+Q - What is diff between XSS and CSRF in rails 
+Q - Ask the question at multiple databases 
+Q - Ask the question at database query :: 
+Q- how to flattern an array without using sort method
+Q- Find the max occurance number in an array
+Q - how to pass the values from parent to child in react 
+Q - 
+
+.......................
+Q. What is the diff between scopes and namespaces in routes ?
+Scope vs Namespace
+The major difference between the two methods is the value of the module, path and as options. While in the scope method the options have no default value and have no effect unless specified, in the namespace method block the scope will automatically add the same value for as, module and path options.
+In a way, namespace is a shorthand for writing a scope with all three options being set to the same value.
+
+For example, in the following snippet, the namespace will add the admin prefix to the path, module and the path helper method:
+
+namespace "admin" do
+  resources :articles
+end
+The above snippet is the same as:
+
+scope "/admin", as: "admin", module: "admin" do
+  resources :articles
+end
+
+
+Both the snippets will generate the routes for the resource articles like so:
+
+Prefix	VERB	URI Pattern	Controller#Action
+admin_articles	GET	/admin/articles	admin/articles#index
+POST	/admin/articles	admin/articles#create
+admin_new_article	GET	/admin/articles/new	admin/articles#new
+admin_edit_article	GET	/admin/articles/:id	admin/articles#edit
+admin_article	GET	/admin/articles/:id	admin/articles#show
+PATCH	/admin/articles/:id	admin/articles#update
+PUT	/admin/articles/:id	admin/articles#update
+DELETE	/admin/articles/:id	admin/articles#destroy
+
+
+.......................
+
+Q - What is shallow nesting in routes in rails ? 
+
+Shallow nesting
+Adding the 'shallow: true' parameter to your nested resource will define routes at the base level, '/songs/', for four of our RESTful routes — show, edit, update and destroy, while leaving the remaining routes — index, new, create— at the nested level. So how is this useful to us?
+
+.......................
+
+What is data structure in ruby ?? 
+
+A data structure is a specific way to organize & access data.
+
+Examples include:
+
+Arrays
+Binary trees
+Hashes
+
+
+.......................
+
+
+Q- What is abstract controller in Rails ?
+
+An additional advantage is that extracting the abstract base controllers can help you clearly separate different types of HTTP interfaces for your Rails app.
+
+
+
+.......................
+
+Q - MEtal Controllers in Rails ??
+
+https://www.akshaykhot.com/metal-controller-in-rails/
+
+.......................
+
+Q - intervew 
+
+1. what is hotwire, how we use it explain it in detail ? 
+2. how cancancan and pundit is diff 
+3. how the poro is useful in writing testcases
+4. what do you use for the rspecs
+5. what are the value objects design patterns
+6. what are the service object
+7. what is sidekiq its functionality
+8. why we write the background jobs which did you use 
+9. what gems you use at initially in application
+10. what are the other features of rails 7 
+11. what is the diff between rails 6 and rails 7 in details we want the answer
+12. what is request response flow in the rails 
+13. what tools you use in background job-sidekiq , delayed job what is the diff bet them
+14. how you improve the speed of the application in rails 
+15. which design pattern you use most 
+16. what is metaprogramming give it with one of the example
+17. how pundit work
+18. take theoro understanding of the gems what is in the mid in the details of that
+19. we want some practical answers
+20. what is the diff between mocs and stubs in testing 
+21. ask about the pundit gem that how it works and all the things related to it 
+22. what problem you face in your gem and all in rails 
+23. how to create the architecture of project from scratch 
+24. prepare any good real life example of metaprogramming and some diff answer practical answers of the metaprogamming 
+25. Array Programs :: Very Good Blog :: 
+
+https://github.com/kumar91gopi/Algorithms-and-Data-Structures-in-Ruby
+
+.................................................................................

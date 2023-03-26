@@ -1,0 +1,437 @@
+gems.txt............
+....................
+Very Good Link :: 
+
+
+1. stripe gem ::  (::Very Good Link ::)
+Links ::  
+https://expertise.jetruby.com/how-to-integrate-stripe-gem-into-rails-app-fb73760b6b9c
+
+https://github.com/stripe/stripe-ruby
+
+A. add gem ::  gem 'stripe'
+
+B.Create develper account in stripe to get the keys access for stripe
+
+
+
+C. Add your secret keys for secrets.yml in stripe gem - 
+secret_key:  	sk_test_Z6fGYzKGwoy7Bhrf5r6BUhMc
+publishable_key: pk_test_b6y9FEhJY9DRriJvWfZPCDxX
+
+
+note - users are the customers in stripe gem so create method assign_customer_id
+
+D. Create the method assign_customer_id  ::
+  def assign_customer_id
+    customer = Stripe::Customer.create(email: email)
+    self.customer_id = customer.id
+  end
+
+E. $  rails g scaffold product name:string price:decimal
+
+F. $  rails g scaffold credit_card digits:string month:integer year:integer
+
+G. $  rails g controller charges
+
+..................................................
+
+
+H. Create user model with methods ::
+
+# app/models/user.rb
+
+class User < ActiveRecord::Base
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+ 
+  has_many :credit_cards, dependent: :destroy
+ 
+  after_commit :assign_customer_id, on: :create
+ 
+  def assign_customer_id
+    customer = Stripe::Customer.create(email: email)
+    self.customer_id = customer.id
+  end
+end
+
+
+..................................................
+
+
+I. Create product  model with methods  ::
+
+class Product < ActiveRecord::Base
+  validates :name,  presence: true, uniqueness: true
+  validates :price, presence: true, numericality: { greater_than: 0 }
+ 
+  def price_in_cents
+    (price * 100).to_i
+  end
+end 
+
+..................................................
+
+J. Create Credit Card model  with methods  ::
+
+# app/services/credit_card_service.rb
+
+class CreditCardService
+  def initialize(user_id, card)
+    @user = User.find(user_id)
+    @card = card
+  end
+ 
+  def create_credit_card
+    customer = Stripe::Customer.retrieve(@user.customer_id)
+    customer.sources.create(source: generate_token).id
+  end
+ 
+  def generate_token
+    Stripe::Token.create(
+      card: {
+        number: @card[:number],
+        exp_month: @card[:month],
+        exp_year: @card[:year],
+        cvc: @card[:cvc]
+      }
+    ).id
+  end
+end
+
+..................................................
+
+K. Create charge   controller with methods  ::
+
+# app/controllers/charges_controller.rb
+
+class ChargesController < ApplicationController
+  before_action :authenticate_user!
+  before_action :find_product
+  
+  def create
+    stripe_card_id =
+      if params[:credit_card].present?
+        CreditCardService.new(current_user.id, card_params).create_credit_card
+      else
+        charge_params[:card_id]
+      end
+  
+    Stripe::Charge.create(
+      customer: current_user.customer_id,
+      source:   stripe_card_id,
+      amount:   @product.price_in_cents,
+      currency: 'usd'
+    )
+  
+    if params[:credit_card].present? && stripe_card_id
+      current_user.credit_cards.create_with(card_params).find_or_create_by(stripe_id: stripe_card_id)
+    end
+  rescue Stripe::CardError => e
+    flash[:error] = e.message
+    redirect_to @product
+  end
+  
+  private
+  
+  def card_params
+    params.require(:credit_card).permit(:number, :month, :year, :cvc)
+  end
+  
+  def charge_params
+    params.require(:charge).permit(:card_id)
+  end
+  
+  def find_product
+    @product = Product.find(params[:product_id])
+  rescue ActiveRecord::RecordNotFound => e
+    flash[:error] = 'Product not found!'
+    redirect_to root_path
+  end
+end
+
+
+..................................................
+
+L. Create credit card services in the services  ::
+
+# app/services/credit_card_service.rb
+
+class CreditCardService
+  def initialize(user_id, card)
+    @user = User.find(user_id)
+    @card = card
+  end
+ 
+  def create_credit_card
+    customer = Stripe::Customer.retrieve(@user.customer_id)
+    customer.sources.create(source: generate_token).id
+  end
+ 
+  def generate_token
+    Stripe::Token.create(
+      card: {
+        number: @card[:number],
+        exp_month: @card[:month],
+        exp_year: @card[:year],
+        cvc: @card[:cvc]
+      }
+    ).id
+  end
+end
+
+..................................................
+
+M. Add a new card to stripe ::
+We use Stripe::Token.create to add a new card to Stripe. 
+
+
+method to add new card to stripe ::
+Stripe::Token.create
+
+method to get details of the existing customer ::
+Stripe::Customer.retrieve
+
+..................................................
+
+N. Edit stripe initializer with Stripe Keys ::
+Edit Stripe initializer with Stripe keys (you can find them in our secrets.yml) and a method that handles Stripe’s webbhoks (in this example we handle charge.success event).
+
+..................................................
+
+
+# config/initializers/stripe.rb
+
+Rails.configuration.stripe = {
+  publishable_key: Rails.application.secrets['stripe']['publishable_key'],
+  secret_key:  	Rails.application.secrets['stripe']['secret_key']
+}
+ 
+Stripe.api_key = Rails.configuration.stripe[:secret_key]
+ 
+StripeEvent.configure do |events|
+  events.subscribe 'charge.succeeded' do |event|
+    # Here you can send notification to user,
+    # change transaction state or whatever you want.
+  end
+end
+
+..................................................
+
+
+O. Create the Routes :: 
+
+
+# config/routes.rb
+
+Rails.application.routes.draw do
+  root to: 'products#index'
+ 
+  devise_for :users
+ 
+  resources :credit_cards
+  resources :products
+  resources :charges
+ 
+  mount StripeEvent::Engine, at: '/payments'
+end
+
+..................................................
+
+
+P. Path to receive the stripe hooks :: 
+
+“StripeEvent::Engine” is the path that receives Stripe’s webhooks.
+
+..................................................
+
+
+# app/views/products/show.html.erb
+
+<p id="notice"><%= notice %></p>
+ 
+<p>
+  <strong>Name:</strong>
+  <%= @product.name %>
+</p>
+ 
+<p>
+  <strong>Price:</strong>
+  <%= number_to_currency(@product.price) %>
+</p>
+ 
+  
+<%= render 'shared/card_and_charge_form', product: @product %>
+ 
+<% if current_user.credit_cards.reject{ |card| card.new_record? }.any? %>
+  <%= render 'shared/charge_form', product: @product %>
+<% end %>
+ 
+<%= link_to 'Edit', edit_product_path(@product) %> |
+<%= link_to 'Back', products_path %>
+
+..................................................
+
+Q:: Create show page of the product :::
+
+
+# app/views/products/show.html.erb
+
+<p id="notice"><%= notice %></p>
+ 
+<p>
+  <strong>Name:</strong>
+  <%= @product.name %>
+</p>
+ 
+<p>
+  <strong>Price:</strong>
+  <%= number_to_currency(@product.price) %>
+</p>
+ 
+  
+<%= render 'shared/card_and_charge_form', product: @product %>
+ 
+<% if current_user.credit_cards.reject{ |card| card.new_record? }.any? %>
+  <%= render 'shared/charge_form', product: @product %>
+<% end %>
+ 
+<%= link_to 'Edit', edit_product_path(@product) %> |
+<%= link_to 'Back', products_path %>
+
+..................................................
+
+R:: Create card and charge form  :::
+
+
+
+# app/views/shared/_card_and_charge_form.html.erb
+
+<%= form_for current_user.credit_cards.new, url: charges_path do |f| %>
+  <%= hidden_field_tag :product_id, product.id %>
+ 
+  <%= render 'shared/form_errors', f: @card if @card.present? %>
+ 
+  <%= f.text_field :number, placeholder: 'Card number' %>
+  <%= f.text_field :month, placeholder: 'Expired month'  %>
+  <%= f.text_field :year, placeholder: 'Expired year'  %>
+  <%= f.text_field :cvc, placeholder: 'CVC'  %>
+ 
+  <%= f.button :submit, data: { 'disable-with' => 'Please wait ...' }  %>
+<% end %>
+
+..................................................
+
+S:: Create  charge form  :::
+
+
+# app/views/shared/_charge_form.html.erb
+
+<%= form_for :charge, url: charges_path do |f| %>
+  <%= hidden_field_tag :product_id, product.id %>
+ 
+  <% if flash[:error].present? %>
+    <p><%= flash[:error] %></p>
+  <% end %>
+ 
+  <%= f.select :card_id, current_user.credit_cards.reject{ |card| card.new_record? }.collect { |card| [card.digits, card.stripe_id] }, { include_blank: false } %>
+  <%= f.button :submit, data: { 'disable-with' => 'Please wait ...' } %>
+<% end %>
+
+..................................................
+
+T ::  Write specs for the stripe ::
+
+1.  For credit card service ::
+
+# spec/services/credit_card_service_spec.rb
+
+require 'stripe_mock'
+ 
+RSpec.describe CreditCardService do
+  let(:user)    	{ create :user }
+  let(:card_params) { attributes_for :credit_card }
+ 
+  before do
+    StripeMock.start
+    user.update(customer_id: Stripe::Customer.create(email: user.email).id)
+  end
+ 
+  after { StripeMock.stop }
+ 
+  context '#create_credit_card' do
+    subject { described_class.new(user.id, card_params).create_credit_card }
+ 
+    it 'creates credit card' do
+      subject
+ 
+      expect(Stripe::Customer.retrieve(user.customer_id).sources.data.last.id).to eq subject
+    end
+  end
+end
+
+2. Add Controller Spec :: 
+
+require 'stripe_mock'
+require 'devise'
+ 
+RSpec.describe ChargesController do
+  let(:product) { create :product }
+  let(:user)	{ create :user }
+  let(:event)   { StripeMock.mock_webhook_event('charge.succeeded') }
+ 
+  before do
+    StripeMock.start
+    user.update(customer_id: Stripe::Customer.create(email: user.email).id)
+    sign_in user
+  end
+ 
+  after { StripeMock.stop }
+ 
+  describe '#create' do
+    context 'with new card' do
+      let(:card_params) { attributes_for :credit_card }
+ 
+      subject { post :create, credit_card: card_params, product_id: product.id }
+ 
+      it 'create card and charge' do
+        expect{ subject }.to change{ CreditCard.count }.by 1
+        expect(response.status).to eq 200
+      end
+    end
+ 
+    context 'with existing card' do
+      let(:card_params)	{ attributes_for :credit_card, user_id: user.id }
+      let(:charge_params)  { user.credit_cards.create(attributes_for :credit_card) }
+      let(:stripe_card_id) { CreditCardService.new(user.id, card_params).create_credit_card }
+      let!(:credit_card)   { CreditCard.create_with(card_params).find_or_create_by(stripe_id: stripe_card_id) }
+ 
+      subject { post :create, charge: { card_id: credit_card.stripe_id }, product_id: product.id }
+ 
+      it 'create charge with existing card' do
+        expect{ subject }.to change{ CreditCard.count }.by 0
+        expect(response.status).to eq 200
+        expect(response).to render_template('create')
+      end
+    end
+  end
+end
+
+
+....................
+....................
+....................
+....................
+.....................
+..................
+
+
+1. Start by my own way ::    Link ::   https://dashboard.stripe.com/register
+stripe account email: dwijendraparashartech@gmail.com , password : shreedas123.
+2. Activate the stripe account: continue activating
+3. Take the test keys __ for testing only :: 
+publishable key :: pk_test_51LDOs2SBczVtC6SofUIt6pfVg8iiQ45tzcMTTYjhBIYMXckl1SA2JvY0eq3iBOYIl1OnMl3bCODVsLn6sADYfZ0200Cqtrkcwh
+secret key :: sk_test_51LDOs2SBczVtC6SoGAP6RGO3DotGBfd0abkyEbX0vcAs2aishoJYDvkklB0jzVcqc2LGHIfawV4zbm1NOjE0pryJ003hTp2J32
+4. add the test api keys to your website ::
+
+

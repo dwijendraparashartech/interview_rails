@@ -1,0 +1,169 @@
+active_admin_Gem.txt
+.............................
+
+Links ::
+
+https://guides.railsgirls.com/backend-with-active-admin
+.............................
+https://www.agiratech.com/installation-and-uses-of-active-admin-in-rails-application
+.............................
+
+What is Active Admin Gem ::
+
+Active Admin is a Ruby on Rails plugin for generating administration style interfaces. It abstracts common business application patterns to make it simple for developers to implement beautiful and elegant interfaces with very little effort.
+
+............................................................
+
+
+
+What are the benefits of adding active - admin ::
+
+1. CRUD operation with any data with ease
+2. Search and filtering
+3. Export data to CSV/JSON/XML
+4. Authentication (via Devise or other)
+5. Easy to management for all data
+6. Data access, persistency and consistency
+
+............................................................
+
+1. gem 'activeadmin' + bundle 
+2. $  rails generate active_admin:install  +  $ rails db:migrate + $ rails s 
+3. http://localhost:3000/admin   with the below credentials :: 
+User: admin@example.com
+Password: password
+
+4. Register your first mode :: 
+rails generate active_admin:resource
+
+5. Creating your first admin account :: 
+$ rails c 
+AdminUser.create(:email => 'admin@railsgirls.com', :password => 'password123', :password_confirmation => 'password123')
+
+6. Accessing your admin panel by the below url :: 
+
+ http://localhost:3000/admin 
+
+7. Add any model to back-end in the Active Admin Model :: 
+
+For idea model :: 
+
+rails generate active_admin:resource Idea
+
+8. Setting up strong parameters :: 
+add these line in the file ::  app/admin/idea.rb ::
+
+ActiveAdmin.register Idea do
+  permit_params :name, :description, :picture
+end
+
+9. Remove ::: Remove “new”, “edit” and “destroy” for users :
+resources :ideas, only: [:show, :index]
+
+10. Don’t forget to remove now broken links from your front-end code such as: 
+
+<%= link_to 'New Idea', new_idea_path %>, 
+<%= link_to 'Edit', edit_idea_path(idea) %>, 
+<%= link_to 'Destroy', idea, method: :delete, data: { confirm: 'Are you sure?' } %>
+
+
+
+11. Some important things we add in the Admin panel ::
+
+1. Customize the Index Page 
+2. Customize the new and Edit Form
+3. Customize the Show Page 
+4. Customize the resource in the general 
+
+..............................................................................
+
+Below links are very very very imp so use them always for the active admin :: 
+Below Imp Links ::
+https://activeadmin.info/3-index-pages.html
+https://activeadmin.info/5-forms.html
+https://activeadmin.info/6-show-pages.html
+https://activeadmin.info/2-resource-customization.html
+https://activeadmin.info/
+https://activeadmin.info/2-resource-customization.html
+
+..............................................................................
+
+
+1. Customize the Index Page 
+index do
+  id_column
+  column :image_title
+  actions
+end
+
+index as: :grid do |product|
+  link_to image_tag(product.image_path), admin_product_path(product)
+end
+
+
+..............................................................................
+
+Imp concept of add admin user with other method ::
+Very Very Important link for active admin concepts clear ::
+
+https://www.agiratech.com/installation-and-uses-of-active-admin-in-rails-application:
+
+..............................................................................
+
+1. gem 'activeadmin'
+2. bundle 
+3. $ rails g active_admin:install --skip-users
+the above generators add the below files :: 
+
+app/admin/dashboard.rb
+app/assets/javascripts/active_admin.js
+app/assets/stylesheets/active_admin.scss
+config/initializers/active_admin.rb
+
+$ rake db:migrate
+$ rake db:seed
+$ rails server
+
+4. Register an existing model with acive admin ::
+rails generate active_admin:resource MyModel
+
+5. Configuration related customization for – /config/initializers/active_admin.rb
+
+
+6. Filters in Active Admin ::
+ActiveAdmin.register Post do
+      filter :false
+end
+
+7. Active admin supports few more filter types ::
+
+:string – A drop down for selecting “Contains”, “Equals”, “Starts with”, “Ends with” and an input for a value.
+:date_range – A start and end date field with calendar inputs
+:numeric – A drop down for selecting “Equal To”, “Greater Than” or “Less Than” and an input for a value.
+:select – A drop down which filters based on a selected item in a collection or all.
+:check_boxes – A list of check boxes users can turn on and off to filter
+By default it will take most relevant filter based on the attribute type, but we can force to change the type by passing :as option.
+Eg – filter :author, as: :check_boxes
+
+
+
+
+
+
+..............................................................................
+
+Other imp link :: very imp link ::
+
+https://www.railscarma.com/blog/technical-articles/active-admin/
+https://www.railscarma.com/blog/technical-articles/active-admin/
+
+
+..............................................................................
+
+Very imp link :: 
+For create the active admin users ::
+
+https://www.sitepoint.com/easy-admin-interfaces-active-admin-rails/
+
+
+..............................................................................

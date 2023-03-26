@@ -1,0 +1,143 @@
+servers.txt
+
+Preferred Links ::
+
+https://www.quora.com/What-web-server-are-you-using-for-Ruby-on-Rails-and-why
+
+
+Questions ::
+
+1. How many types of servers are using in ruby on rails application ??
+
+
+2. What is the diff between - Difference between application server and web server?
+
+
+3. Tell some types of the Web Servers ?  Ans :  Nginx and Apache 
+Nginx and Apache are the two big web servers you'll run into. If the request is for something that doesn't change often, like CSS, JavaScript, or images, your Rails app probably doesn't need to see it. The web server can handle the request itself, without even talking to your app. It'll usually be faster that way.[lp]
+
+4. Tell some types of the application Servers ? Mongrel,Unicorn,Thin,Rainbows,Puma.
+
+Mongrel (which isn't used much anymore), Unicorn, Thin, Rainbows, and Puma.
+
+
+
+5. Types of Servers we used for which ?
+
+
+6. What is the difference between Web Server, Application Server and Database Server ?
+
+
+7. How to create a Server ?
+
+
+8. How to create a Client - Server Connection in Rails ?
+
+
+9. How to Create a Server in Rails ?
+
+
+10. How many Users we create for the server in rails ?
+
+
+
+
+Q 1. ::  How many types of servers are using in ruby on rails application ??
+
+
+Puma |  Unicorn | Thin | Passanger | Webrick
+
+Puma: Puma is a multi-threaded web server that is known for its speed and reliability. It is a good choice for Ruby on Rails because it is designed to handle many concurrent requests, making it suitable for high-traffic applications.
+
+Unicorn: Unicorn is another popular choice for Ruby on Rails. It is a multi-process web server that is known for its ability to handle many clients with a small memory footprint.
+
+Thin: Thin is a lightweight web server that is designed to be fast and efficient. It is a good choice for Ruby on Rails because it can handle multiple requests with a small memory footprint, making it suitable for lower-traffic applications.
+
+Passenger: Passenger is a popular web server for Ruby on Rails that provides a number of features that make it easy to deploy and manage applications. It is known for its ease of use, robustness, and stability.
+
+
+..................................
+
+Q 2. ::  How many types of servers are using in ruby on rails application ??
+
+An application server and a web server serve different purposes in a web application architecture.
+
+A web server is responsible for serving static content, such as HTML pages, images, and stylesheets, to clients over the Internet. When a client requests a web page, the web server retrieves the corresponding file and sends it back to the client. Web servers are typically optimized for serving static content quickly and efficiently. Examples of web servers include Apache, Nginx, and IIS.
+
+An application server, on the other hand, is responsible for executing the dynamic aspects of a web application. This includes processing incoming requests, executing business logic, and generating dynamic responses. The application server typically communicates with a database to retrieve and store data, and it may also interact with other systems, such as caching servers, message brokers, and search engines. Examples of application servers include Ruby on Rails, Django, and Spring.
+
+In a typical web application architecture, a web server sits in front of an application server, acting as a reverse proxy. The web server receives incoming requests from clients, and it forwards them to the application server. The application server generates a dynamic response, which the web server then sends back to the client.
+
+The separation of responsibilities between the web server and the application server allows each component to be optimized for its specific role, and it provides a level of abstraction and isolation that makes it easier to manage and scale the system as a whole.
+
+..................................
+
+Q3.Tell some types of the Web Servers ?
+
+
+
+
+ Puma,Unicorn and Passenger are primarily used for production.
+ WEBrick and Thin lightweight,fast but only for development purposes or in production if the app is small one less no. of concurrent user.
+
+Imp ::
+
+We at Andolasoft used web servers like Puma,Unicorn, WEBrick,Mongrel, Phusion Passenger, Thin with Rails ordered based on preferences.
+Out of the above ones Puma,Unicorn and Passenger are primarily used for production.
+
+WEBrick and Thin lightweight,fast but only for development purposes or in production if the app is small one less no. of concurrent user.
+
+Thin is capable of handling long running requests unlike some other choices without the help of a front facing reverse-proxy solution.
+
+Puma allows you to set the amount of minimum and maximum threads it can use to do its job and also works in a clustered mode whereby you can use forked processes to handle requests concurrently.
+
+Unicorn's master process spawns workers, as per requirements, to serve the requests. This process also monitors the workers in order to prevent memory and process related staggering issues.
+....................................
+
+
+Q4.Tell some types of the Web Servers ?
+
+
+
+
+....................................
+
+
+Q5.Tell some types of the application Servers ?
+
+
+
+....................................
+
+
+
+Q  . What is the difference between Web , Application and Database Server ??
+
+
+Server is anything that is ready to handle requests 24*7 as it’s connected with the internet all the time. I will make it as easy as possible to understand the difference. So, we’ll start with an example.
+
+Let’s say you have a website that gets 1000 visitors a day. And your budget to host your website is $10 per month. In that case, you will get one Shared hosting or tiny VPS to host your website.
+
+Now, You are hosting your website on a single server that responds your Web requests (Apache/Nginx), Processes your data(PHP/Python) and handles your database queries(MySQL/MariaDB/Postgres)
+
+All of these softwares are installed in a same machine and a single machine handles Web requests, Application processes and Database queries. It means, a single machine has Web server, Application server and Database server.
+
+Now, you made progress and your website is getting 1,000,000 visitors per month. In this case, to maximize the uptime and to improve monitoring, you will host your database on different machine and call it a Database server. Because it handles all your database queries.
+
+Now, your traffic is 1.5M visitors every month and you want to maximize your revenue by processing their data which will require too much processing. It will increase load on your server that handles your web requests and application processes.
+
+So, you will host your application on another machine that handle requests from the web server. It will become your Application server and the server that is handling your web requests will become your dedicated Web server.
+
+Now, you have one machine that handles your web requests which is called Web server. You have one server that runs all the processes your application requires in order to work properly which is called your Application server. And you have one server that handles database queries and we call it Database server.
+
+Now you get better monitoring and can find out bugs and unusual activities on each and every part of your web application. To wrap it up, I am going to give you differences in a single lines.
+
+Web Server: Web server handles web requests sent by visitors visiting your website. Web server runs on Apache, Nginx, Microsoft IIS, etc.
+
+Application server: Application server is the server that works between Web server and database server and basically manages, processes the data.
+
+Database Server: Database server handles database queries. It runs on MySQL, PostgreSQL, MariaDB, etc.
+
+So, these are the differences between Web server, Application server and Database server according to me. Let me know if you have any more questions in comment section.
+
+....................................
