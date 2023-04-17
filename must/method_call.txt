@@ -1,0 +1,147 @@
+method_call.txt ::
+
+method_call.ruby
+
+Link ::  https://www.notonlycode.org/12-ways-to-call-a-method-in-ruby/
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Call a method in Ruby ??
+
+1. user.hello()  # the obvious way
+2. user.hello  # skip the brackets
+3. user.send(:hello) # using send 
+4. user.public_send(:hello) # using public send 
+5. user.method(:hello).call # 
+6. user.method(:hello).() # 
+7. user.method(:hello)[] # 
+8. method = user.method(:hello) # 
+method.call()
+9. user.tap(&:hello) #  using tap
+:hello.to_proc.call(user) # using "to_proc" on function name
+10. eval("user.hello") # 
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+12 ways to call a method in Ruby
+A fun little experiment where I try to call the same method in Ruby in as many ways as possible
+
+Gregory Witek
+Gregory Witek
+Aug 13, 2020 • 5 min read
+12 ways to call a method in Ruby
+Today during a chat with one of my colleagues we discussed agreeing on certain ways to write our Python code. We joked about how Python follows this idea of having exactly one way to do each thing (which is usually followed by the language, but not necessarily by libraries). It made me think about Ruby, which has opposite philosophy - everything can be done in many different ways.
+
+This led me to a random idea of checking in how many different ways I can call a single method in Ruby. I ended up with 12 different ways (a couple are a bit of cheating). Prepare for some surprises below - especially the last one is mind blowing!
+
+Warning the code below is not meant for use in production (especially the last 3 examples). It is just my exploration of the language capabilities. Some of the techniques shown are useful in a bunch of cases, but make sure to proceed with caution. Simplicity, security and readability are more important than fancy stuff.
+
+Setup
+For the sake of this experiment, I'm setting up a single class with one method that I'll be calling in many different ways. For the sake of simplicity, the method takes no arguments (although I believe each exaple would work with arguments as well).
+
+The class is called User, it has 1 attribute, name, and the method to be called is hello, which prints a welcome message, including user name.
+
+class User
+  def initialize(name)
+    @name = name
+  end
+
+  def hello
+    puts "Hello, #{@name}!"
+  end
+
+  def method_missing(_)
+    hello
+  end
+end
+
+user = User.new('Gregory')
+
+1: the obvious way
+user.hello()
+Not much to see here - this is how you call methods in plenty of languages. Interesting fact: you can put spaces around the dot: user  .  hello() will work as well.
+
+2: skip the brackets
+user.hello
+Technically it works the same as one before, it just skips brackets, which are optional in Ruby (as long as the code is unambiguous, sometimes they are required due multiple ways in which the code could be parsed)
+
+3-4: using send and public_send
+user.send(:hello)
+user.public_send(:hello)
+In this case we pass the name of the function to be called as an argument to either send or public_send methods that are defined in every class. The difference between send and public_send is that the latter respects the privacy of methods - if you try to call private method, it will raise an error, while send will still call it.
+
+I'm passing the name of the function using symbol type (:hello), but you can use string as well  ("hello").
+
+5-7: using "method" and "call"
+user.method(:hello).call
+user.method(:hello).()
+user.method(:hello)[]
+3 examples, with the 2nd and 3rd being just a syntax sugar, so I put them together. This one is quite interesting. Calling user.method(:hello) returns an instance of Method class. This object can be passed around as any value and can be called any time - it also stores the reference to the object to which it belongs, so if I change the user's name, the new one will be used:
+
+method = user.method(:hello)
+user.set_instance_variable(:@name, "Not Only Code")
+method.call() # prints "Hello, Not Only Code!"
+The .() and [] are equivalent of .call() and can also take arguments - proc.call(1,2,3), proc.(1,2,3) and proc[1,2,3] will all work the same way (the last one won't support named arguments though).
+
+8: using "tap"
+user.tap(&:hello)
+tap is a funny little method that takes a block, passes itself as an argument there and executes the block, and then finally returns itself. I rarely use it, but there are cases where it might be helpful (like side effects when chaining methods).
+
+The &:hello syntax turns the :hello symbol into a Proc instance. You can read more about this syntax on Honeybadger blog - it's really well explained there. Proc is a callable object, just like Method from previous examples.
+
+9: using "to_proc" on function name
+:hello.to_proc.call(user)
+I like this one because it reverses the order - user becomes the argument of the function. What happens under the hood here is very similar to the previous one - the call function of Proc passes the initial symbol to the argument received. Something similar to this:
+
+class Proc
+  def call(obj)
+    obj.send(@symbol_used_to_create_proc)
+  end
+end
+10: using "method_missing"
+class User
+  def method_missing(_)
+    hello
+  end
+end
+
+user.i_am_a_lizard_king # prints "Hello, Gregory!"
+user.i_can_do_everything # prints "Hello, Gregory!"
+This one is a bit of cheating, since still under the hood I use the standard way of calling a method, but I think it's worth putting it here.
+
+method_missing is a method that will be executed when object receives a call to a method that is not defined. It's a powerful function that is one of fundaments of Ruby's flexibility, however it might lead to bugs that take ages to find (and to some perfomance issues), so use it with caution.
+
+11: using "eval"
+eval("user.hello")
+Again, a bit of cheating, since I still use the standard method call syntax, but how it works under the hood is obviously very different. eval passes the string to Ruby parser and interpreter just as if it was a part of my code, and then executes the code. You should definitely, absolutely avoid using it in your code, especially if you allow users to pass some values to your application.
+
+12: using "source" and "instance_eval"
+require 'method_source' # external gem
+
+method_source = user.method(:hello).source
+method_body = method_source.split("\n")[1...-1].join(";")
+user.instance_eval(method_source)
+Ok, the last one - and it's quite crazy, so explantion is a bit longer. It relies on external gem, called method_source, but that's because it would take me too much time and space to write this code here (it's all just Ruby though, no magic!). Let me explain how it works:
+
+user.method(:hello).source returns the source of the method as a string. The output of this is the whole body (including the spaces):
+
+  def hello
+    puts "Hello, #{@name}!"
+  end
+How does method_source gem do it? The Method class in Ruby has a source_location function that returns the location of the method's source code - file and line number where the method starts. Then method_source essentially opens that file, finds the respective line, looks for end that will end the method and returns the code in between.
+
+Now that I have the full code of the method, I want to remove the method definition and the end. In my case I just remove the first and last line, but if the method was a one-liner, it would require some changes. The output of the 2nd line is a string with value: puts "Hello, #{@name}!" .
+
+Finally, I take this string and I pass it to instance_eval of my user object. instance_eval works kind of like eval except that it executes code in different scope. If I call eval it would execute code in scope of my whole file, where the @name variable is not defined. By passing it to instance_eval I ensure it uses the correct values.
+
+Is there more?
+That was a fun little experiment. I'm pretty sure there are some more ways to call methods in Ruby - it's a large and very flexible language. If you know some other ways, let me know, I'm very curious!
+
+And if you enjoy my content, check out my YouTube channel, Not Only Code, where I'm talking about different aspects of working as a software developer.
+
+Discussion about this blog post (and a few other additions to the list) can be found on Ruby Subreddit.
+
+
+........................................................................................................................................................................
+
+

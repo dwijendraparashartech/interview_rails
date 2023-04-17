@@ -1,0 +1,35 @@
+
+Hash Programs ::
+
+p hash = {"key1"=>"1","key2"=>"2"} # create first hash
+p hash1 = {"key11"=>"value11","key22"=>"value22"} # create  another second hash
+p hash.keys()  # create keys from the hash collection
+p hash.values() # create values from the hash collection
+p hash["key1"]  # get value from the hash collection based on specified key
+p hash["key3"]="value3"  # to add items into the hash collection
+p hash.has_key?("key1")  # to check if a hash key exists in Ruby?
+p hash.has_value?("value1")   # to check if a hash value exists in Ruby?
+p hash.store("key4","value4")  # to add elements to a Hash or to store items in a hash 
+p hash.delete("key1")  # delete the item from the hash collection based on a specific key
+p hash.empty?   # to check a hash collection is empty or not
+p hash.has_value?("2")==true  # to check a value is exist in the hash collection or not
+p hash.key("2")   #to get key based on value
+p hash.value?("key2")  
+p hash.invert()   # to print the inverted hash collection
+p hash.length()  # to print the length of hash collection
+p hash.size()   # to print the size of  hash collection
+p hash.key?("102") == true  # given key is exist in the hash collection or not
+p hash.to_a()     #convert the hash collection into the array
+p hash.to_s()                # to convert the hash collection into the string
+p hash.value?("2")==true    # to search an item in the hash collection
+p hash.values()   # to get hash collection values as an array
+p hash.each{} # to iterate elements of a hash collection using each() method
+p hash.each{|key,value| puts value}   # to iterate hash collection and print only values
+p hash.inspect() #  to demonstrate the Hash.inspect() function
+p hash.delete_if{|key, value| value ="2" } #  to demonstrate the delete_if() method
+p hash.sort()   #to get the hash elements as a sorted array from the hash collection
+p hash.replace(hash1)  # to replace the items of hash collection from another hash collection
+p hash.clear()   #  to remove all items from the hash collection
+p hash.merge(hash1)   # to merge two hash collections
+
+

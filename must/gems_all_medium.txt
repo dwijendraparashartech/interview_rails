@@ -1,0 +1,46 @@
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Delayed Job Gem :: 
+Link :: https://www.andolasoft.com/blog/4-simple-steps-to-implement-delayed-job-in-rails.html
+
+
+1. Add gem to the Gemfile + bundle - “delayed_job”,‘delayed_job_active_record’,‘delayed_job_mongoid’
+
+2. Generate related file for Job Run :  $ rails g delayed_job:active_record , 
+adds following files :
+A. /bin/delayed_job  - this script to run the jobs are in queue
+B. Migration file to create a table to store the job with other information such as priority, attempts, handler, last_error, run_at, locked_at, failed_at, locked_by, queue.
+
+3. rails db:migrate
+4. Set the queue_adapter in config/application.rb
+config.active_job.queue_adapter = :delayed_job
+5. If you are using the protected_attributes gem, it must appear before delayed_job in your gemfile.
+6. 
+Setup Delayed::Job config in an initializer (config/initializers/delayed_job_config.rb)
+Delayed::Worker.destroy_failed_jobs = false
+Delayed::Worker.sleep_delay = 60
+Delayed::Worker.max_attempts = 3
+Delayed::Worker.max_run_time = 5.minutes
+Delayed::Worker.read_ahead = 10
+Delayed::Worker.default_queue_name = ‘default’
+Delayed::Worker.delay_jobs = !Rails.env.test?
+Delayed::Worker.raise_signal_exceptions = :term
+Delayed::Worker.logger = Logger.new(File.join(Rails.root, ‘log’, ‘delayed_job.log’))
+
+7. Replace script/delayed_job with bin/delayed_job
+Start up the jobs process
+There are two ways to do this.
+
+If application is in development mode, we would use the below rake task instead.
+rake jobs:work
+If application is in production mode, then it is preferred to use the “delayed_job” script. This demonizes the job process and allows multiple background processes to be spawned.
+
+8.Add task to run in background
+In Controller just call .delay.method(params) on any object and it will be processed in the background.
+...................
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+

@@ -1,8 +1,7 @@
 design_pattern_Example.txt
 
-..................................
 
-
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 Types of Design Patterns ??
 
@@ -34,13 +33,7 @@ Strategy
 Template
 Visitor
 
-
-..................................
-
-
-
-
-
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 1. Service ::
 
@@ -51,6 +44,10 @@ class WebsiteTitleScraper
   end
 end
 The above class is responsible only for scraping the website title.
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
 
 2. Value Object ::
 
@@ -67,6 +64,10 @@ class Email
 end
 The above class is responsible for parsing the email’s value and returning the data related to it.
 
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
 3. Presenter 
 
 This design pattern is responsible for isolating more advanced logic that is used inside the Rails’ views:
@@ -81,6 +82,10 @@ class UserPresenter
   end
 end
 We should keep the views as simple as possible and avoid putting the business logic inside of them. Presenters are a good solution for code isolation that makes the code more testable and readable.
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
 
 4.Decorator ::
 
@@ -111,8 +116,10 @@ end
 In the above example, I used the SimpleDelegator class provided by Ruby by default, but you can also use a gem like Draper that offers additional features.
 
 ..............
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-Builder
+5. Builder
+
 The builder pattern is often also called an adapter. The pattern’s main purpose is to provide a simple way of returning a given class or instance depending on the case. If you are parsing files to get their contents you can create the following builder:
 
 
@@ -153,8 +160,8 @@ Now, if you have the file_path, you can access the rows without worrying about s
 parser = FileParser.build(file_path)
 rows = parser.rows
 
-.....................
 
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 Form object
 The form object pattern was created to make the ActiveRecord’s models thinner. We can often create a given record in multiple places, and each place has its rules regarding the validation rules, etc.
@@ -197,9 +204,8 @@ user.save
 
 Thanks to this pattern, we can keep the User model as simple as possible and put only the logic shared across all places in the application.
 
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-
-.......................
 
 Policy object
 The policy object pattern is useful when you have to check multiple conditions before performing a given action. Let’s assume that we have a bank application, and we would like to check if the user can transfer a given amount of money:
@@ -238,9 +244,11 @@ end
 Of course, the query object doesn’t have to implement only class methods; it can also provide instance methods that can be chained when needed.
 
 
-.........................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-Observer
+
+8. Observer
+
 The observer pattern was supported by Rails out of the box before version 4, and now it’s available as a gem. It allows performing a given action each time an event is called on a model. If you would like to log information each time the new user is created, you can write the following code:
 
 class UserObserver < ActiveRecord::Observer
@@ -250,10 +258,10 @@ class UserObserver < ActiveRecord::Observer
 end
 It is crucial to disable observers when running tests unless you test the observers’ behavior as you can slow down all tests.
 
-.........................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 
-Interactor
+9. Interactor
 The interactor pattern is all about interactions. Interaction is a set of actions performed one by one. When one of the actions is stopped, then other actions should not be performed. Interactions are similar to transactions, as the rollback of previous actions is also possible.
 
 To implement the interactor pattern in the Rails application, you can use a great interactor gem. If you are implementing the process of making a bank transfer, you can create the following structure:
@@ -302,10 +310,10 @@ outcome.message # => "recipient is invalid"
 The interactor pattern is a perfect solution for complex procedures where you would like to have full control over the steps and receive meaningful feedback when one of the procedures fail to execute.
 
 
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-....................
+10. Null object
 
-Null object
 The null object pattern is as simple as the value object as they are based on plain Ruby objects. The idea behind this pattern is to provide a value for non-existing records.
 
 If in your application the user can set its location, and you want to display information when it’s not set, you can achieve it by using the if condition or creating the NullLocation object:

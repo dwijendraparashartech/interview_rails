@@ -1,0 +1,148 @@
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Stripe Gem in Short ::
+
+1.1.Create Stripe Account and activate it
+1.2.Create the Test Keys First: publishable and secret keys
+1.3.Add the api test keys to your website in secrets.yml
+1. Add Gem gem 'stripe' + bundle
+2. Add Secret Keys for secrets.yml
+3. Create assign_customer_id Method
+4. Create Table for Product and Credit
+5. Create the Controller for Charges and add methods 
+6. Add methods to User,Product and Credit Card Model
+7. Create Stripe Charge in the Charges Controller
+8. Create Credit Card Services in the Services
+9. Add a new Card to Stripe
+10.Edit Stripe Initializer with Stripe Keys
+11.Create the Routes 
+12.Path to receive the Stripe Hooks 
+13.Create Show Page of Product
+14.Create Credit Card and Charge Form
+15.Create Charge Form
+16.Write Spec for the Stripe
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+DelayedJob Gem in Short ::
+
+1.Add Delayed Gem + bundle
+2.Generate Script file for Job Run in queue:  /bin/delayed_job
+3.Set the queue adapter in config/application.rb
+4.Replace script/delayed_job with bin/delayed_job
+5.Add task to run in background
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Sidekiq Gem in Short ::
+
+Step 01  :::  Add sidekiq to your Gemfile:  gem 'sidekiq' + bundle 
+Step 02    :::   Then run ‘rails g sidekiq:worker HardWorker’ and auto create worker file
+
+Class Hardworker
+	include Sidekiq::Worker
+	def perform(name,count)
+	#do something
+	end 
+end 
+Step 03   :::   Create a job to be processed asynchronously:
+HardWorker.perform_async('bob,5')
+Step 04 
+Start sidekiq from the root of your Rails application so the jobs will be processed:
+HardWorker.perform_in(5.minutes,'bob',5)
+HardWorker.perform_at(5.minutes.from_now,'bpb',5)
+Step 05 :::  Start sidekiq from the root of your Rails application so the jobs will be processed:
+bundle exec sidekiq
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Pundit Gem in Short ::
+
+Step01 ::  gem 'pundit' + bundle
+Step02 ::  Include Pundit Gem in your Application Controller: include Pundit::Authorization
+Step03 ::  Adding Policies:mkdir app/policies,touch app/policies/article_policy.rb
+Step04 ::  Add and Check Policy Code in the Policy Files 
+Step05 ::  Generate and Manage the Article Controller and Routes 
+Step06 ::  Manage the View,Show,New File of Articles.
+Step07 ::  Update the application controller for the policy errors
+Step08 ::  Create the Pundit Policy with Scopes
+Step09 ::  Add Policy Scopes to controller
+Step09 ::  Extend Policy with Multiple Roles 
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+CanCanCan Gem in Short ::
+
+Step01 ::  gem 'cancancan' + bundle
+Step02 ::  Add User Type and devise gem
+Step03 ::  Add two users in seeds.rb
+Step04 ::  define a method that returns either true or false if current user is admin or not.
+Step05 ::  Create the Ability File :: ability.rb file 
+Step06 ::  Manage Permissions in CanCanCan.
+Step07 ::  check authorization using load_and_authorize_resource to load authorized models into the controller
+Step08 ::  Handle the exception error in application controller
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Devise Gem in Short :: 
+
+Step01 ::  gem 'devise' and $ bundle
+Step02 ::  $ rails g devise:install
+Step03 ::  $ rails g devise User + rails db:migrate
+Step03 ::  $rails g controller Home index
+Step04 ::  get ‘home/index’ ,  root 'home#index’  
+Step05 ::  before_action :authenticate_user!  # application_controller.rb  
+Step06 ::  config.sign_out_via = [:delete, :get]  # devise.rb
+Step07 ::  config.navigational_formats = ['*/*', :html, :turbo_stream] # devise.rb
+Steo08 ::  $ rails generate devise:views
+Step09 ::  $ rails generate devise:views users
+Step10 ::  $ rails generate devise:views -v registrations confirmations
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+CarrierWave Gem in Short ::
+
+1.install carrer wave gem 
+2.generate the uploader:rails g uploader Avatar#upload files:app/uploaders/avatar_uploader.rb
+3.create your column to your model where you want to store the image
+4.open up the model and mount the uplaoder
+5.can upload the different versions of the image
+6.create the config initilizer
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+JWT Gem in Short ::
+
+JSON Web Token Structure?
+
+A JWT is easy to identify. It is three strings separated by (.)
+1) Header   2) Payload    3) Signature
+
+1. Header  ::  The header carries two parts:
+● The type of token
+● The hashing algorithm to use, such as HMAC SHA256 or RSA
+
+2. Payload
+The payload contains information about the user and his or her role. For example, a paid token load may contain an email and password.
+
+3. Signature
+A signature is a unique key that identifies a service that creates a header. In this case, the token signature will be the base-64 encoded version with the secret code of the Rails application (Rails.application.secrets.secret_key_base). Because each app has a unique basic key, this secret key acts as a token signature.
+
+...............................
+
+1.Add jwt Gem
+2.Create encode,decode method and secret_key in json_web_token.rb
+3.Create authorize request function in application_controller.rb
+4.Create authenticate_request function in application_controller.rb in private method
+4.Create User Model and Add Validation
+5.Create User Controller and Add Methods 
+6.Create Authentication Controller and Implement Login Feature
+
+...............................
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+

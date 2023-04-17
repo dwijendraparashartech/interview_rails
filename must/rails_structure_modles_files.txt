@@ -1,0 +1,102 @@
+rails_structure_modles_files.txt ::::::::::::::::::
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+1.ActionMailer: A Library to generate and send mails.
+2.ActionMailBox: A Library to receive emails within a rails application.
+3.ActiveJob: A Framework for declaring jobs and and making them run on variety of queuing backend.
+4.ActionCable: A Framework to integrate Websockets with a Rails Application.
+5.ActiveStorage: A Library to attach cloud and local files to rails application.
+6.ActionText: A Library to attach cloud and local files to Rails Application.
+7.ActiveSupport: A collection of utility classes and standard library extensions that are useful for rails and may also be used independently outside rails.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Some descriptive questions:
+
+1.What are yaml files (.yml files)
+
+YAML file format is a popular choice for storing translations in Ruby on Rails applications. That is not surprising, knowing it has a human-readable syntax, that it supports a wide variety of data types, and that it is suitable for data exchange.
+
+The YAML file has a lot of capabilities. However, we will only focus on those that are relevant in terms of localization for Ruby on Rails applications.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Tell about the files of Rails Projects::
+
+
+1.app/assets/config/manifest.js :: 
+These manifest files contain directives — instructions that tell Sprockets which files to require in order to build a single CSS or JavaScript file. With these directives, Sprockets loads the files specified, processes them if necessary, concatenates them into one single file and then compresses them (if Rails.
+
+2.app/assets/stylesheets/application.css :: 
+
+
+
+
+
+
+channel.rb
+connection.rb
+application_controller.rb
+application_helper.rb
+application.js
+hello_controller.js
+index.js
+application.js
+application_job.rb
+application_mailer.rb
+application_record.rb
+application.html.erb
+mailer.html.erb
+mailer.text.erb
+
+development.rb
+production.rb
+test.rb
+assets.rb
+content_security_policy.rb
+filter_parameter_logging.rb
+inflections.rb
+permissions_policy.rb
+en.yml
+application.rb
+boot.rb
+cabel.yml
+database.yml
+enviornment.rb
+importmap.rb
+puma.rb
+routes.rb
+storage.yml
+404.html
+422.html
+500.html
+favicon.ico
+
+
+
+schema.rb
+seeds.rb
+

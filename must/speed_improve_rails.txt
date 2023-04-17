@@ -1,0 +1,50 @@
+improve_rails_speed.txt :::::::::
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Avoid : 1 ,2 ,3 
+1.Avoid :: Avoid Creating Unnecessary Objects.
+2.Avoid :: Method Interations on large Collections
+3.Avoid :: Two Methods find_by and find_by_all
+4.Beware of Pagination 
+5. Call only What you need 
+6. Correctly Indexing database 
+7. Eager or Preloaded queries 
+8. Eliminate N+1 queries
+9. Minimize the no of database request
+Reduce : 10,11
+10.Reduce:: Reduce Garbage Collections Call Amounts
+11.Reduce:: Reduce size of images and tables 
+12.Render Partials Properly
+13.Select the Right Session Storage 
+14.Turn Caching On 
+15.Try Jruby
+Use :: 16,17,18,19,20
+16.Use Background Processing::Sidekiq
+17.Use Bullet Gem
+18.Use cdn for your Assets
+19.Use proper indexes for full text search 
+20.Use String Method :: << 
+21. Write less code use more gem 
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+How to improve the Ruby Code ?
+1.Avoid Hidden Structures
+2.Avoid While!(not)
+3.Avoid Functions that do not work well with Iterators  
+4.Patch the GC::Garbage Collector
+5.USe Double pipe ||= for your Methods
+6.Use loop do over while true 
+7.Use Hash [...] to create a Hash from a list of Values 
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What are the gems and libraries through which we can improve the quality of the Code ?
+1. Ruby Critic
+2. MetricFu
+3. Attacker 
+4. Rubocop
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+

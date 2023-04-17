@@ -1,0 +1,42 @@
+sidekiq_gem.txt ::::::::::::::::::::::::::::::::::
+
+How to Implement Sidekiq :: A Small description for Interview ::::::::::::::
+
+Step01::  Add sidekiq to your Gemfile:  gem 'sidekiq' + bundle 
+Step02::  Create the Worker File 
+Step03::  Create a job to be processed asynchronously
+Step04::  Start sidekiq from the root of your Rails application so the jobs will be processed
+Step05::  Start sidekiq from the root of your Rails application so the jobs will be processed
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+sidekiq_01  :::  Add sidekiq to your Gemfile:  gem 'sidekiq' + bundle 
+
+sidekiq_02   :::   Then run ‘rails g sidekiq:worker HardWorker’ and auto create worker file
+
+Class Hardworker
+	include Sidekiq::Worker
+	def perform(name,count)
+	#do something
+	end 
+end 
+
+sidekiq_03   :::   Create a job to be processed asynchronously:
+HardWorker.perform_async('bob,5')
+
+
+sidekiq_04 
+Start sidekiq from the root of your Rails application so the jobs will be processed:
+HardWorker.perform_in(5.minutes,'bob',5)
+HardWorker.perform_at(5.minutes.from_now,'bpb',5)
+
+
+sidekiq_05 :::  Start sidekiq from the root of your Rails application so the jobs will be processed:
+ bundle exec sidekiq
+
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||

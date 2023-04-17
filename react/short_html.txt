@@ -1,0 +1,107 @@
+html_short_questions.txt::::::::::::::
+
+1.What is semantic HTML?
+2.What is the layout of HTML?
+3.What is marquee?
+4.What is Image Map?
+5.What is Embed Tag?
+6.What is List in HTML?
+7.What is Anchor Tag in HTML?
+8.What is Tag in HTML?
+9.What are the attributes in HTML?
+10.What is the attr attribute in HTML?
+11.How do you create a hyperlink in HTML?
+12.What is HTML?
+13.How many types of Heading data HTML have?
+14.What HTML tag is used to display the data in tabulur form?
+15.What is the basic structure of HTML template?
+16.What are attributes?
+17.How do you use atrbutes?
+18.What are entitites in HTML?
+19.How can you reduce a page's load time?
+20.What is HTML-5?
+21.What are the advantages of using HTML-5?
+22.What are the semantic elements in HTML-5?
+23.What is an Api for HTML-5?
+24.List of Some Api's in HTML-5?
+25.What is the purpose of <!Doctype HTML>?
+26.What are the Tags? (Tag)
+27.What is the anchor Tag?
+28.Which HTML tag is used to display data in tabulur form?
+29.What is an iFrame?
+30.What are the media element tags introduced by HTML5?
+31.What are the Common Lists used when designing a Webpage?
+32.What is the Canvas element in HTML-5?
+33.What is a style sheet?
+34.How many types of heading can an HTML document support?
+35.Using an anchor tag,how can you open a url into a new tab when clicked?
+36.What is an SVG?
+37.What is a stylesheet?
+38.Heading in HTML-5?
+
+Some other questions of HTML-5?
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+1.Do all HTML Tags have an end element?
+2.What is the formatting in HTML?
+3.What is the difference between HTML elements and tags?
+4.What is Image map?(repeat)
+5.How to Create a nested Web page in HTML?
+6.How to make a picture of background image of a Webpage?
+7.What are the empty elements?
+8.What is the use of Span-Tag?Give an Example?
+9.Which types of video formats are supported by HTML-5?
+10.What is the use of gifcaption tag in HTML-5?
+11.Can you create a multi colored text on web page?
+12.What is the advantage of collapsing white space?
+13.When it is appropriate to use frames?
+14.What is the hierarcgy that is being ollowed when it comes to style sheet?
+15.How to you create text on  a Webpage that allows you to send an email when Clicked?
+16.How are active-links different from normal-links?
+17.What are the different tags to seperate sections of text?
+18.How can we comment in HTML?
+19.What are inline elements and block level elements in HTML?
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+
+
+
+
+
+
+
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+
+
+
+
+
+
+
+
+
+
+

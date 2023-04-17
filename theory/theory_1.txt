@@ -118,6 +118,34 @@ web servers are the servers which can take the request from browser.
 App servers sack the functionalities of web server
 web server handles http requests,where app server serves - through business logic to application through any no of protocol.
 
+Nginx and Apache are the two big web servers you’ll run into.
+
+Difference between Web Server and Application Server
+
+The following table highlights the important differences between a Web Server and an Application Server −
+
+Factor	Web Server	Application Server
+Purpose	A Web Server contains a Web container only.	An Application Server contains a Web Container plus an EJB Container.
+
+Useful	A web server is good in case of static contents like static html pages.	An Application server is relevant in case of dynamic contents like bank websites.
+
+Resource Consumption	A Web server consumes less CPU, Memory resources as compared to an application server.	An Application server utilizes more resources.
+
+Target Environment	A Web Server provides the runtime environment for web applications.	Application servers provide the runtime environment for enterprise applications.
+
+Multithreading support	Multithreading is not supported.	Multithreading is supported.
+Protocol(s) supported	Web Servers support HTTP Protocol.	Application Servers support HTTP as well as RPC/RMI protocols.
+
+Example	Apache Web Server.	WebLogic, JBoss.
+.........................................................................
+
+18.1. Give the Examples of Web Servers and Application Servers ?
+
+Web Servers ::
+Nginx and Apache are the two big web servers you’ll run into.
+App Servers ::
+Unicorn, Thin, Rainbows, and Puma
+
 ...
 19. Diff between #== && #equal ?
 #==    performs general comparison and implements differently across classes.
@@ -125,6 +153,23 @@ equal? is defined basic object and compares object identity
 #equal? show not be overridden in subclasses.
 
 ...
+20.What is Rack ?
+You can think of Rack as a common language that Ruby web frameworks (like Rails) and app servers both speak. Because each side knows the same language, it means Rails can talk to Unicorn and Unicorn to Rails, without having either Rails or Unicorn know anything about the other.
+Rack provides a minimal, modular, and adaptable interface for developing web applications in Ruby. By wrapping HTTP requests and responses in the simplest way possible, it unifies and distills the API for web servers, web frameworks, and software in between (the so-called middleware) into a single method call.
+As per Rack, it provides a minimal interface between web servers that support Ruby and Ruby frameworks.
+Rack application is nothing but the object that responds to the call method.
+
+class Hello
+  def call(env)
+    [200, {"Content-Type" => "text/html"}, ["Hello there!"]]
+  end
+end
+
+run Hello.new
+,,..
+
+
+
 20. Diff bet Dig,Float,Max ?
 Float Class :: is used when the meaning changes constantly
 Dig :: When there is an enormous need for float.

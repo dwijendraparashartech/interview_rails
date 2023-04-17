@@ -1,8 +1,56 @@
 Examples of Ruby :::::::::::::::
 
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-............................
-1.Rspec
+1.Sidekiq Job Example
+2.RSpec Example
+3.Meta programming  Example
+4.Monkey Patching Example
+5.Single table inheritance Example 
+6.Callback Example
+7.Example of Singleton Method 
+8.Example of class_eval
+9.Example of instance_eval
+10.Example of Delegation Method
+11.Example of observer 
+12.Example of Private,Public and Protected Method 
+13.Example of Method Overloading
+14.Example of Method Overriding
+15.Example of has_and_belongs_to_many and has_many_through association
+16.Example of Helper Method in Rails 
+17.Example of Duck Typing in Rails 
+18.Example of Getter Method
+19.Example of Setter Method
+20.Example of Ruby attribute accessor?
+21.Example of attr_accessor method
+22.Example of Defined Method
+23.Example of Operator Overloading
+24.Example of Class and Instance Methods
+25.Example of Example of Attributes :: attr_accessor,attr_getter,attr_accessor  in Rails 
+26.Example of Encapsulation 
+27.Example of Abstraction
+28.Example of has_and_belongs_to_many and has_many_through association 
+29.Understanding of Exception handling through raise-rescue-ensure method
+30.Understanding of Exception handling through throw-catch method 
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- Sidekiq Job Example ::::::::::::::::::::::::::::::::::::::::::::::::::
+
+# inside app/jobs/hello_world_job.rb
+class HelloWorldJob < ApplicationJob
+  queue_as :default
+  def perform(*args)
+    # Simulates a long, time-consuming task
+    sleep 5
+    # Will display current time, milliseconds included
+    p "hello from HelloWorldJob #{Time.now().strftime('%F - %H:%M:%S.%L')}"
+  end
+end
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- RSpec Example  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 Class for which Rspec Write :: 
   class HelloWorld
@@ -21,8 +69,11 @@ Rspec Test Case for this Class ::
    end
   end
 
-............................
-2.Meta programming ::
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- Meta programming  Example  :::::::::::::::::::::::::::::::::::::::::::::::::
+
+
   # before meataprogramming 
 class MyClass
   def red
@@ -48,9 +99,11 @@ class MyClass
     end
   end
 end
-..............................
 
-3. Monkey Patching ::
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q- Monkey Patching Example :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
   class String 
   def reverse 
@@ -58,9 +111,11 @@ end
   end 
   end 
 "Reverse me?".reverse
-..............................
 
-4. Single table inheritance Example :: 
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q- Single table inheritance Example :::::::::::::::::::::::::::::::::::::::::::
 
 rails generate model Expert name gender salary type
 rails db:create db:migrate
@@ -76,9 +131,10 @@ BeardDresser.create(name: "Mike", gender: "male", salary: "9000")
 HairDresser.count   => 1
 BeardDresser.count  => 1
 Expert.count  => 2
-..............................
 
-5.Callback ::
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- Callback Example :::::::::::::::::::::::::::::::::::::::::::
 
 class Subscription < ActiveRecord::Base
    before_create :record_signup
@@ -87,9 +143,10 @@ class Subscription < ActiveRecord::Base
       self.signed_up_on = Date.today
    end
 end
-...............................
 
-6.Example of Singleton Method ::
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- Example of Singleton Method ::
 
 class Stm
   def print
@@ -106,9 +163,10 @@ def o2.print
 end 
 o1.print
 o2.print
-...............................
 
-7. Example of class_eval ::
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- Example of class_eval ::
 
 class_eval can be used to create an instance method
 Developer.class_eval do
@@ -124,9 +182,11 @@ p developer = Developer.new
 
 developer.frontend
 # "inside a method self is: #<Developer:0x2c5d640>"
-...............................
 
-8. Example of instance_eval ::
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q-  Example of instance_eval ::
 There’s one more way to create a class method, and that is by using instance_eval:
 class Developer
 end
@@ -140,9 +200,11 @@ end
 
 Developer.backend
 # "inside a method self is: Developer"
-...............................
 
-9.Delegation :: Delegate Method ::
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- Example of Delegation Method ::
+
 
 Link :: https://medium.com/@pk60905/using-delegate-in-rails-527332da7f96
 Example :: 
@@ -197,9 +259,11 @@ end
 queue_item = QueueItem.first
 queue_item.video_title == queue_item.video.title
 # => true
-...............................
 
-10. Example of observer 
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q- Example of observer 
 
 A. simple email method to send email but our model job is not to send the emails so it breaks the single responsibility principle 
 class User < Activerecord::Base
@@ -223,9 +287,11 @@ class UserObserver < ActiveRecord::Observer
     end
   end
 end
-...............................
 
-11. Example of Private,Public and Protected Method :: 
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q- Example of Private,Public and Protected Method :: 
 
 Public methods enforce no access control -- they can be called in any scope.
 Protected methods are only accessible to other objects of the same class.
@@ -254,9 +320,12 @@ AccessLevel.new.something_interesting
  #=> Protected method.  Sweet!
  #=> NoMethodError: private method ‘private_method’ called for
  #=>  #<AccessLevel:0x898c8>
- ...............................
 
-12.Example of Method Overloading ::
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q- Example of Method Overloading ::
 
 class MethodOverloadingExample
   def display_message(message)
@@ -335,9 +404,11 @@ obj1 = MethodOverloadingExample.new
 obj1.display_message('Welcome to the Ruby World','Chetan Singh')
 $ ruby method_overloading_example.rb
 #Output :: 'Welcome to the Ruby World','Chetan Singh'
-......................
 
-13.Example of Method Overriding::
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q- Example of Method Overriding::
 
 The below example is for the method overriding 
 ..........................
@@ -358,9 +429,8 @@ def display_message
   puts "Welcome to the Ruby World"
 end 
 end 
-....
 
-14. 
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 Example of has_and_belongs_to_many and has_many_through association ::
 has_many_through :
@@ -390,9 +460,10 @@ ruby method_overriding_example.rb
 obj1 = MethodOverridingExample.new
 obj1.display_message
 Output :: Last method will be used because ruby is the interpretd language so it execute the code line by line .
-...
 
-15.Example of Helper Method in Rails :: 
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- Example of Helper Method in Rails :: 
 
 module UsersHelper
   def full_name(user)
@@ -410,9 +481,11 @@ class UsersController < ApplicationController
     end
   end
 end
-................................
 
-16.Example of Duck Typing in Rails ::
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q- Example of Duck Typing in Rails ::
 
 This is the definition from a great author Sandi Metz book POODR.
 
@@ -483,9 +556,10 @@ Goose quack
 Duck swim
 Goose swim
 We achieve the duck typing model here.
-........................................................
 
-17. Example of Getter Method :: 
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- Example of Getter Method :: 
 
 What is a getter method?
 Getter methods help you retrieve the value of an instance variable. If you don’t have a getter method, trying to retrieve a variable is going to result in an error.
@@ -515,9 +589,9 @@ company = Company.new("The Bluth Company")
 p company.name
 # => "The Bluth Company"
 
-........................................................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-18. Example of Setter Method :: 
+Q- Example of Setter Method :: 
 
 What is a setter method?
 Setter methods help us assign new values to our instance variables. Let see what happens if you don’t have a setter method and you try to assign a new value to your instance variable
@@ -554,9 +628,9 @@ end
 company.name = "Dunder Mifflin"
 # => "Dunder Mifflin"
 
-............................................................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-19. What is a Ruby attribute accessor?
+Example of Ruby attribute accessor?
 
 You can see how classes can become quite big with having to define 2 methods for every instance variable. That’s why we have access to 3 build-in Ruby methods:
 
@@ -613,9 +687,9 @@ attr_accessor :name
 attr_reader :id
 
 
-...................................................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-20.Example of attr_accessor method :: 
+Q- Example of attr_accessor method :: 
 
 What is attr_accessor?
 Basically attr_accessor is a shortcut for when you need both attr_reader and attr_writer. It squashes down those two lines into one. Like so.
@@ -630,9 +704,9 @@ end
 
 That is the idiomatic way of doing it. But you don’t have to do it like that. Here’s another one way you could acomplish the same thing.
 
-...................................................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-21. Example of Defined Method :: 
+Q-  Example of Defined Method :: 
 
 The define_method method is used to define methods dynamically in Ruby. It takes the name of the method you want to define as its first argument, and a block for the body of the method.
 
@@ -662,10 +736,10 @@ Ruby has many ways of achieving the same goal but it’s a good idea to follow t
 
 There is also a significant performance advantage to using the attr_reader, attr_writer, and attr_accessor methods. Check out Aaron Patterson’s talk to see why.
 
-...................................................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 
-22. Example of Operator Overloading :: 
+Q-  Example of Operator Overloading :: 
 
 Ruby operator overloading
 Operator overloading is a situation where different operators have different implementations depending on their arguments.
@@ -715,9 +789,9 @@ $ ./operator_overloading.rb
 Circle with radius: 11
 Adding these two circle objects creates a third with a radius of 11.
 
-...................................................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-23. Example of Class and Instance Methods :: 
+Q- Example of Class and Instance Methods :: 
 
 In Ruby, a method provides functionality to an Object. A class method provides functionality to a class itself, while an instance method provides functionality to one instance of a class.
 
@@ -748,9 +822,9 @@ This would yield the following:
 => "Hello, from an instance method"
 We cannot call an instance method on the class itself, and we cannot directly call a class method on an instance.
 
-...................................................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-24.  Example of Example of Attributes :: attr_accessor,attr_getter,attr_accessor  in Rails ::
+Q- Example of Example of Attributes :: attr_accessor,attr_getter,attr_accessor  in Rails ::
 
 Link ::  https://medium.com/rubycademy/a-matter-of-attributes-668bdd29ad29
 
@@ -815,9 +889,10 @@ irb> website.instance_variables
 Exp :  In the previous examples, I told you that the attr_* methods create instance variables. It’s almost true.In effect, the instance variables created by the attr_* methods use thelazy initialization mechanism.This means that the instance variables are only initialized when the setter method is invoked — or when the instance variable is explicitly set within an instance method.In the above example, the @title instance variable is explicitly created in the Website#initialize method.
 So, this instance variable is available in the array returned by the first call to instance_variables.Notice that the @link instance variable is not yet created, despite the call to attr_accessor. This instance variable is only created after the call to the Website#link= method.So, by using the attr_* methods, the instance variable associated to each argument name will only be created when we set a value to it (by using the setter method or by explicitly assign a value to it).
 
-...................................................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-25. Example of Encapsulation :: 
+
+Q. Example of Encapsulation :: 
 
 Encapsulation is defined as the wrapping up of data under a single unit. It is the mechanism that binds together code and the data it manipulates. In a different way, encapsulation is a protective shield that prevents the data from being accessed by the code outside this shield.
 
@@ -873,9 +948,10 @@ Data Hiding:The user will have no idea about the inner implementation of the cla
 Reusability: Encapsulation also improves the re-usability and easy to change with new requirements.
 Testing code is easy:Encapsulated code is easy to test for unit testing.
 
-........................................................................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-26. Example of Abstraction :: 
+
+Q- Example of Abstraction :: 
 
 Abstraction is an object-oriented programming concept, where the essential attributes of something are shown and all the unnecessary ones are hidden. With this approach, one can hide the implementation details and provide only the important interface.
 
@@ -958,9 +1034,9 @@ In Public Method!
 Traceback (most recent call last):
 main.rb:34:in `<main>': private method `privateMethod' called for #<Sample:0x00005573b8da04e0> (NoMethodError)
 
-.......................................................................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-27.Example of has_and_belongs_to_many and has_many_through association ::
+Q- Example of has_and_belongs_to_many and has_many_through association ::
 
 
 has_many_through :
@@ -993,9 +1069,9 @@ class Part < ApplicationRecord
 end
 
 
-......................................................................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-28. Understanding of Exception handling through raise-rescue-ensure method ?
+Q- Understanding of Exception handling through raise-rescue-ensure method ?
 
 begin
  # exception raise
@@ -1020,9 +1096,9 @@ begin
  puts 'ensure block execute'
 end 
 
-......................................................................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-29. Understanding of Exception handling through throw-catch method ?
+Q- Understanding of Exception handling through throw-catch method ?
 
 throw :label_name
     catch :label_name do
@@ -1034,7 +1110,7 @@ throw :label_name
   # matching catch will be executed when throw block encountered
 end 
 
-......................................................................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 30. 
 

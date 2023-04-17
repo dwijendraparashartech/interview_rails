@@ -1,0 +1,70 @@
+rails_caching.txt ::
+
+Q1.What is Caching?
+Caching means to store content generated during the request-response cycle and to reuse it when responding to similar requests.Caching is often the most effective way to boost an application's performance. Through caching, websites running on a single server with a single database can sustain a load of thousands of concurrent users.
+There are 3 types of caching in Rails:
+1.Page Caching. 2.Action Caching.  3.Fragment Caching
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q2.What is Page Caching?
+Page caching is a Rails mechanism which allows the request for a generated page to be fulfilled by the web server (i.e. Apache or NGINX) without having to go through the entire Rails stack. While this is super fast it can't be applied to every situation (such as pages that need authentication). Also, because the web server is serving a file directly from the filesystem you will need to implement cache expiration.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q3.What is Action Caching?
+Page Caching cannot be used for actions that have before filters - for example, pages that require authentication. This is where Action Caching comes in. Action Caching works like Page Caching except the incoming web request hits the Rails stack so that before filters can be run on it before the cache is served. This allows authentication and other restrictions to be run while still serving the result of the output from a cached copy.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q4.What is Fragment Caching?
+Dynamic web applications usually build pages with a variety of components not all of which have the same caching characteristics. When different parts of the page need to be cached and expired separately you can use Fragment Caching.
+Fragment Caching allows a fragment of view logic t
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q5.How to Implement Caching in Rails?
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q6.How to Improve Website Performance using Caching in Rails?
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q7.What are the main Reasons of using Caching?
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q8.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Links :: 
+https://www.javatpoint.com/ruby-on-rails-caching
+
+

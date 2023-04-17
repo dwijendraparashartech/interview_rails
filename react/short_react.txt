@@ -1,0 +1,264 @@
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q1.What is Reconciliation?
+Reconciliation is the process through which React update the Dom,when the Component state change then React calculate that Component should update or not,If React think that the DOM should be updated then Virtual Dom should be created and compared by the Current Dom.In this Virtual DOM should update the Component new State.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q2.What is HOC:Higher Order Component?
+HOC-Hoc is the advance technique of React in which We can reuse the Component logic,Hoc is the function which takes a component and returns a new Component,Hoc is very common and mostly used in third party libraries,if we want to share the behavior in the React Component then Hoc is the best way,If the code is written at many places then we can refactor it in the reusable Hoc.Hoc main feature is to decompose the Component Logic in more simpler functions also which can be reused.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q3.What are the Forwarding Refs?
+This is the technique in which pass a automatically from a component to its children.This technique is not used in all the components.This technique is used in some component libraries specially in reusable component libraries.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q4.What is Profilier or Profilier Api?
+Prolifier measures that how many times Teact render a Application and what is the rendering Cost.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q5.What are Hooks?
+Hooks is the new addition in React 16.8,With Hook Help we can use the state and other React features without writing the Class.We can extract the stateful logic from a component then it can be independently tested or reused so that hooks can be shared inside many  components
+or with communitites.We can not use hooks inside the classes and after using hooks we can use the lifecycle methods also ,like: ComponentDidMount,ComponentDidUpdate,ComponentWillMount
+Hooks are basically of Two types:: 1. Basic Hooks,  2.Advance Hooks.
+1.Basic Hooks - useState(state hook), useEffect(effect hook), useContext(context hook)
+2.Advance Hooks - useReducer,useCallback,useMemo,useRef,useImperativeHandle,useLayoutEffect,
+useDebugValue.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q6.What are Portals?
+Portals is a first class way in which we can render the children inside the Dom Node which exist in the outside hierarchy of the parent Component.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q7.What is Static Type Checking?
+Static type checkers are the flow and typescript which identify some certain problems.These improve the workflow of the developer before run the code with addition of some of the features as like auto completion.so we use the Flow or typescript instead of using prototype at larger basis.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q8.What is Flow?
+Flow is the Static Type Checker for the Javascript Code,this is developed by the facebook and mostly used with React.It tells to define the Varibales,functions and React Component through a special syntax and the mistake will be identified quickly.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q9.What is TypeScript?
+Typescript is the programming language which is developed by the Microsoft,it is the superset of Javascript and it has its own complier which can catch the erros & Bugs in the build-time.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q10.What are Hooks?
+Hooks is the new Addition in the React 16.8
+With the help of Hooks We can use the state and other features even without writing.
+Hooks allow us that we can share this within the components or with community.
+We can not use the hooks inside classes.
+We can use hooks inside the lifecycle methods.
+Hooks types are : State hook,Effect hook,Context Hook
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q11.What is Redux?
+Redux follow the Unidirectional data flow this means that your data or application-data will floowo one way data bindiing and as the application is complex it ishard to red[roduce the new features and if we have not any control at the state and application state.Redux reduce thecode complexity by adding restriction that when and how state will update,State manangement is easy through this way.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q13.What are the expressions for : JSX,CSS,setState
+JSX:{}     CSS: {{}}  SetState: ({})
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q14.What happen when React is npm is > or < 5.1 
+
+npm < 5.1 ::
+npm install -g create-react-app
+create-react-app my-app
+npm start
+
+npm > 5.1 ::
+npx create-react-app my-app
+cd my-app
+npm start
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q15.What do you mean  by Lazy Loading?
+Lazy loading is the new concept in React that tells you load react component lazily through the code splitting without help from any additional libraries.
+Lazy loading is the technique of rendering only needed or critical User interface items first then quickly unrolling the new cirical items later.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q16.What is the Stateless Component?
+Stateless Component is the Component which has not any state it means you cant reach this.state inside it.This component has no any lifecycleWe can not use ComponentDidMount and Other hooks,When Ract render the stateless component then we have only to do MyStatelessComponent and pass props here.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q17.What is the escape Function?
+Escape Function will compute a new String in which certain characters have been replaced by hexadecimal escape sequence.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q18.What is Prop Drilling?
+Prop drilling is the process to get the data to parts of the React-Component-tree,and the context api provide a way to share values between different components,without having to explictly pass a prop through every level.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q19.How to stop re-rendering?
+ShouldComponentUpdate - Method is used to stop re-rendering
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q20.what is useMemo? This is the Hook in ReactJs
+useMemo is the hook in ReactJs in the funtional Component of React that returns a memorize value.In the Computer Science memorization is a concept used in general when we do not re-compute the function with a given argument for the next time as it return the cached result.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q20.what is useReduce?
+useReducer is  used to store and update state just like useState hooks.It accepts a reducer function as the first parameters and the nitial state as the second.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+Q21.What are the styled Components in React ?
+Styled Component is the library for React and ReactNative so component level styles can be use in the application ,that are written with a mixture of javascript and css using a technique called css in js.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q22.What is Lazy is React?
+Lazy is the new function in react that lets you load React Component lazily through code spitting without help from any additional Libraries.Lazy loading is the only technique of rendering only needed or critical User interface items first then quitely enrolling the non-critical-tems.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q23.What are the types of React Components?
+1. Functional Component
+2. Class Component
+3. Higher Order Component
+4. Dumb Component
+5. Smart Component
+6. Presentational Component
+7. Container Component
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q24.What are the Additional Hooks?
+1.useReducer
+2.useCallback
+3.useMemo
+4.useRef
+5.useImperativeHandle
+6.useLayoutEffect
+7.useDebugValue
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q25.What is Webpack in React?
+Webpack is the popular module building system which is build at top of node js ,this is not only handle the combination and minification of javascript and css file,but also other assets such as image files(spriting) through the use of plugins.
+Our project will bundle its own copy of react and react-dom with webpack and ReactJS,Not will be used only for server side rendering ,in this project own copy of React bundle & react dom with webpack and ReactJs.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q26.What is Redux-Saga?
+Redux-Saga is the middleware library is used to allow a redux store to interact with resources outside of itself asynchronously.This includes-making HTTP requests to external services,accessing browser storage,executing executing I/O Operations.Redux-Saga helps to organise these side effects in way way that is easier to manage.
+" Redux Saga is a middleware Lobrary which allows Redux-Stor to its outside resources to interact."
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q27.What is Redux-Thunk?
+Redux Thunk is the middleware which allows action creaters to write instead of an action.Thunk is used to delay - dispatch of an action or to dispatch only if certain condition is met.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q28.What is Diffing?
+Diffing is the algorithm diff of previous and next state and when put the particular data at React Dom then this process is called Reconciliation.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q29.What is the flow of Redux?
+Redux basic idea or concept is that whole application state is put inside a single store.Usually Store is the Javascript Object,there is only one way to fire the applications and after that to write the reducers for that actions which modify that state,entire state transition will put inside the reducers and there is no side effect of ti.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q30.What is Pure Component?
+Pure component is just like the component,only it does not have should component update in it.When props and state are changed then it does not have the comparison of that ,so component rerender whenever component update is call.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q31.How to pass the data without using props?
+With the help of context we pass the data without using props.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q32.What is the WorkFlow of Redux?
+Reset : Allow resetting the state of Store.
+Revert : Roollback to the last
+Sweep : All disabled actions that you might have fired by error will be dispatched.
+Commit : Makes the presence state and initial State.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q33.What is Custom Hook?
+Custom Hook is the function of Javascript,when When we want to share the logic then we take it with the third function.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q34.What is diff between Real Dom and Virutal Dom?
+1.Update : Real Dom update slow and Virual Dom update faster.
+2.Element Update Strategy: Real Dom Create a new Dom if element updates ,Virtual Dom updates the JSX if element updates.
+3.Dom Manipulation: In Real Dom Dom manipulation is very expensive ,In Virtual Dom Dom manuipulation is very easy.
+4.Memory Westage: In Real Dom too much of memory westage is there where in Virtual Dom no memory westage is there.
+5.Update to HTML: In Real Dom update is slow and they directly updates the HTML , where as in Virtual Dom update is fas and thery indirectly updates the HTML.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q35.What is the diff between ES-5 and ES-6?
+1.Varible Define : In ES-5 var keyword is used to define the variables and in ES-6 let and const keyword is used to define the variable.
+2.community Support : In Es-5 Wide Community Support is available where as in Es-6 Lesser Communty support is available.
+3.Time Consuming: ES-5 is time consuming and  
+4.Used : In ES-5 Function and return keyword is used and in ES-6 for...of loops is used.
+5.Used Loop :
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q36.How to use state in the functional Component?
+useStateHook: Functional component
+this.state: Class Component.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q37.What are the useful Websites in React?
+1.htmlcolors.com
+2.joeschimoe.io
+3.tachyons.io - alternate to bootstrap
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q38.What are the Symentic Elements?
+Sementic Elements are those which describes the particular meaning to the browser and the developer.Elements like <form>,<article>,<figure> etc are semantic elements.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Q39.Some Important Points needs to be remember in React?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

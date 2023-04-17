@@ -1,17 +1,4 @@
-kaminari_gem.txt
-......................
-Link :: 
-Very good and detailed gem ::
-https://github.com/kaminari/kaminari
 
-Very basic gem ::
-
-https://medium.com/@waseem.ghafoor/pagination-in-rails-app-with-kaminari-8158f8738f4e
-
-https://github.com/kaminari/kaminari
-
-
-..................................................................
 
 1. include kaminari gem -- gem ‘kaminari’  + bundle 
 
@@ -118,4 +105,38 @@ Paginate Helper Method ::
 This would output several pagination links such as « First ‹ Prev ... 2 3 4 5 6 7 8 9 10 ... Next › Last »
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+......................
+Link :: 
+Very good and detailed gem ::
+https://github.com/kaminari/kaminari
+
+Very basic gem ::
+
+https://medium.com/@waseem.ghafoor/pagination-in-rails-app-with-kaminari-8158f8738f4e
+
+https://github.com/kaminari/kaminari
 

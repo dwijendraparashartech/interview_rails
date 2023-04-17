@@ -1,0 +1,304 @@
+css_short_questions.txt
+
+
+1.What is Javascript?
+2.What are some features of Javascropt?
+3.Who develop javascript and what is its first name?
+4.What are the advantages of Javascript?
+5.What are the disadvantages of Javascript?
+6.How to create an object in javascript?
+7.How to create an array in Javascript?
+8.What is the named function in javascript?
+9.Do We assign the anynchronous function to a variable?
+10.Define an anonymous function?
+11.How can we use the external javascript file?
+12.Is Javascript a case sensitive language?
+13.What are the different data types in javascript?
+14.What is DOM?What is the use of Document Objct?
+15.What is a NaN() function?
+16.What is the strict mode in JS?
+17.How many popupBoxes are present in Javascript?
+18.What we use for debugging in the Javascript?
+19.What is the difference between event.PreventDefault() and event.StopProgagation() methods?
+20.What are the Javascript Callbacks?
+21.What are the Promises in Javascript?
+22.Tell some important points with the Arrow Function?
+23.What is the diff between call methods and apply method?
+24.What is Hosting?
+25.What is IIFE - Immediately Invoked Function Expression?
+26.What is Self Invoking Function?
+27.What is the type operator in Function?
+28.What is Event Delegation?
+29.What is Throattling?
+30.What are Function Generator?
+31.What is Event Buggling?
+32.What is Event Propagation?
+33.What is Currying?
+34.What are Features of ES-6?
+35.What are Iterators?
+36.What is Synchronization and Asychronization?
+37.What is Memorization in Javascript?
+38.How many types of functions are used in Javascript?
+39.What is BOM?
+40.What is Speed Operator in Javascript?
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+1.What is Javascript?
+Javascript is the Scripting Language.This is different from Java.Javascript is the object-based,light-weight,cross-platform-translated-language.This is mostly used in Client-side Validations.The Javascript translator (embeded in the browser) responsible to translate the Javascript Code.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+2.Tell Some Features of Javascript?
+	1.Light-weight 
+	2.Interpreted Programming Language
+	3.Good For Applications which are network-centric.
+	4.Complementry to Java
+	5.Complementry to HTML
+	6.Open Source
+	7.Cross-Platform
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+3. Who develop the Javascript and what is its first name?
+Brendan Eich(Netscape Programmer) in 10 days in near sep-1995.Initially it is called Mocha.After that LiveScript and after all Javascript.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+4.What are the advantages of Javascript?
+	1.Server interaction is very less.
+	2.Visitor gets immediate feedback.
+	3.Interactivity is very High.
+	4.Richer Interfaces
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+5.How to create a Object in JS?
+	1.By Object Literal.
+	2.By Creating an Instance of the Object.
+	3.By Object Constructor.
+	.........................
+	Create a simple code using Object Literals-
+	emp = {id:102,name:"Rahul Kumar",salary:5000}
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+6. How can we create an Array ?
+	1.By Array Literal
+	2.By Creating an instance of an Array
+	3.By using an Array Constructor.
+	.........................
+	var emp = ["Shyam","Vimal","Ratan"]
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+7.What is the named Function in Javascript?
+A Function that is called at the time of definition is called the named function:
+...........................
+function msg()
+{
+	document.write\n("Named fuction");
+}
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+8.Can we assign a anonymous function to a Variable?
+Yes,We can assign the anonymous function to the Variable.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+9.Define Anonymous function?
+The Function which has no name is the anonymous function,these functions declare dynamically at run time using function operator instead of function declaration.Function Operator is more flexible thatn function definition.This is early used in the place of expression.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+10.How can we use a external javascript file?
+We assume that the file name(message.js) place the following script tag inside the head tag.
+<script type="text/javascript" src="message Js"></script>
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+11.Define an Anonymous Function?
+This is the function which has no name,these functions declared dynamically at run-time using function operator instead of function declaration.Function operator is more flexible than an function definition.This is early used in the place of expression.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+12.Is Javascript the Case Sensitive Language?
+Yes Javascript is the case sensitive language.
+var msg= "Javascript is a Case Sensitive language"
+function display(){
+	document.write/n(msg);it will not display the result.
+}
+display();
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+13.What are the different data-types of Javascript:
+1.Primitive Data Types: String,number,boolean,bigint,undefined,null,symbol,typeOf
+2.Non-Primitive Data Types: Object and Array.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+14.What is DOM.What is the use of Document Object?
+DOM is the Document object model,Document Object represent the HTML Document.This is used to access and change the content of the HTML.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+15.What is a isNAN() function?
+The isNAN() function returns true if the Var value is not a number.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+16.How many types of Popup Boxes are present in javascript?
+1.Alert Box.    2.ConfirmBox.     3.PromptBox.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+17.What can we use in the Javascript for Debugging?
+1.Using console.log() method.
+2.Using debugger method.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+18.What is the difference between event.PreventDefault() and event.StopPropagation() methods in JS?
+event.PreventDefault() :: This method is used to prevent the default behaviour of an element.
+event.StopPropagation() :: This method is used to Stop the propagation of an event or stop the event from ocuring in the bubbling or capturing phase.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+19.What are the Javascript Callbacks?
+A Callback is the function which pass as an argument to another function.This callback technique allow one function to call another function.Usually a callback function can run after another function has finished.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+20.What are Promises in Javascript?
+Producing code is the code which takes some time and consuming code is the code which wait for the result.A Promise is a Javascript object which links producing code and consuming code.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+21.Describe some features of Arrow Function?
+
+1.Arrow function has not own this,This is not suited for the Object Methods.
+2.Arrow function is not hoisted means it defines before they used.
+3.Use of const is safer than use of var because a function expression is always a constant value.
+4.We can omit in this only return keyword and curlybraces,functions in a single statement due to this it is more in fashion.
+Syntax:  const(x/y) => {return x*y}
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+22.What is the difference between call and apply method?
+The Call() methods takes arguments seperately.
+The apply() methods take arguments as an array.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+23.What is Hoisting in Javascript?
+In the Javascript variable can be used before its declartion , whereas in other languages variable can be used only after its declaration.In Javascript Hoisting apply only to Variable declaration and Function declaration.Functions which can be defined through the expressions can not hoisting.So in the Javascript Function When we use hoisting then due to function hoisting we can call the Javascript Functions before call them.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+24.What is IIFE-Immediately invoked function expression?
+IIFE is the function expressionthat automaticaly invokes after completion of the definition.The parenthesis() plays an important role in IIFE Pattern.In Javascript parenthesis can not contain statement it can only contain expression.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+25.What are the Self Invoking Functions?
+Function Expression could make Self invoking function.A Self invoking function automatically 
+start without any call,but function declaration can not make self invoke.
+Function Expression - Self Invoking -Yes
+Function Declaration- Self Invoking -No
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+26.What is the type operator in the Function?
+In javascript typeOf operator return function of the functions.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+27.What is Event Delegation?
+In Javscript Event Delegation is the simple technique by which you add a single event handler to a parent element in order to avoid having to add event handlers to mulltiple child elements.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+28.What is throttling?
+Throaattaling is the technique in which no matter the user fires the event,that attached function will be executed once in a given time interval for instance when a user clicks a button , a hallowed function is executed which prints hello world on the console.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+29.What are the function generators?
+Es-6 provides a new way of working with functions and iterators in form of generators(or generator functions).A generator is a function that can stop mid way and then continue from where it stopped.
+In short a generator appears to be a function but it behave like an iterator.
+A Function generator or generator behave lke a iterator and appears like the function.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+30.What is Event Bubbling?
+Event Bubbling is the method of event propagation in the HTML DOM Api,when an event is in an element inside another element, and both elements have registered to handle to that event.In event bubbling the event is first captured and handed by the element and then propagated to outer elements,
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+31.What is Event Propagation?
+Event propagation is a mechanism that defines how event propagates or travel through the DOM tree to arrive at its target and what happened to its afterwards.
+Event propagation is a way to declare the stack of events that are fired in a Web browser.Ex-licking on a tag is the first event that we will fire, but there are other events too.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+What is Currying>
+Currying is a technique of evaluating function with multiple arguments into sequence of functions with single argument.
+In other words instead of taking all arguments at one time,takes the first one and return a new function that takes the second one and return a new function which takes the third one,and so forth until all arguments have been fulfilled.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+What are the Features of ES-6?
+1.Arrows                                                        15.symboles
+2.Classes                                                       16.subclassable builting
+3.Enhanced Object Literals                                      17.promises
+4.Template Strings                                              18.math+no+string+array
+5.Destructuring                                                 19.object api's
+6.default+rest spread                                           20.binary and octal literals
+7.let+const                                                     21.reflect api
+8.iterators+for.of                                              22.tail calls.
+9.generators                                                    
+10.unicodes                                                     
+11.modules                                                      
+12.module loaders                                               
+13.map+set+weekmap+weekset                                      
+14.proxies                                                      
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+What are the Iterators in the functions and in the Javascript?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

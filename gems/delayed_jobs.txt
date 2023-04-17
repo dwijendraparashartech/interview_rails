@@ -1,0 +1,119 @@
+delayed_jobs.txt :::::::::::::::::::::::
+
+Link ::  https://www.andolasoft.com/blog/4-simple-steps-to-implement-delayed-job-in-rails.html
+
+How to Implement DelayedJob :: A Small description for Interview ::::::::::::::
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+1.Add Gem to gemfile ::  “delayed_job”  (with active record) &&   gem ‘delayed_job_mongoid’(with mongoid)
+2.
+
+
+Detailed Steps To Integrate Delayed Job In A Rails Application
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+“delayed_job” supports multiple back-ends for storing the job queue
+
+
+
+/Gemfile.rb
+
+gem ‘delayed_job_active_record’, ‘4.0.3’
+Run “bundle install” to install the “delayed_job” gem
+
+
+Step# 1 ::  Add gem to the Gemfile :: gem “delayed_job” or gem ‘delayed_job_mongoid’
+Step# 2 ::  Generate the related file for the Job run
+Step# 3 ::  Set the queue adapter in job run :: config/application.rb
+Step# 4 ::  Setup Delayed::Job config in an initializer (config/initializers/delayed_job_config.rb)
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Step# 2   ::   Generate the related file for the Job run
+Generate related files required to run the background job by running the following command
+rails g delayed_job:active_record
+It adds following files to the application
+
+A Script named “delayed_job” inside “/bin” folder to run the jobs which are in queue.
+Migration file to create a table to store the job with other information such as priority, attempts, handler, last_error, run_at, locked_at, failed_at, locked_by, queue.
+Run the migration file by using the following command
+
+rails db:migrate
+Set the queue_adapter in config/application.rb
+
+config.active_job.queue_adapter = :delayed_job
+If you are using the protected_attributes gem, it must appear before delayed_job in your gemfile. If your jobs are failing with:
+
+Setup Delayed::Job config in an initializer (config/initializers/delayed_job_config.rb)
+Delayed::Worker.destroy_failed_jobs = false
+Delayed::Worker.sleep_delay = 60
+Delayed::Worker.max_attempts = 3
+Delayed::Worker.max_run_time = 5.minutes
+Delayed::Worker.read_ahead = 10
+Delayed::Worker.default_queue_name = ‘default’
+Delayed::Worker.delay_jobs = !Rails.env.test?
+Delayed::Worker.raise_signal_exceptions = :term
+Delayed::Worker.logger = Logger.new(File.join(Rails.root, ‘log’, ‘delayed_job.log’))
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Step# 3 ::  Replace script/delayed_job with bin/delayed_job
+Start up the jobs process
+There are two ways to do this.
+
+If application is in development mode, we would use the below rake task instead.
+rake jobs:work
+If application is in production mode, then it is preferred to use the “delayed_job” script. This demonizes the job process and allows multiple background processes to be spawned.
+To use this, pursue the following steps
+
+Add gem “daemons” to your Gemfile
+Run bundle install
+Make sure you’ve run rails generate delayed_job
+If you want to just run all available jobs and exit you can use rake jobs:workoff
+Work off queues by setting the QUEUE or QUEUES environment variable.
+QUEUE=tracking rake jobs:work
+QUEUES=mailers,tasks rake jobs:work
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+Step# 4 ::   Add task to run in background
+In Controller just call .delay.method(params) on any object and it will be processed in the background.
+Example:
+
+UsersController before adding to background job
+
+class UsersController < ApplicationController
+   def send_email
+     User.find_each(is_subscribed: true) do |user|
+       NewsMailer.newsletter_mail(user).deliver
+       flash[:notice] = "Mail delivered"
+       redirect_to root_path
+     end
+   end
+end
+ 
+UsersController after adding to background job
+
+
+class UsersController < ApplicationController
+  def send_email
+  User.find_each(is_subscribed: true) do |user|
+    # add .delay method to add it to background process. In case of     mail sending remove the .deliver method to make it work.
+    NewsMailer.delay.newsletter_mail(user)
+    flash[:notice] = "Mail delivered"
+    redirect_to root_path
+    end
+  end
+end
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+

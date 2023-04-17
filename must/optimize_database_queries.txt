@@ -1,0 +1,75 @@
+optimize_database_queries.txt :::
+
+Links ::
+https://blog.appsignal.com/2022/01/26/test-and-optimize-your-ruby-on-rails-database-performance.html
+https://blog.heroku.com/rails-database-optimization
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q - How to Optimize the Database Queries ?
+
+7 Ways to Optimize Ruby on Rails Database Performance
+
+1. Eager Loading for N+1 Queries
+2. Use a Database Index
+3. Use Limits
+4. Use find_each To Load a Large Number of Items
+5. Select Your Required Field Using Pluck
+6. Use Bulk Operations
+7. Use In-Memory Calculation if Needed
+
+3 ways to identify and test database performance issues in Rails by:
+
+Running Explain on ActiveRecord queries
+Measuring key database metrics
+Measuring Rails app performance using AppSignal
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q - How to Optimize the Database Queries ?
+
+1.Identifying Slow Queries ::
+2.Add Indexes to Improve Query Time ::
+3.Adding an Index in Rails ::
+
+
+1.Identifying Slow Queries ::
+
+data.heroku.com provides insight into slow queries that may be impacting the performance of your application. Selecting the database and navigating to the Diagnose tab will display queries for each of these categories:
+
+Most time consuming
+Most frequently invoked
+Slowest execution time
+Slowest I/O
+
+2.Add Indexes to Improve Query Time ::
+3.Adding an Index in Rails ::
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q - How to Optimize the Database Queries ?
+
+1.Eager Loading With `includes` to Avoid n+1 Queries
+2.Use `find_each` When Loading a Large Amount of Records
+3.`Select`ing And `Pluck`-ing Only Attributes We Need
+4. Check existence of record with `exists?` instead of `present?`
+5. Prefer `ActiveRecord::Relation#size` over `ActiveRecord::Calculations#count`
+6. Bulk Delete With `delete_all`
+7. Bulk Creation
+8. Bulk Update
+9. Bullet Gem
+10.Benchmarking your Changes 
+11.Don't Forgot to create Indexes 
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- What is most best Method to speed - up - your Sql Queries ?
+
+Use Bencharking :: In the Benchmarking use pluck instead of Select 
+
+
+
+
+

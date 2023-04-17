@@ -1,0 +1,128 @@
+background_jobs.txt ::
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is the better delayed job or sidekiq ?
+Sidekiq is better 
+performance-wise, Sidekiq beats Delayed Job quite convincingly.
+If performance and long-term maintainability are of importance, Sidekiq is a no-brainer. On the other hand, if running costs are a concern, Delayed Job can help you there.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is Delayed Job,Tell in Detail?
+1.easy to add background applications on heroku
+2.good for runtime cost
+3.known as DJ
+4.used to extract some longer running tasks.
+5.you can reuse methods from your models in background jobs
+6.you can use rescue and many other popular background processing libraries.
+
+This gem is best when you need to extract some longer running actions (e.g. sending newsletters to large number of users) into a background task.You can reuse methods from your models and you can create complex classes for all your background task needs.With delayed_jobs even progress bars are possible in RubyOnRais.
+Delayed Job, also known as DJ, makes it easy to add background tasks to your Rails applications on Heroku. You can also use Resque and many other popular background queueing libraries. Delayed Job uses your database as a queue to process background jobs.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is Sidekiq ?
+Simple, efficient background processing for Ruby. Sidekiq uses threads to handle many jobs at the same time in the same process. It does not require Rails but will integrate tightly with Rails to make background processing dead simple.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+How to Implement Sidekiq in Rails ??
+Step01::  Add sidekiq to your Gemfile:  gem 'sidekiq' + bundle 
+Step02::  Set adapter in config/application.rb:config.active_job.queue_adapter = :sidekiq
+Step02::  Create the Worker File 
+Step03::  Create a job to be processed asynchronously :Create a new file under app/jobs/hello_world_job.rb
+Step04::  Start sidekiq from the root of your Rails application so the jobs will be processed
+Step05:: Call the hello world job from the view:
+post "welcome/trigger_job"# route where any visitor require the helloWorldJob to be triggered
+get "other/job_done"  # where visitor are redirected once job has been called
+Step-6:: Create app/controllers/other_controller.rb
+# inside app/controllers/other_controller.rb
+class OtherController < ApplicationController
+  def job_done
+  end
+end
+Step 07:Create app/views/other/job_done.html.erb
+<!-- inside app/views/other/job_done.html.erb -->
+<h1>Job was called</h1>
+Step08:Now our job is ready to be called from the initial view :
+<%# inside app/views/welcome/index.html.erb %>
+<h1>This is h1 title</h1>
+
+<%= form_with url: welcome_trigger_job_path do |f| %>
+ <%= f.submit 'Launch job' %>
+<% end %>
+Step 08:And the call will happen inside the controller, like this :
+# inside app/controllers/welcome_controller.rb
+class WelcomeController < ApplicationController
+  def trigger_job
+    HelloWorldJob.perform_later
+    redirect_to other_job_done_path
+  end
+end
+Step09.1:  our jobs must be sent from another thread. This is done locally by adding a Procfile.dev file at the root of our project :
+web: bin/rails s
+worker: bundle exec sidekiq -C config/sidekiq.yml
+Step09.2: Add config/sidekiq.yml
+# inside config/sidekiq.yml
+development:
+  :concurrency: 5
+production:
+  :concurrency: 10
+:max_retries: 1
+:queues:
+  - default
+Step10: And finally add the sidekiq initializer here : config/initializers/sidekiq.rb
+# inside config/initializers/sidekiq.rb
+Sidekiq.configure_server do |config|
+  config.redis = { url: ENV.fetch('REDIS_URL', 'redis://localhost:6379/1') }
+end
+Sidekiq.configure_client do |config|
+  config.redis = { url: ENV.fetch('REDIS_URL', 'redis://localhost:6379/1') }
+end
+Step11. Launch local app
+Now it's time to see if everything is going well.
+
+Launch your local server like this :
+
+foreman start -f Procfile.dev
+
+Let's see what is displayed locally :
+
+
+Click on the "Launch job" button, and immediately display logs in your terminal :
+
+Step12: Push Rails and Sidekiq to production
+# heroku is connected
+heroku login  
+heroku create  
+
+# This will modify local files
+echo "web: bundle exec puma -C config/puma.rb" > Procfile  
+echo "worker: bundle exec sidekiq -e production -C config/sidekiq.yml" >> Procfile  
+bundle lock --add-platform x86_64-linux  
+
+# This will modify you heroku app
+heroku addons:create heroku-postgresql:hobby-dev  
+heroku addons:create heroku-redis:hobby-dev
+heroku buildpacks:add heroku/ruby  
+
+git add . && git commit -m 'ready for prod'  
+git push heroku main  
+
+# app works, but worker (for background jobs) is missing
+heroku ps:scale worker=1
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+How to Implement DelayedJob in Rails ??
+
+1.Add gem to gemfile:delayed_job,delayed_job_active_record,delayed_job_mongoid
+2.Generate job run script files - /bin/delayed_job
+3.Create table to store the job with migration + rake db:migrate
+4.Set the queue adaper in config/application.rb
+5.Set up delayed job config in your config/initializers/delayed_job_config.rb
+6.Replace script/delayed_job with bin/delayed_job
+7.Add task to run in the background.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||

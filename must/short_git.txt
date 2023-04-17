@@ -1,0 +1,335 @@
+git.txt
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+0.What is the diff between git rebase and git merge in Rails ?
+
+1. Diff between git pull and git fetch 
+git fetch only downloads new data from a remote repository, but it doesn’t integrate any of the downloaded data into your working files. All it does is provide a view of this data.
+git pull downloads as well as merges the data from a remote repository into your local working files. It may also lead to merge conflicts if your local changes are not yet committed. Use the git stash command to hide your local changes.
+
+1. Diff between git pull and git fetch 
+git pull = git fetch + git merge
+git pull ::  This command pulls new changes from the currently working branch located in the remote central repository.
+git fetch :: This command is also used for a similar purpose but it follows a two step process: 
+1. Pulls all commits and changes from desired branch and stores them in a new branch of the local repository. 
+current
+2. For changes to be reflected in the current / target branch, git fetch should be followed by git merge command.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+2. What is git rebase command 
+The git rebase command allows you to easily change a series of commits, modifying the history of your repository. You can reorder, edit, or squash commits together. Typically, you would use git rebase to: Edit previous commit messages. Combine multiple commits into one.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+3.What has to be run to squash multiple commits (last N) into a single commit?
+Squashing multiple commits to a single one overwrites the history which is why it is recommended to be done using full caution. This step can be done by running the command: git rebase -i HEAD~{{N}} where {{N}} represents the number of commits needed to be squashed.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+4.Can you tell something about git reflog?
+This command tracks every single change made in the repository references (that can be branches or tags) and also maintains the branches/tags log history that was either created locally or checked out. Reference logs such as the commit snapshot of when the branch was created or cloned, checked-out, renamed, or any commits made on the branch are maintained by Git and listed by the ‘reflog’ command.
+
+This recovery of the branch is only possible when the branch was either created locally or checked-out from a remote repository in your local repository for Git to store its reference history logs.
+This command should be executed in the repository that had the lost branch.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+5.How will you resolve conflict in Git?
+Conflicts occur whenever there are multiple people working on the same file across multiple branches. In such cases, git won't be able to resolve it automatically as it is not capable of deciding what changes has to get the precedence.
+Following are the steps are done in order to resolve git conflicts:
+1. Identify the files that have conflicts.
+2. Discuss with members who have worked on the file and ensure that the required changes are done in the file.
+3. Add these files to the staged section by using the git add command.
+4. Commit these changes using the git commit command.
+5. Finally, push the changes to the branch using the git.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+6.How to revert a bad commit which is already pushed?
+There can be cases where we want to revert from the pushed changes and go back to the previous version. To handle this, there are two possible approaches based on the situations:
+
+Approach 1: Fix the bad changes of the files and create a new commit and push to the remote repository. This step is the simplest and most recommended approach to fix bad changes. You can use the command: git commit -m "<message>"
+Approach 2: New commit can be created that reverts changes done in the bad commit. It can be done using git revert <name of bad commit>
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+6. How do you revert a commit that has already been pushed and made public?
+One or more commits can be reverted through the use of git revert. This command, in essence, creates a new commit with patches that cancel out the changes introduced in specific commits. In case the commit that needs to be reverted has already been published or changing the repository history is not an option, git revert can be used to revert commits. Running the following command will revert the last two commits:
+git revert HEAD~2..HEAD
+Alternatively, one can always checkout the state of a particular commit from the past, and commit it anew.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+7.What is the functionality of “git cherry-pick” command?
+This command is used to introduce certain commits from one branch onto another branch within the repository. The most common use case is when we want to forward- or back-port commits from the maintenance branch to the development branch.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+8.Can you tell the differences between git revert and git reset?
+git revert ::
+This command is used for creating a new commit that undoes the changes of the previous commit.
+Using this command adds a new history to the project without modifying the existing history.
+git reset ::
+This command is used for undoing the local changes done in the git repository
+This command operates on the commit history, git index, and the working directory.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+9. One of your teammates accidentally deleted a branch, and has already pushed the changes to the central git repo. There are no other git repos, and none of your other teammates had a local copy. How would you recover this branch?
+Answer :: git reflog
+Check out the latest commit to this branch in the reflog, and then check it out as a new branch.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+10. How can you copy a commit made in one branch to another (e.g. a hot fix commit from released branch to current development branch)?
+You need to use the cherry-pick command. It provides the possibility to play back an existing commit to your current location/branch. So you need to switch to the target branch (e.g. git checkout development) and call git cherry-pick {hash of that commit}.
+In spite of applying the same changes, it will be a new commit with a new hash because the changes are applied to a different destination.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+11. How do you cherry-pick a merge commit?
+Cherry-pick uses a diff to find the difference between branches.
+As a merge commit belongs to a different branch, it has two parents and two changesets.
+For example, if you have merge commt ref 63ad84c, you have to specify -m and use parent 1 as a base:
+git checkout release_branch
+git cherry-pick -m 1 63ad84c
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+12. What is a conflict in git and how can it be resolved?
+A conflict arises when more than one commit that has to be merged has some change in the same place or same line of code. Git will not be able to predict which change should take precedence. This is a git conflict.
+
+To resolve the conflict in git, edit the files to fix the conflicting changes and then add the resolved files by running git add. After that, to commit the repaired merge, run git commit. Git remembers that you are in the middle of a merge, so it sets the parents of the commit correctly.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+13. What is “Staging Area” or “Index” in GIT?
+Before completing the commits, it can be formatted and reviewed in an intermediate area known as ‘Staging Area’ or ‘Index’.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+14.  What is GIT stash?
+GIT stash takes the current state of the working directory and index and puts in on the stack for later and gives you back a clean working directory.  So in case if you are in the middle of something and need to jump over to the other job, and at the same time you don’t want to lose your current edits then you can use GIT stash.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+15.How can you create a repository in Git?
+In Git, to create a repository, create a directory for the project if it does not exist, and then run command “git init”. By running this command .git directory will be created in the project directory, the directory does not need to be empty.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+16. What is ‘head’ in git and how many heads can be created in a repository?
+A ‘head’ is simply a reference to a commit object. In every repository, there is a default head referred as “Master”.  A repository can contain any number of heads.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+17.How can you bring a new feature in the main branch?
+To bring a new feature in the main branch, you can use a command “git merge” or “git pull command”.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+18.To delete a branch what is the command that is used?
+Once your development branch is merged into the main branch, you don’t need
+development branch.  To delete a branch use, the command “git branch –d [head]”.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+19.What is another option for merging in git?
+“Rebasing” is an alternative to merging in git.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+20.What is the function of ‘git rm’?
+To remove the file from the staging area and also off your disk ‘git rm’ is used.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+21.What is the use of ‘git log’?
+To find specific commits in your project history- by author, date, content or history ‘git log’ is used.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+22.What is the function of ‘git reset’?
+The function of ‘Git Reset’ is to reset your index as well as the working directory to the state of your last commit.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+23. How git instaweb is used?
+‘Git Instaweb’ automatically directs a web browser and runs webserver with an interface into your local repository.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+24.How can you fix a broken commit?
+To fix any broken commit, you will use the command “git commit—amend”. By running this command, you can fix the broken commit message in the editor.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+25.Why is it advisable to create an additional commit rather than amending an existing commit?
+ There are couple of reason
+  a)  The amend operation will destroy the state that was previously saved in a commit.  If it’s just the commit message being changed then that’s not an issue.  But if the contents are being amended then chances of eliminating something important remains more.
+  b) Abusing “git commit- amend” can cause a small commit to grow and acquire unrelated changes.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+26.What is ‘bare repository’ in GIT?
+To co-ordinate with the distributed development and developers team, especially when you are working on a project from multiple computers ‘Bare Repository’ is used. A bare repository comprises of a version history of your code.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+27. Name few Git Commands ::
+Command	Function
+git rm [file]	deletes the file from your working directory and stages the deletion.
+git log 	list the version history for the current branch.
+git show [commit]  
+
+shows the metadata and content changes of the specified commit.
+git tag [commitID] 
+
+used to give tags to the specified commit.
+git checkout [branch name]
+
+git checkout -b [branch name]
+
+used to switch from one branch to another.
+creates a new branch and also switches to it.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is Git Bash?
+Git Bash is an application that installs Bash, Git, and a few Bash utilities that are commonly used on a Windows OS. In Git Bash, interaction is possible with Git elements and the repository through different commands.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is tagging in Git?
+Tagging allows developers to mark all the important checkpoints through the course of their projects’ progress. Instead of commit IDs, tag names can be used while commits are checked out and pushed to a remote repo.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is forking in Git?
+A repository copy is called a fork. So, forking allows one to experiment with changes without worrying about the original project. This process is ideal for proposing changes to someone else’s projects.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is the function of ‘git config’?
+
+The ‘Git config’ is a great way to configure our options for the Git installation. Using this command, we can define the repository behavior, preferences and user information.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is cherry-pick in Git?
+Git cherry-pick is a command that allows the picking of arbitrary Git commits by reference and adding them to the HEAD. Cherry-picking is the process of picking a commit from one branch and applying it to another. It helps in undoing changes.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+What is origin in Git?
+Origin refers to the remote repository that a project was originally cloned from and is used instead of the original repository’s URL. This allows for easier referencing.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+What is the git push command?
+The git push command is applied for uploading content to a remote repository from a local repository. Pushing can overwrite changes, so it should be used with caution.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is the git pull command?
+The git pull command is for fetching and downloading content from a remote repository and integrating it with a local repository.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+ Explain git checkout in Git.
+
+ Git checkout allows for the switching of the HEAD. It can be used to restore the historic versions of files as well. The command operates upon files, commits, and branches.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+ What does git rebase do?
+ Rebasing is the reapplying of commits on top of another base trip. A sequence of commits is applied from distinct branches into the final commit. It is a linear process of merging and an alternative to the git merge command. Rebasing makes it seem like one has created a branch from a different commit.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||s
+
+What is revert in Git?
+The git revert command is a forward-moving undo operation. It is a safe way to undo changes as it will create a new commit that inverses the changes instead of deleting or orphaning commits in the commit history.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||s
+
+What is the difference between resetting and reverting?
+While git reset changes the state of the branch to a previous one by removing all of the states after the desired commit, git revert does it through the creation of new reverting commits and keeping the original one intact.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||s
+
+What is the difference between ‘git remote’ and ‘git clone’?
+Git remote adds a reference to a remote repository for further tracking. Git clone, like its name, clones an existing remote repository and builds a new one.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||s
+
+How are fork, branch, and clone different from each other?
+Forking creates a copy of the original repository, and it remains in the GitHub account. Whereas, in cloning, the repository is copied to the local machine using Git. Forking is used to propose changes to the repository owners. In cloning, the changes are directly pushed to the original repository, provided the user has write access. A branch occurs within a repository and is a way to keep developing and modifying the software without affecting the main project.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||s
+
+What is the difference between git reflog and log?
+The git log is a public record of the commit history for a branch. Reflog, on the other hand, is a private one of the repository’s local commits.
+
+Unlike reflog, the git log is a part of the Git repository and is replicated after a push, fetch, or pull. A developer cannot access a local repository’s reflog without having access to the computer where it is located.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||s
+
+What is GIT stash drop?
+When we are finished with working on the stashed item or want to remove the list, we can use the Git stash drop. This will ensure that the item that is last added by default or any particular item can be removed from the argument.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+How to identify if a certain branch has been merged into master?
+Git branch –merged master – shows all branches that are merged into master
+
+Git branch – merged – shows all branches that are merged into the head
+
+Git branch – no-merged –shows all the branches that are not merged
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+What are the constituents of the commit object contain?
+the state of a project at a given point of time is contained in a set of files
+Parent object commit references
+A 40-character string that uniquely identifies the commit object called a SHAI name
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is the regular way for branching in GIT?
+The best way to create a branch in GIT is to have one ‘main’ branch and then create another branch for implementing the changes that we want to make. This is extremely useful when there are a large number of developers working on a single project.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What do you understand by the term ‘Version Control System’?
+A version control system (VCS) records all the changes made to a file or set of data, so a specific version may be called later if needed.
+
+This helps ensure that all team members are working on the latest version of the file
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+How to change any older commit messages?
+You can change the most recent commit message with the git commit —amend command.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+How to handle huge binary files in Git?
+Git LFS is a Git extension for dealing with large and binary files in a separate Git repository.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+What exactly is git cherry-pick?
+A command typically used to move specific commits from one branch of a repository to another.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+

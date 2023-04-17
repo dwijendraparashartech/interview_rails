@@ -27,6 +27,7 @@ Single file upload through the carrier wave ::
 
 1.
 $ gem install carrierwave
+gem 'carrierwave', '>= 3.0.0.beta', '< 4.0' + bundle 
 
 2. Getting uploader :: 
 rails generate uploader Avatar

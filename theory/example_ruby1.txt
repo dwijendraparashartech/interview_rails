@@ -3,13 +3,39 @@ programs1.txt ::
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 
-1. Find Maximum occurance items in an array   ::
-pets = [1,2,3,4,2,10,2,10,10,10,10]
-puts pets.max_by {|i| pets.count(i)}
+# Find Maximum occurance items in an array   ::
+
+p array = [1,2,3,4,2,10,2,10,10,10,10]
+p array.max_by {|i| array.count(i)}
+
+#1.2 Find the occurances of items in an Array ::
+p array = [1,2,2,2,2,1,1,4,3]
+p array.select{|i| array.count(i)>1}.uniq
+
 
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-2. Find whether two array elements are match or not (order does not matter) ::
+# Reverse a String without Reverse Method ::
+
+str = 'dlrow olleh'
+rev = ''
+for i in 1..str.length
+    rev += str[str.length-i]
+end 
+p rev
+
+str = '9876 54321'
+rev = ''
+for i in 1..str.length
+rev += str[str.length-i]
+end 
+p rev
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+# Find whether two array elements are match or not (order does not matter) ::
+
 p a = [1,2,3,2,2]
 p b = [1,3,2,2,2]
 p a.sort == b.sort
@@ -22,12 +48,11 @@ puts c.sort == d.sort
 
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-
-3.  Find the duplicate items in an array ::
+#  Find the duplicate items in an array ::
 array = [1,2,1,3,5,4,4,5,5]
 p array.select{|e| array.count(e)>1}.uniq
 
-OR
+#OR
 
 def find_duplicates(array)
   duplicates = []
@@ -41,7 +66,7 @@ p find_duplicates([1, 2, 3, 1, 5, 6, 7, 8, 5, 2]) #=> [1, 5, 2]
 
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-4. Write the Routes for below code  for comments and blk_upload ::
+# Write the Routes for below code  for comments and bulk_upload ::
   resources :posts do
       member do
         get 'comments'
@@ -53,12 +78,25 @@ p find_duplicates([1, 2, 3, 1, 5, 6, 7, 8, 5, 2]) #=> [1, 5, 2]
 
 Ans ::
 Route for Bulk Upload ::   POST  /posts/bulk_upload
-Route for Comments ::      /posts/:id/comments
+Route for Comments ::      GET  /posts/:id/comments
+
+All Routes will Make :: 
+
+Using the resource method to define routes will automatically generate routes for the standard seven restful actions:
+
+GET /posts
+POST /posts
+GET /posts/new
+GET /posts/:id/edit
+GET /posts/:id
+PATCH/PUT /posts/:id
+DELETE /posts/:id
+Note that Rails also supports the (relatively) new URL verb PATCH for partial updates to records. (In theory, a PUT request should only be valid if the entire record is included in the request.)
 
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-
 5. use metaprogramming to refactor these methods
+
 def admin?
   role ==  'admin'
 end
@@ -76,13 +114,12 @@ ROLE.each do |user_role|
     role == user_role
   end 
 end 
+
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 
 6. Explain this ruby idiom: a ||= b
-Mid 
-Top 84 Ruby Interview Questions  Ruby  84  
-Answer
+
 Is it a common idiom that strong ruby developers will use all the time.
 
 # a = b when a == false
@@ -112,19 +149,20 @@ ActiveRecord::Base.establish_connection({
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 
-8. Ques Type ::  Find the highest value in an array of hashes in Ruby
-Method ::  You can use max_bymethod
-Link ::  https://stackoverflow.com/questions/39581381/
+#8. Ques Type ::  Find the highest value in an array of hashes in Ruby
+#Method ::  You can use max_bymethod
+#Link ::  https://stackoverflow.com/questions/39581381/
 
-find users where the score is more than 100
+#find users where the score is more than 100
 array = [
   { name: 'Dan', score: 110 },
   { name: 'Mike', score: 57 },
   { name: 'Jill', score: 120 }
 ]
 
-Ans ::
+#Ans ::
 array.max_by{|k| k[:score] }
+#output  {:name=>"Jill", :score=>120}
 
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 

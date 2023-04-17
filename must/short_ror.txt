@@ -1,0 +1,246 @@
+ror_short_questions.txt
+
+What is the difference between helper,serializer,decorator and presenter design pattern?
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+What is the flow of you for agile methodology?
+The Agile process flow includes concept, initiation, iteration or construction, release, production, and retirement, as described below: Concept: Envision and prioritize projects. Inception: Identify team members, appointment of funds, and discussion of initial environments and requirements.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is dup method in Rails ?
+Dup::   an_object. Produces a shallow copy of obj—the instance variables of obj are copied, but not the objects they reference. dup copies the tainted state of obj. This method may have class-specific behavior. If so, that behavior will be documented under the # initialize_copy method of the class.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is clone method in Rails?
+clone(freeze: true) → an_object. Produces a shallow copy of obj—the instance variables of obj are copied, but not the objects they reference. clone copies the frozen (unless :freeze keyword argument is given with a false value) and tainted state of obj.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is indexing ?how to identify the indexing in Rails ?
+Indexing :: An index is used to speed up the performance of queries on a database.Rails allows us to create index on a database column by means of a migration. By default, the sort order for the index is ascending. But consider the case where we are fetching reports from the database.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is caching?
+Caching means to store content generated during the request-response cycle and to reuse it when responding to similar requests.Caching is often the most effective way to boost an application's performance. Through caching, websites running on a single server with a single database can sustain a load of thousands of concurrent users.
+There are 3 types of caching in Rails:
+1.Page Caching. 2.Action Caching.  3.Fragment Caching
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is Page Caching?
+Page caching is a Rails mechanism which allows the request for a generated page to be fulfilled by the web server (i.e. Apache or NGINX) without having to go through the entire Rails stack. While this is super fast it can't be applied to every situation (such as pages that need authentication).
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is Action Caching?
+Action Caching works like Page Caching except the incoming web request hits the Rails stack so that before filters can be run on it before the cache is served. This allows authentication and other restrictions to be run while still serving the result of the output from a cached copy.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is Fragment Caching?
+Dynamic web applications usually build pages with a variety of components not all of which have the same caching characteristics. When different parts of the page need to be cached and expired separately you can use Fragment Caching.
+
+Fragment Caching allows a fragment of view logic to be wrapped in a cache block and served out of the cache store when the next request comes in
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is Russian Doll Caching?
+You may want to nest cached fragments inside other cached fragments. This is called Russian doll caching.
+The advantage of Russian doll caching is that if a single product is updated, all the other inner fragments can be reused when regenerating the outer fragment.
+As explained in the previous section, a cached file will expire if the value of updated_at changes for a record on which the cached file directly depends. However, this will not expire any cache the fragment is nested within.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Shared Partial Caching?
+It is possible to share partials and associated caching between files with different mime types. For example shared partial caching allows template writers to share a partial between HTML and JavaScript files. When templates are collected in the template resolver file paths they only include the template language extension and not the mime type. Because of this templates can be used for multiple mime types. Both HTML and JavaScript requests will respond to the following code:
+render(partial: 'hotels/hotel', collection: @hotels, cached: true)
+Copy
+Will load a file named hotels/hotel.erb.
+Another option is to include the full filename of the partial to render.
+render(partial: 'hotels/hotel.html.erb', collection: @hotels, cached: true)
+Copy
+Will load a file named hotels/hotel.html.erb in any file mime type, for example you could include this partial in a JavaScript file.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+How to Implement Caching in Rails?
+Rails provides three methods to deal with the cache:  read, write, and fetch.
+All of them take a cache "key" which is how we look up the value: 
+> Rails.cache.write("my-cache-key", 123)
+> Rails.cache.read("my-cache-key")
+=> 123
+> Rails.cache.read("key-not-written")
+=> nil
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+How to Improve Website Performance using Caching in Rails?
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- what are all String default methods used in Ruby?
+"string".chars
+.join(', ')
+"abcdef".count("a-c", "c-f")
+"str".reverse
+"hEllo wOrlD".include?("w") 
+"Red, Red and Blue".gsub("Red", "Orange") 
+"Red, Red and Blue".sub("Red", "Orange")  #> "Orange, Red and Blue"
+"There Is No Spoon".split  # ["There", "Is", "No", "Spoon"]
+" hEllo WOrlD \n\t\v\r ".strip 
+"...hello...world...".chomp(".")	
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- what are all Array default methods used in Ruby?
+.length
+.first
+.last
+.take
+.drop
+.array index method #> array[2]
+.pop
+.shift
+.push
+.unshift
+.delete
+.delete_at
+.reverse
+.select
+.include?
+join
+.each
+.map
+.unique 
+.concat
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- what are all Hash default methods used in Ruby?
+
+color = {   
+    "Rose" => "red",   
+    "Lily" => "purple",   
+    "Marigold" => "yellow",   
+    "Jasmine" => "white"   
+  }   
+  puts color['Rose']   
+
+    color.each do |key, value|   
+  puts "#{key} color is #{value}"   
+ end  
+
+ Ruby Hash Methods
+A Ruby hash has many methods. Some are public class methods and some public instance methods.
+
+Public Class Methods
+Method	Description
+Hash[object]	Create a new hash with given objects.
+new(obj)	Return a new empty hash.
+try_convert(obj)	Try to convert obj into hash.
+Public Instance Methods
+Method	Description
+hsh==other_hash	Two hashes are equal if they contain same key and value pair.
+hsh[key]	Retrieve value from the respective key.
+hsh[key] = value	Associates new value to the given key.
+assoc(obj)	Compare obj in the hash.
+clear	Remove all key value pair from hash.
+compare_by_identity	Compare hash keys by their identity.
+compare_by_identity?	Return true if hash compare its keys by their identity.
+default(key=nil)	Return default value.
+default = obj
+Sets the default value.
+delete(key)	Delete key value pair.
+each	Call block once for each key in hash.
+empty?	Return true if hash contains no key value pair.
+eql>(other)	Return true if hash and other both have same content
+fetch(key[, default])
+Return value from hash for a given key.
+flatten	Return a new array that is a one-dimensional flattening of this hash.
+has_key?(key)	Return true if given key is present in hash.
+has_value?(value)	Return true if given value is present in hash for a key.
+include?(key)	Return true if given key is present in hash.
+to_s/ inspect
+Return content of hash as string.
+
+defaults    = { a: 1, b: 2, c: 3 }
+preferences = { c: 4 }
+defaults.merge!(preferences)
+
+{ b: 1, a: 2 }.sort
+{ c: 3, b: 1, a: 2 }.sort_by(&:last)
+
+
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is the difference between Web Server and Application Server?
+1.Protocol Support:
+Web server only support HTTP and HTTPS protocol.
+Application server supports IIP,RMI prootocol also.
+
+2.Use of Resources:
+Web Server use least resources
+Application Server use max Business resources
+
+3.Scale:
+Web Server are used at medium scale.
+Application Server used at big scale.
+
+4.Content:
+Web server store and give the Static web content 
+Application Server store and give the Business logic.
+
+Main Diff ::
+A Web Server is a common subset of an application server.A web server delivers static Web Content- e.g. HTML Pages,files,images,video- primarily in response to hypertext transfer protocol(HTTP) requests from a web browser.
+
+
+
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What are different types of Variables?
+
+1.Local : Available Inside the Method
+2.Instance : Available Inside the Object
+3.Class : Available Inside the Class and across Objects
+4.Global : Available Across Classes.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- What is the diff between Relational and NonRelational Database?
+The fundamental difference between relational and non-relational databases has something to do with the way data is organized. In a relational database, the data is organized into tables while in a non-relational database, the data is not organized into tables.
+
+1.Relational: Also Called SQL Tables
+NonRelational: Also Called NonSQL Tables
+
+2.Relational: Tables can be joined together 
+NonRelational: There is no joint concept
+
+3.Relational: Use SQL
+NonRelational: Do not Use SQL
+
+4.Example Relational:MYSQL,SQLite3,PostgreSql
+Example NonRelational:Cassendra,Hbase,MongoDB,Neo4
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+3.what are the variables we use in the jwt 
+4.What is jwt in Rails?
+5.how to create a jwt token?
+6.what are the parameters in jwt token?
+7.Which type of hashing algorithm we use in ?
+8.What are the security you use in your api?
+9.What type of security you use in your authorization system?

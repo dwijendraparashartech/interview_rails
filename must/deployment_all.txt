@@ -1,0 +1,64 @@
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Deployment to Amazon ::
+
+Step 1:: Launch an EC2 Instance with code deploy
+Step 2:: Configure Code Deploy
+Step 3:: Configure Code Pipeline
+Step 4:: Deploy your app
+Step 5:: Why Parameter Store not Secrets Manager?
+Step 6:: Configure your parameters using AWS System Manager (parameter store)
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Deployment to Capistrano ::
+
+Step1 ::  Install rbenv and Ruby on the web server
+Step2 ::  Install and configure Passenger & Nginx
+Step3 ::  Install Capistrano gems
+Step4 ::  Capify the application
+Step5 ::  Provide Custom Crdentials 
+Step6 ::  Deploy your App  
+Step7 ::  Capistrano run/debug configuration
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Deployment General Steps ::
+
+1. Push your code to a Git repository
+2. Login to your server, create a user for the app
+3. Install Git on the server
+4. Pull code
+5. Login as the app's user
+6. Install app dependencies
+7. Configure database.yml and secrets.yml
+8. Compile Rails assets and run database migrations
+9. Create a Passenger config file
+10. Go back to the admin account
+11. Start Passenger Standalone
+12. Test drive
+13. Make sure Passenger Standalone starts on system boot
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Deployemnt to production/server ::  
+
+1 Update your gem bundle
+	2 Transferring the app code to the server
+	2.1 Push your code to a Git repository
+	2.2 Login to your server, create a user for the app
+	2.3 Install Git on the server
+	2.4 Pull code
+3 Preparing the app's environment
+	3.1 Login as the app's user
+	3.2 Install app dependencies
+	3.3 Configure database.yml and secrets.yml
+	3.4 Compile Rails assets and run database migrations
+4 Starting the app in Passenger
+	4.1 Create a Passenger config file
+	4.2 Go back to the admin account
+	4.3 Start Passenger Standalone
+	4.4 Test drive
+	4.5 Make sure Passenger Standalone starts on system boot
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||

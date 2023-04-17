@@ -1,0 +1,1414 @@
+example_ruby_all.txt
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q-  Given an array [1,2,3,4,5,6,7,8,9], sum it up using a method.
+Q-  Solve the below problem :: x = [{"a" => 10},{"b" => 20},{"c" => 30}]
+Q-  This problem - posts = Post.includes(comments: [:author]).all
+Q-  This problem - all_keys = params.slice(*available_option_keys)
+Q-  Benchmark Code
+Q-  Sort the keys - { abc: 'hello', 'another_key' => 123, 4567 => 'third' }
+Q-  Write a function that sorts the keys in a hash by the length of the key as a string.
+Q-  Output: val1 = true and false  ,  val2 = true && false
+Q-  Foo::Bar VAL code
+Q-  (a) {p a}["Hello world"]
+Q-  How to add one object to another object in rails 
+Q-  Create a route to be able to display pages  
+Q-  Suppose we have a Student with id=”4”. If we delete the Student with id=”4”,
+Q-  One example to tell the diff between hash and hashwithindifferentaccess
+Q-  How would you define a Person model so that any Person can be assigned as the parent of another Person
+Q-  Bug: 
+Q-  (s) {p s} [“I’m a Proc”]
+Q-  Swapping of Two Numbers with various methods 
+Q-  Reversing of an Array without using Reverse Method
+Q-  Sort a Given Array by Frequency of Element
+Q-  Given an array of random numbers, Push all the zero’s of a given array to the end of the array
+Q-  Find majority element(if exists) in a given sorted array.
+Q-  Give an Example to Flatten  an Array without using Flatten Method
+Q-  Give an Example to Sort an Array without using Sort Method
+Q-  Controller action as a parameter.
+Q-  Flatten - hash = { a: { b: { c: 42, d: 'foo' }, d: 'bar' }, e: 'baz' }
+to  { :a_b_c=>42, :a_b_d=>"foo", :a_d=>"bar", :e=>"baz" }
+Q-  Syntatic Sugar Program
+Q-  How can one build an array of cN values (['foo', bar', baz'])?
+Q- def times_two(arg1); and  def sum(arg1, arg2); programs
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- Given an array [1,2,3,4,5,6,7,8,9], sum it up using a method.
+
+Answer: Summation of an array is one of the most fundamental concepts in programming, and there are a lot of methods to achieve it, such as iterating the array and summing the numbers. In Ruby, it’s neat to know that we can call inject, because it’s so powerful yet simple.
+
+def sum(array)
+  return array.inject(:+)
+end
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+# Find Maximum occurance items in an array   ::
+
+p array = [1,2,3,4,2,10,2,10,10,10,10]
+p array.max_by {|i| array.count(i)}
+
+#1.2 Find the occurances of items in an Array ::
+p array = [1,2,2,2,2,1,1,4,3]
+p array.select{|i| array.count(i)>1}.uniq
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+#  Find the duplicate items in an array ::
+array = [1,2,1,3,5,4,4,5,5]
+p array.select{|e| array.count(e)>1}.uniq
+
+#OR
+
+def find_duplicates(array)
+  duplicates = []
+  array.each do |element|
+    duplicates << element if array.count(element) > 1
+  end
+  duplicates.uniq
+end
+
+p find_duplicates([1, 2, 3, 1, 5, 6, 7, 8, 5, 2]) #=> [1, 5, 2]
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+use metaprogramming to refactor these methods
+
+def admin?
+  role ==  'admin'
+end
+def marketer?
+  role == 'marketer'
+end
+def sales?
+  role == 'sales'
+end 
+
+Ans :: try this may be this is right 
+ROLE =  ['admin','marketer','sales']
+ROLE.each do |user_role|
+  define_method #{user_role}" do 
+    role == user_role
+  end 
+end 
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Which of the expressions listed below will result in “false”?
+
+true  ? “true” : “false”  ﻿
+false ? “true” : “false”  ﻿
+nil ? “true” : “false”  ﻿
+1 ? “true” : “false”  ﻿
+0 ? “true” : “false”  ﻿
+“false” ? “true” : “false”  ﻿
+“”  ? “true” : “false”  ﻿
+[]  ? “true” : “false”  ﻿
+Answer –
+
+In Ruby, the only values that evaluate to false are false and nil. Everything else – even zero (0) and an empty array ([]) – evaluates to true.
+
+This comes as a real surprise to programmers who have previously been working in other languages like JavaScript.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+How to use sql db or mysql db without defining it in the database.yml?
+
+You can use ActiveRecord anywhere
+require “rubygems”
+require “active_record”
+ActiveRecord::Base.establish_connection({
+               :adapter=> ‘postgresql’, :user=>’foo’, :password=> ‘abc’, :database=>’whatever’})
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+ Find out the sum of first part of strings of an array ::
+
+p ["5 Apple", "5 Orange", "15 Grapes"].map(&:to_i).sum
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What’s the following program going to print?
+x = 1
+class MyClass
+  y = 2
+  def foo
+     z = 4
+     y ||= 0
+     puts z + y
+  end
+  define_method :bar do |x|
+     z = 5
+     y ||= 0
+     puts z + y + x
+  end
+end
+my_class = MyClass.new
+my_class.foo
+my_class.bar(10)
+my_class.bar
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+How to Create and access the array of hashes --
+p hash_arr = [{"a"=>'vvvv',"b"=>'xxxx'},{"c"=>"cccccc","d"=>"dddd"}]
+p hash_arr[1]["c"]
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Iterate over array of hashes :: 
+hash_arr = [{name:'Amu',occupation:'Web Developer'},{name:'Sumit',occupation:'HR'}]
+hash_arr.each do |hash|
+  puts 'values in the hash'
+  hash.each do |key,value|
+    puts (key.to_s+':'+value.to_s)
+end
+end
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+How to Iterate over normal hash :: 
+h = { "first_name" => "John", "last_name" => "Doe" }
+h.each do |key, value|
+    puts "#{key} = #{value}"
+end
+
+# => first_name = John
+#    last_name = Doe
+....
+h = { "first_name" => "John", "last_name" => "Doe" }
+h.each_key do |key|
+  puts key
+end
+
+# => first_name
+#    last_name
+....
+h = { "first_name" => "John", "last_name" => "Doe" }
+h.each_value do |value|
+    puts value
+end
+
+# => John
+#    Doe
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Give an Example to Find out the even and odd numbers in an array   ::
+
+program for even numbers in an array using normal method  :: 
+
+
+even_numbers = []
+[1,2,3,4,5].each do |n|
+    if n %2 == 0 
+        even_numbers << n 
+    end 
+end 
+puts even_numbers
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+program for odd numbers in an array using normal method  :: 
+
+odd_numbers = []
+[1,2,3,4,5].each do |n|
+    if n %2 != 0 
+        odd_numbers << n 
+    end 
+end 
+puts odd_numbers
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+
+program for even numbers in an array using select method  :: 
+
+puts [1,2,3,4,5].select{|n| n%2 == 0}
+
+program for odd numbers in an array using select method   :: 
+
+puts [1,2,3,4,5].select{|n| n%2 != 0}
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Explain the difference between:
+
+x += " world"
+and
+
+x.concat " world"
+Answer-
+
+The += operator re-initializes the variable with a new value, so a += b is equivalent to a = a + b.
+
+Therefore, while it may seem that += is mutating the value, it’s actually creating a new object and pointing the the old variable to that new object.
+
+This is perhaps easier to understand if written as follows:
+
+(Examining the object id of foo and foo2 will also demonstrate that new objects are being created.)
+
+The difference has implications for performance and also has different mutation behavior than one might expect.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What will be the result of each of the following lines of code?
+
+Answer-
+
+The first three lines of code will all print out 10, as expected.
+
+The next two lines of code will both print out 3, as expected.
+
+However, the last line of code (i.e., sum (1,2)) will result in the following:
+
+Syntax:
+
+The problem is the space between the method name and the open parenthesis. Because of the space, the Ruby parser thinks that (1, 2) is an expression that represents a single argument, but (1, 2) is not a valid Ruby expression, hence the error.
+
+Note that the problem does not occur with single argument methods (as shown with our timesTwo method above), since the single value is a valid expression (e.g., (5) is a valid expression which simply evaluates to 5).
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Which of the expressions listed below will result in “false”?
+
+true  ? “true” : “false”  ﻿
+false ? “true” : “false”  ﻿
+nil ? “true” : “false”  ﻿
+1 ? “true” : “false”  ﻿
+0 ? “true” : “false”  ﻿
+“false” ? “true” : “false”  ﻿
+“”  ? “true” : “false”  ﻿
+[]  ? “true” : “false”  ﻿
+Answer –
+
+In Ruby, the only values that evaluate to false are false and nil. Everything else – even zero (0) and an empty array ([]) – evaluates to true.
+
+This comes as a real surprise to programmers who have previously been working in other languages like JavaScript.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+10. write rspec. if poduct count is 0 display message "Out of stock"
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+ What will val1 and val2 equal after the code below is executed? Explain your answer.
+
+Answer –
+
+Although these two statements might appear to be equivalent, they are not, due to the order of operations. Specifically, the and and or operators have lower precedence than the = operator, whereas the && and || operators have higher precedence than the = operator, based on order of operations.
+
+To help clarify this, here’s the same code, but employing parentheses to clarify the default order of operations:
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+11. ajax call to list post comments with controller, view, js code
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Ques Type ::  Find the highest value in an array of hashes in Ruby
+#Method ::  You can use max_bymethod
+#Link ::  https://stackoverflow.com/questions/39581381/
+
+#find users where the score is more than 100
+array = [
+  { name: 'Dan', score: 110 },
+  { name: 'Mike', score: 57 },
+  { name: 'Jill', score: 120 }
+]
+
+#Ans ::
+array.max_by{|k| k[:score] }
+#output  {:name=>"Jill", :score=>120}
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+# Reverse a String without Reverse Method ::
+str = 'dlrow olleh'
+rev = ''
+for i in 1..str.length
+    rev += str[str.length-i]
+end 
+p rev
+
+str = '9876 54321'
+rev = ''
+for i in 1..str.length
+rev += str[str.length-i]
+end 
+p rev
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+# Find whether two array elements are match or not (order does not matter) ::
+
+p a = [1,2,3,2,2]
+p b = [1,3,2,2,2]
+p a.sort == b.sort
+# output : true
+
+c = [1,2,3,2,2]
+d = [1,3,2,2,1]
+puts c.sort == d.sort 
+# output : false
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q- Solve the below problem :: 
+
+Given this input:
+
+x = [{"a" => 10},{"b" => 20},{"c" => 30}]
+How can you obtain the following?
+
+one array containing all keys
+another containing all values
+the sum of all the values
+
+
+Sol ::  
+x = [{"a" => 10},{"b" => 20},{"c" => 30}]
+y = x[0].merge(x[1]).merge(x[2])
+y.keys  # will return all keys
+y.values # will return all values
+y.values.inject(:+)   # will return the sum of all values
+
+But a better first line would be this:
+
+y = x.reduce(:merge)
+…because it would work on an array of any size, not just the exact input given.
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+# Write the Routes for below code  for comments and bulk_upload ::
+  resources :posts do
+      member do
+        get 'comments'
+      end
+      collection do
+        post 'bulk_upload'
+      end
+  end
+
+Ans ::
+Route for Bulk Upload ::   POST  /posts/bulk_upload
+Route for Comments ::      GET  /posts/:id/comments
+
+All Routes will Make :: 
+
+Using the resource method to define routes will automatically generate routes for the standard seven restful actions:
+
+GET /posts
+POST /posts
+GET /posts/new
+GET /posts/:id/edit
+GET /posts/:id
+PATCH/PUT /posts/:id
+DELETE /posts/:id
+Note that Rails also supports the (relatively) new URL verb PATCH for partial updates to records. (In theory, a PUT request should only be valid if the entire record is included in the request.)
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- What is the code with the controller code below :: 
+
+
+class CommentsController < ApplicationController
+  def users_comments
+    posts = Post.all
+    comments = posts.map(&:comments).flatten
+    @user_comments = comments.select do |comment|
+      comment.author.username == params[:username]
+    end
+  end
+end
+
+Sol ::   
+Replace - 
+posts = Post.all      to the below line please 
+posts = Post.includes(comments: [:author]).all
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q- What is the problem with 
+    class MyController < ApplicationController
+      def options
+        options = {}
+        available_option_keys = [:first_option, :second_option, :third_option]
+        all_keys = params.keys.map(&:to_sym)
+        set_option_keys = all_keys & available_option_keys
+        set_option_keys.each do |key|
+          options[key] = params[key]
+        end
+        options
+      end
+    end
+
+Solution :: 
+Replace :: 
+this ::
+all_keys = params.keys.map(&:to_sym)
+
+by this ::
+all_keys = params.slice(*available_option_keys)
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q- Suppose we have a Student with id=”4”. If we delete the Student with id=”4”, what will be the result of the following queries:
+
+Student.find(4)  ------
+will raise an error: ActiveRecord::RecordNotFound: Couldn't find Student with id=4
+
+
+
+Student.find_by_id(4) ------
+will return nil and will not raise an error.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q- What is wrong with the code below? Also, state the reason.
+require "benchmark"
+puts Benchmark.measure do
+    break if Random.rand(100) === 1 while true
+end
+
+..
+
+Sol :: 
+
+Answer: The operator precedence is the issue in the code. The code will return:
+
+LocalJumpError: no block given (yield)
+As do-end is weaker than attracting arguments to the function, that’s why one either needs to surround the whole call to Benchmark.measurewith parentheses, or to use curly brackets instead of do-end.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Implement a class macro :benchmark that can be used to print the time an instance method takes to execute (advanced).
+class Foo
+  def bar
+     ...
+  end
+ 
+  def qux
+     ...
+  end
+  benchmark :bar, :qux
+end
+foo = Foo.new
+foo.bar
+# => bar took 0.12 ms
+foo.qux
+# => qux took 1.15 ms
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What will be the values of:
+var1 = A.a(0)
+var2 = A.a(2)
+
+Answer- var1 will be equal to nil
+var2 will be equal to 4
+Understand: * A conditional statement in Ruby is an expression that returns nil if the conditional is false. * Ruby methods return the last expression in the method body.
+
+In this example:
+
+A.a(0) returns nil for unsuccessful conditional
+A.a(2) returns the square of 2, i.e 4
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is the value of the variable upcased in the below piece of code?
+
+upcased = ["one", "two", "three"].map {|n| puts n.upcase }
+
+Answer- upcase = [nil, nil, nil]
+
+Let’s take a look at puts as below:
+﻿
+>> puts "Hi"
+Hi
+=> nil
+
+
+Note the nil at the end: that’s the return value from puts. After all, puts is a method, so it has to return something. As it happens, it always returns nil. The printing out of the string is an action the method performs.
+
+Similarly, evaluating the code in question we can understand that while it’s a common learner mistake to expect the result to be ["ONE", "TWO", "THREE"]. In fact, it’s [nil, nil, nil]. Each time through the block, the block evaluates to the return value of puts to be nil.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What will be the value of:
+
+defined? foo
+defined? bar
+
+Answer-
+
+foo has been at least read by the interpreter, therefore it is defined and assigned a nil value. However, since bar has never been written, it was never defined in the first place.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Find and fix the bug within the code below?
+
+Answer- Normally if Ruby encounters an identifier, and the identifier does not reference a defined local variable, Ruby will try to call a method with the given name. However, when Ruby encounters address = a within the initialize method, it treats address = a as a local variable initialization and fails to invoke the setter. This occurs when Ruby encounters an identifier beginning with a lowercase character or underscore on the left-hand side of an assignment operator. The solution is to clarify that we want to call the writer method address = by prepending address with the self keyword. The initialize method has been reproduced below:
+
+def initialize(a)
+  self.address = a
+end
+
+Alternatively, you could also fix the bug by directly assigning the value to the instance variable within the initialize method like so:
+
+﻿
+def initialize(a)
+  @address = clean(a)
+end
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q- Write a function that sorts the keys in a hash by the length of the key as a string. For instance, the hash:
+
+{ abc: 'hello', 'another_key' => 123, 4567 => 'third' }
+should result in:
+
+["abc", "4567", "another_key"]
+
+
+..........
+
+Ans :: 
+
+
+Best Answer ::
+hsh.keys.map(&:to_s).sort_by(&:length)
+
+Other Answers ::
+hsh.keys.collect(&:to_s).sort_by { |key| key.length }
+def key_sort hsh
+	hsh.keys.collect(&:to_s).sort { |a, b| a.length <=> b.length }
+end
+collect { |x| x.to_s }
+
+..................
+
+Ans::  hsh.keys.map(&:to_s).sort_by(&:length)
+
+
+As is always true in programming, there are in fact multiple ways to accomplish this.
+
+The most straightforward answer would be of the form:
+
+hsh.keys.map(&:to_s).sort_by(&:length)
+
+
+or:
+
+hsh.keys.collect(&:to_s).sort_by { |key| key.length }
+Alternatively, Ruby’s Enumerable mixin provides many methods to operate on collections. The key here is to turn the hash keys into a collection, convert them all to strings, then sort the array.
+
+def key_sort hsh
+	hsh.keys.collect(&:to_s).sort { |a, b| a.length <=> b.length }
+end
+An equivalent call of the collect method is done with the usual block syntax of:
+
+collect { |x| x.to_s }
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q-  What will val1 and val2 equal after the code below is executed? Explain your answer.
+
+val1 = true and false  # hint: output of this statement in IRB is NOT value of val1!
+val2 = true && false
+
+..........
+
+Ans :: 
+(val1 = true) and false    # results in val1 being equal to true
+val2 = (true && false)     # results in val2 being equal to false
+
+..........
+
+Description ::
+
+Although these two statements might appear to be equivalent, they are not, due to the order of operations. Specifically, the and and or operators have lower precedence than the = operator, whereas the && and || operators have higher precedence than the = operator, based on order of operations.
+
+To help clarify this, here’s the same code, but employing parentheses to clarify the default order of operations:
+
+(val1 = true) and false    # results in val1 being equal to true
+val2 = (true && false)     # results in val2 being equal to false
+This is, incidentally, a great example of why using parentheses to clearly specify your intent is generally a good practice, in any language. But whether or not you use parentheses, it’s important to be aware of these order of operations rules and to thereby ensure that you are properly determining when to employ and / or vs. && / ||.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+Q- Consider the following code :: What will be the value of each of the following ::
+
+..............................................................
+
+VAL = 'Global'
+ 
+module Foo
+  VAL = 'Foo Local'
+ 
+  class Bar
+    def value1
+      VAL
+    end
+  end
+end
+
+class Foo::Bar
+  def value2
+    VAL
+  end
+end
+
+...
+
+What will be the value of each of the following:
+
+Foo::Bar.new.value1
+Foo::Bar.new.value2
+............................................................
+
+
+..................
+
+Ans ::
+
+Foo::Bar.new.value1   ------    'Foo Local'
+Foo::Bar.new.value2   ------     'Global'
+
+
+Description ::
+
+Foo::Bar.new.value1 will be equal to 'Foo Local' and Foo::Bar.new.value2 will be equal to 'Global'.
+
+Here’s why:
+
+The module keyword (as well as the class and def keywords) will create a new lexical scope for all of its contents. The above module Foo therefore creates the scope Foo in which the VAL constant equal to 'Foo Local' is defined. Inside Foo, we declare class Bar, which creates another new lexical scope (named Foo::Bar) which also has access to its parent scope (i.e., Foo) and all of its constants.
+
+However, when we then declare Foo::Bar (i.e., using ::), we are actually creating yet another lexical scope, which is also named Foo::Bar (how’s that for confusing!). However, this lexical scope has no parent (i.e., it is entirely independent of the lexcial scope Foo created earlier) and therefore does not have any access to the contents of the ‘Foo’ scope. Therefore, inside class Foo::Bar, we only have access to the VAL constant declared at the beginning of the script (i.e., outside of any module) with the value 'Global'.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q- Is the line of code below valid Ruby code? If so, what does it do? Explain your answer.
+
+-> (a) {p a}["Hello world"]
+
+Yes, it’s valid. Here’s how to understand what it does:
+The -> operator creates a new Proc, which is one of Ruby’s function types. (The -> is often called the “stabby proc”. It’s also called the “stabby lambda”, as it creates a new Proc instance that is a lambda. All lambdas are Procs, but not all Procs are lambdas. There are some slight differences between the two.)
+This particular Proc takes one parameter (namely, a). When the Proc is called, Ruby executes the block p a, which is the equivalent of puts(a.inspect) (a subtle, but useful, difference which is why p is sometimes better than puts for debugging). So this Proc simply prints out the string that is passed to it.
+You can call a Proc by using either the call method on Proc, or by using the square bracket syntax, so this line of code also invokes the Proc and passes it the string “Hello World”.
+So putting that all together, this line of code (a) creates a Proc that takes a single parameter a which it prints out and (b) invokes that Proc and passes it the string “Hello world”. So, in short, this line of code prints “Hello World”.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- How to add one object to another object in rails ::: 
+
+cycle = Cycle.find(1)
+[1, 2, 3, 4].each do |barcode|
+   item = Items.where(:barcode => barcode)
+   cycle.items << item
+end
+cycle.save
+
+or do
+
+cycle = Cycle.find(1)
+[1, 2, 3, 4].each do |barcode|
+   item = Items.where(:barcode => barcode)
+   item.cycle = cycle
+   item.save
+end
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q-Create a route to be able to display pages with different information about different types of beer. The route should recognize URL paths like /beer/<beer_type> and should use the same controller action for each type of beer with the actually beer type passed into the controller action as a parameter. The valid beer types are:
+IPA
+brown_ale
+pilsner
+lager
+lambic
+hefeweizen
+Any other type of beer specified should generate a 404 status code.
+.........................................................................
+
+One option would be to generate a simple get route that specifies the controller action to call and passes the kind of beer as a parameter:
+
+get 'beers/:kind' => 'beers#kind'
+Then, within the context of the controller action, if the kind parameter is not included in the list of valid kinds, the action can raise a ActionController::RoutingError, which will redirect to 404 in production.
+
+Alternatively, a simpler solution is to check against the list of valid kinds in the definition of the route. This can be accomplished using the constraints option as follows:
+
+kinds = %w|IPA brown_ale pilsner lager lambic hefweizen|
+get 'beers/:kind' => 'beers#kind', constraints: {kind: Regexp.new(kinds.join('|'))}
+This code calls the BeersController#kind action method with params['kind'] set to a string representing the beer type given in the URL path. The key is using the constraints option for the route to specify a regular expression to use to verify the route is correct. In this case, the lambda checks to see that the kind parameter is included in the list of valid beer types.
+
+Or perhaps an even better solution would be to use resource routing. This has the added benefit of providing URL generation helpers, but at the cost of requiring that the parameter name for the beer be passed as :id. This would look something like:
+
+kinds = %w|IPA brown_ale pilsner lager lambic hefweizen|
+resource :beer, only: [:show], constraints: {id: Regexp.new(kinds.join('|'))}
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q-Suppose we have a Student with id=”4”. If we delete the Student with id=”4”, what will be the result of the following queries:
+
+Student.find(4)  ------
+will raise an error: ActiveRecord::RecordNotFound: Couldn't find Student with id=4
+
+
+
+Student.find_by_id(4) ------
+will return nil and will not raise an error.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q-One example to tell the diff between hash and hashwithindifferentaccess :: 
+
+....................................
+
+h = HashWithIndifferentAccess.new
+h[:my_value] = 'foo'
+h['my_value'] #=> will return "foo"
+
+....................................
+
+h = Hash.new
+h[:my_value] = 'foo'
+h['my_value'] #=> nil 
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q-How would you define a Person model so that any Person can be assigned as the parent of another Person (as demonstrated in the Rails console below)? What columns would you need to define in the migration creating the table for Person?
+
+irb(main):001:0> john = Person.create(name: "John")
+irb(main):002:0> jim = Person.create(name: "Jim", parent: john)
+irb(main):003:0> bob = Person.create(name: "Bob", parent: john)
+irb(main):004:0> john.children.map(&:name)
+=> ["Jim", "Bob"]
+And for a more advanced challenge: Update the Person model so that you can also get a list of all of a person’s grandchildren, as illustrated below. Would you need to make any changes to the corresponding table in the database?
+
+irb(main):001:0> sally = Person.create(name: "Sally")
+irb(main):002:0> sue = Person.create(name: "Sue", parent: sally)
+irb(main):003:0> kate = Person.create(name: "Kate", parent: sally)
+irb(main):004:0> lisa = Person.create(name: "Lisa", parent: sue)
+irb(main):005:0> robin = Person.create(name: "Robin", parent: kate)
+irb(main):006:0> donna = Person.create(name: "Donna", parent: kate)
+irb(main):007:0> sally.grandchildren.map(&:name)
+=> ["Lisa", "Robin", "Donna"]
+
+.....
+
+Sol ::
+Normally, the target class of an ActiveRecord association is inferred from the association’s name (a perfect example of “convention over configuration”). It is possible to override this default behavior, though, and specify a different target class. Doing so, it is even possible to have relationships between two objects of the same class.
+
+This is how it is possible to set up a parent-child relationship. The model definition would look like:
+
+class Person < ActiveRecord::Base
+  belongs_to :parent, class: Person
+  has_many :children, class: Person, foreign_key: :parent_id
+end
+It’s necessary to specify the foreign_key option for the has_many relationship because ActiveRecord will attempt to use :person_id by default. In the migration to create the table for this model, you would need to define, at minimum, a column for the name attribute as well as an integer column for parent_id.
+
+Self-referential relationships can be extended in all the same ways as normal two-model relationships. This even includes has_many ... :through => ... style relationships. However, because we are circumventing Rails’ conventions, we will need to specify the source of the :through in the case of adding a grandchild relationship:
+
+class Person < ActiveRecord::Base
+  belongs_to :parent, class: Person
+  has_many :children, class: Person, foreign_key: :parent_id
+  has_many :grandchildren, class: Person, through: :children, source: :children
+end
+
+Consequently, since this is still just using the parent_id defined in the first case, no changes to the table in the database are required.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q-Find and fix the bug within the code below.
+
+class Home
+  attr_reader :address
+
+  def initialize(a)
+    address = a
+  end
+
+  def call
+    # perform a process that requires @address
+  end
+
+  private
+
+  def address=(a)
+    @address = clean(a)
+    end
+
+  def clean(a)
+    # return sanitized address
+  end
+end
+
+
+Answer :: 
+Normally if Ruby encounters an identifier, and the identifier does not reference a defined local variable, Ruby will try to call a method with the given name. However, when Ruby encounters address = a within the initialize method, it treats address = a as a local variable initialization and fails to invoke the setter. This occurs when Ruby encounters an identifier beginning with a lowercase character or underscore on the left-hand side of an assignment operator. The solution is to clarify that we want to call the writer method address = by prepending address with the self keyword. The initialize method has been reproduced below:
+
+def initialize(a)
+  self.address = a
+end
+Alternatively, you could also fix the bug by directly assigning the value to the instance variable within the initialize method like so:
+
+def initialize(a)
+  @address = clean(a)
+end
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- Predict the output of the code below. Explain your answer.
+-> (s) {p s} [“I’m a Proc”]
+
+Ans ::
+
+This question highlights the syntactical elegance of Ruby. A seasoned coder can perform a lot with a single line of Ruby code. The -> operator, or “stabby proc” as it is often called, is a way to create a proc that is also a lambda, or nameless function. This proc takes the parameter s and executes the block {p s}, which is shorthand for puts(s.inspect) before passing the string “I’m a Proc” using the square bracket syntax in place of the typical “call” method. The result is an elegant single line of code that prints the string “I’m a Proc” to the console.
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q-Program of Swapping of Two Numbers ?
+
+Swapping :: Swapping of Two Numbers :: 
+
+                 .....................................................
+
+
+Method First ::  Using Temporary variable)
+
+
+def swap(a,b)
+    temp = a
+    a = b
+    b = temp
+    return a,b
+end
+print swap(3,1)
+
+..............................
+
+Method Second :: (Ruby magic)
+
+def swap(a,b)
+    a,b=b,a
+    return a,b
+end
+print swap(3,1)
+
+..............................
+
+Method Third :: (Using sum and difference, no temporary variable required)
+
+def swap(a,b)
+    a = a+b
+    b = a-b
+    a = a-b
+    return a,b
+end
+print swap(3,1)
+
+
+..............................
+
+
+ Method Fourth :: :: Method 4 (Using bitwise XOR ,no temporary variable required) 
+
+
+def swap(a,b)
+    a = a^b
+    b = a^b
+    a = a^b
+    return a,b
+end
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q-Reversing of an Array without using Reverse Method ?
+
+Q- Reversing :: Reversing of Array  :: 
+
+First Method   ::  # Iterative
+
+# Iterative
+def reverse_array(a)
+    right=a.length-1
+    left=0
+    while(left<right)
+     #swap the elements
+        temp=a[left]        #Swapping can be like done like this a[left],a[right]=a[right],a[left]
+        a[left]=a[right]
+        a[right]=temp
+        
+        left+=1
+        right-=1
+    end
+    print a
+end
+
+reverse_array([1,2,3,4,5]) # => [5,4,3,2,1]
+
+...................................
+
+Second  Method ::  # Recursive
+....................................
+#driver program
+
+def driver_program(a)
+    right=a.length-1
+    left=0 
+    reverse_array(a,left,right)
+    print a
+end
+def reverse_array(a,left,right)
+    
+    return  if left>=right 
+     #swap the elements
+        temp=a[left]        
+        a[left]=a[right]
+        a[right]=temp
+        reverse_array(a,left+1,right-1)
+end
+
+driver_program([1,2,3,4,5]) # => [5,4,3,2,1]
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q-Sort a Given Array by Frequency of Element :: 
+
+
+def sort_by_frequency(a)
+    len=a.length
+    freq=Hash.new() #Hash to store element,count and starting index
+    for i in 0...len
+    # Storing count and index in hash with element as the key
+     unless freq[a[i]]
+         freq[a[i]]={}
+         freq[a[i]][:count]=1 
+         freq[a[i]][:index]=i
+     else
+         freq[a[i]][:count]+=1
+     end
+    end
+    
+    freq=freq.sort_by{|k,v| [-v[:count],v[:index]]} # Sort the hash by decreasing count value and if count is same then by index(starting index)
+    p=0                         # Index to iterate over array
+    # Iterate on hash
+    freq.each do |k,v|
+        for i in 0...v[:count]
+          a[p]=k
+          p+=1
+        end  
+    end
+  return a
+end
+        
+
+print sort_by_frequency([1,3,3,3,4,4,4,2,2,2,5]),"\n" # => [3, 3, 3, 4, 4, 4, 2, 2, 2, 1, 5]
+print sort_by_frequency([1,3,3,3,4,4,4,2,2,2,5,5,6,7,7,7,8,8]) # => [3, 3, 3, 4, 4, 4, 2, 2, 2, 7, 7, 7, 5, 5, 8, 8, 1, 6]
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q-#Given an array of random numbers, Push all the zero’s of a given array to the end of the array :: 
+
+
+#Time Complexity: O(n),Auxiliary Space: O(1)
+
+##Algorithm:
+    #Traverse the given array from left to right andmaintain count of non-zero elements in array.
+    # For every non-zero element arr[i], put the element at ‘arr[count]’ and increment ‘count’. 
+    # After complete traversal, all non-zero elements have already been shifted to front end and ‘count’ is set as index of first 0. 
+    # Now run a loop which makes all elements zero from ‘count’ till end of the array zero.
+
+def move_zeros(a)
+    len=a.length
+    count=0
+    for i in 0...len
+        if a[i]!=0
+            a[count]=a[i]
+            count+=1
+        end
+    end
+  # Loop from count to len-1 and fill it with zeros 
+    while count<len
+        a[count]=0
+        count+=1
+    end
+    return a
+end
+
+print move_zeros([1,2,0,3,0,4,0,5,0,0,6]) # => [1, 2, 3, 4, 5, 6, 0, 0, 0, 0, 0]
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q-# Find majority element(if exists) in a given sorted array.
+
+# A majority element in an array A[] of size n is an element that appears more than n/2 times 
+#Time-complexity: O(logn), Auxiliary-space:O(1)
+#Algorithm: Binary-search
+
+def majority_element(a)
+  	len=a.length
+   	lo=0
+  	hi=len-1
+	  mid= lo+(hi-lo)/2
+   	candidate=a[mid]
+	  if len%2==0 && a[lo]==a[mid+1]
+		    return candidate
+	  elsif len%2 !=0 && a[lo]==candidate
+		    return candidate
+	  else
+		    while hi-lo>1
+	          mid=lo+(hi-lo)/2
+            if a[mid]>=candidate
+	            hi=mid
+	          else
+	            lo=mid
+            end
+		    end
+  
+	      if a[hi]==candidate
+	       	  left_index=hi
+	     	    right_index=left_index+(len/2)
+        
+	  		    if a[right_index]==candidate
+	            return candidate
+	   		    else
+	       		  return -1
+	   		    end
+	      end
+  	    
+	  end
+end
+puts majority_element([1,1,3,3,3,3]) # output 3
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q-Give an Example to Flatten  an Array without using Flatten Method   ::
+
+
+There are 3 types that we can flatten an array :: 
+
+1.Flattening an Array by One Dimension ::
+
+my_array = [1, [2, 3, [4, 5]]]
+single_flatten(my_array) #=> [1, 2, 3, [4, 5]]
+
+................
+
+def single_flatten(array)
+  results = []
+  array.each do |element|
+    if element.class == Array
+      element.each {|value| results << value}
+    else
+      results << element
+    end
+  end
+  results
+end
+
+............
+Exp :: 
+This method takes in an array and sets an empty results array. It then looks at each element of the array in question. If the element is an array, it will look at each element within that array, and append the nested element’s value to the results array using the shovel operator. If the element is not an array, it will append the value of that element into the the results array. Once every element in the array has either had itself or its components appended into the results, the method returns the result array, which is equivalent to the original array flattened by one dimension:
+
+
+
+......................
+
+
+2.Flattening an Array n Times
+
+my_array = [1, [2, 3, [4, [5, 6]]]]
+multiple_flatten(my_array, 2) #=> [1, 2, 3, 4, [5, 6]]
+
+................
+def multiple_flatten(array, n)
+  count = 0
+  arr = array
+  while count < n do
+    arr = single_flatten(arr)
+    count += 1
+  end
+  arr
+end
+
+Exp :: 
+
+First, we set the count to zero and the variable arr to our initial array. If the counter hasn’t reached the number of dimensions we’ve specified wanting to reduce our array by, arr will be passed into single_flatten. Every time the block in the while loop executes, arr is reassigned to the result of single_flatten, and the counter is incremented by one. Once the counter is equal to the number of dimensions we want to reduce by, the final return value of the method is arr, the last result of the single_flatten.
+
+
+......................
+
+3.Flattening an Array with Recursion :: Single /Total Flatten whole Array ::
+
+my_array = [1, [2, 3, [4, 5]]]
+recursive_flatten(my_array) #=> [1, 2, 3, 4, 5]
+
+.................
+def recursive_flatten(array, results = [])
+  array.each do |element|
+    if element.class == Array
+      recursive_flatten(element, results)
+    else
+      results << element
+    end
+  end
+  results
+end
+
+.................
+
+Exp :: 
+
+
+Like the single flatten, it checks if an element is an array, and if not, appends the value of the element to a results array. However, if the element is an array, the method calls itself pulling in this element and the existing results array. The method will keep calling itself on the elements of elements until all the elements are not arrays and can be pushed into the results array.
+
+Because we want the method to be completely recursive, we’re setting results to an optional argument that defaults to an empty array. If we set the results array to be empty within the method, it will reset the results array every time the function is called. The first time we call recursive_flatten, we call it without the results argument. This way, it will create our initially empty results array that will then be filled passed around and into the other recursive_flatten methods and never be reset back to being empty!
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Q- Give an Example to Sort an Array without using Sort Method ::
+
+Example of sort array :: 
+
+#Using bubble sort algorithm in ruby
+
+a = [1,5,7,2,3,50,78,34,89]
+
+a.size.times.each do |t|
+ i=0
+ a.each do |b|
+   if b > a[i+1]
+     a[i],a[i+1] = a[i+1],a[i]
+   end
+   i+=1 if i < a.size-2
+ end
+end
+print a
+
+
+# with swapped true method 
+
+def my_sort(list)
+  return list if list.size <= 1 
+
+  swapped = false
+  while !swapped
+    swapped = false
+    0.upto(list.size-2) do |i|
+      if list[i] > list[i+1]
+        list[i], list[i+1] = list[i+1], list[i]
+        swapped = true
+      end
+    end
+  end
+
+  list
+end
+
+print my_sort([2,1,3,5,4,40])
+
+
+# Sort an Array program with sort method - ascending and descending type::
+
+print [0,8,5,4,22,1,4].sort_by{|number| number}
+print [0,8,5,4,22,1,4].sort_by{|number| number}.reverse
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- 
+
+Controller action as a parameter. The valid music genres are as follows: classical, rock, house, country, hip_hop, and rnb. All other genres should generate a 404 status code.
+You will likely receive a variety of potential answers for an open-ended coding question like this, but here are two of the most straightforward approaches to creating a route. The most straightforward solution would be to create a simple route that specifies the controller action to call and passes the genre of music as a parameter. If the genre parameter is not included in the list of valid genres, the action will raise an ActionController::RoutingError and redirect to a 404 page.
+
+get 'music/:genre' => 'music#genre'
+Alternatively, a better solution would be to use resource routing which comes with the added benefit of URL generation helpers. You can use the constraints option to verify the validity of a route by checking the parameter against a list of genres. This method requires that the parameter name for the genre be passed as :id and would look something like this:
+
+genres = %w|classical rock house country hip_hop rnb|
+resource :music, only: [:show], constraints: {id: Regexp.new(genres.join('|'))}
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- How would you flatten the following?
+hash = { a: { b: { c: 42, d: 'foo' }, d: 'bar' }, e: 'baz' }
+to
+
+{ :a_b_c=>42, :a_b_d=>"foo", :a_d=>"bar", :e=>"baz" }
+λ = ->(h, key = nil) do
+  h.map do |k, v|
+    _k = key ? "#{key}_#{k}" : k.to_s
+    v.is_a?(Hash) ? λ.call(v, _k) : [_k.to_sym, v]
+  end.flatten #⇒ note flatten 
+end
+Hash[*λ.call(hash)]
+#⇒ {:a_b_c=>42, :a_b_d=>"foo", :a_d=>"bar", :e=>"baz"}
+Understanding recursion is important. While all these Fibonacci numbers and factorials are repeated over and over again, the real-world tasks are less academic. Walking through the hash in the described manner is often a must.
+
+The exercise might be stated as the exact opposite: given the “flattened” form of the hash, rebuild its nested representation.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q-
+
+Consider the following:
+Given the following syntactic sugar:
+
+(1..42).reduce &:*
+#⇒ 1405006117752879898543142606244511569936384000000000
+What makes this notation to be an equivalent of:
+
+(1..42).reduce { |memo, elem| memo * elem }
+Does the Ruby parser handle this particular case, or could this be implemented in plain Ruby?
+
+The candidate can monkeypatch to the Symbol class with their own implementation of the aforementioned syntactic sugar.
+
+E.g.
+
+class Symbol
+def to_proc
+  # this implementation in incomplete
+  # — more sophisticated question: why?
+  # — even more hard: re-implement it properly
+lambda { |memo, recv| memo.public_send(self, recv)  }
+end
+end
+(1..42).reduce &:*
+#⇒ 1405006117752879898543142606244511569936384000000000
+There is not much magic in this example. An ampersand converts an argument, that is apparently a Symbol instance here, to Proc object, simply calling to_proc method on it. The implementation is Symbol#to_proc in done in C for performance reasons, but the candidate can write their own implementation in Ruby to make sure everything works as expected.
+
+Answers to additional questions in the code: — the code above fails when the callee expects to receive one parameter only
+
+(e.g. a try to use this implementation with Enumerator#each)
+
+will fail with an arity error:
+
+(1..42).each &:*
+ArgumentError: wrong number of arguments (given 1, expected 2)
+To fix this, the candidate should use the splat argument to lambda and analyze the amount of actual argument passed:
+
+lambda do |*args|
+  case args.size
+  when 1 then # each-like
+when 2 then # with accumulator
+...
+
+Q-What’s wrong with the code below and why?
+require 'benchmark'
+puts Benchmark.measure do  
+    break if Random.rand(100) === 1 while true
+end
+Operator precedence matters! The code will return
+
+LocalJumpError: no block given (yield)
+As do-end is weaker than attracting arguments to the function, that’s why one either needs to surround the whole call to Benchmark.measure with parentheses, or to use curly brackets instead of do-end.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q-Build an array based on the following scenario.
+Provided we have a hash of a fixed structure (e. g. we receive this hash from a third-party data provider, that guarantees the structure):
+
+input = [ {a1: 42, b1: { c1: 'foo' }}, 
+{a2: 43, b2: { c2: 'bar' }}, 
+{a3: 44, b3: { c3: 'baz' }},
+… ]
+How can one build an array of cN values (['foo', bar', baz'])?
+
+Some examples would be:
+
+input.map { |v| v.to_a.last.last.to_a.last.last }
+or
+
+input.map { |v| v.flatten.last.flatten.last }
+Here one iterates through the array, collecting nested hashes and using an index to build the requested key name, but there is more straightforward approach. Hash is an Enumerable, which gives the developer an ability to query it almost as what has been done with an array.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q-
+ Consider the following scenario related to variables.
+Given the code below, how one might access the @foo variable from outside? Is it an instance variable, or class variable? What object this variable is defined on?
+
+class Foo
+  class << self
+    @foo = 42
+  end
+end
+You can access the variable with
+
+(class << Foo ; @foo ; end)
+It’s an instance variable and defined on Foo’s Singleton method, or more specifically, the eigenclass of Foo.
+
+Each class in Ruby has its own “eigenclass.” This eigenclass is derived from Class class. Foo class is an instance of it’s eigenclass. This eigenclass has the only instance Foo; it as well has instance methods, defined as class methods on Foo, and it might have instance variables, e. g. @foo variable in this particular example.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q-
+Consider the following two methods
+
+Method 1 - def times_two(arg1);
+
+puts arg1*2;
+
+end
+
+Method 2 - def sum(arg1, arg2);
+
+puts arg1 + arg2;
+
+end
+
+What will be the result of each of the following lines of code?
+
+times_two 5
+
+times_two(5)
+
+times_two (5)
+
+sum 1, 2
+
+sum(1, 2)
+
+sum(1,  2)
+
+...
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+

@@ -1,0 +1,158 @@
+security.txt
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q1.How many attacks in Rails Security?
+1.CSRF
+2.SQL Injection
+3.XSS
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q1.What is Injection ?How many types are there for Injection ?
+Injection is the class of attack which introduce the malicious code or parameters into a web application in order to run it within its security context.Injection is very tricky beacause same code is benifical at some place where harmful at another place.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q2.What is Sql Injection ?
+SQL Injection or sql is a common type of attack which uses the malicious sql code or backend database manipulation to access the information which should not be changed or displayed.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q3.What is CSRF? CSRF - Cross Site Request Forgery
+Server generates these token and link to the user session and store them in database then this token inject in any form which is present to the client as hidden field when client submit the form for validation it passes the token back to the server.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q4.What is XSS?  XSS - Cross Site Scripting 
+This is a common type attack it allows attackers to inject any client side script which is then executed by the victim's browsers in their browsing contents.Typically Cross side scripting is used to bypass access controls and to steal web sessions.This is the type of injection attacks means attacker injects malicious code into the application , the code then is executed by the victim's machine.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q5.From how many ways Xss Can be Enter?
+1.Search Result Pages
+2.Comments
+3.Messages
+4.Reviewes
+5.Documents
+6.Name of Projects
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q6.How to Prevent from CSRF by default by Rails ?
+1.We use the protect from forgery
+protect_from_forgery with :: exception
+
+2.We use the CSRF Meta Tags 
+<%= csrf_meta_tags %>
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q6.How to Prevent from CSRF?
+1.Follow the Restful Design 
+2.Use anti CSRF Token.
+3.Use Samesite Cookies
+4.Scan Regularly
+5.Train and Maintain Awareness
+6.Custom Header for Requests 
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q7.How to Prevent XSS Attacks?
+1.Give users the option to disable client side scripts
+2.Redirect Invalid Requests
+3.Convert Special characters and spaces to their respective HTML or URL enclosed requirements: like ::
+such as - ?,&,/,<,> and spaces
+4.Detect Simultaneous Logins,including them from two seperate IP addresses and invalidate these sessions.
+5.Use and Enforce a Content Security Policy to disable any feature that might be manipulation in Xss attacks.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q8.How to Prevent SQL Injection Attack? 
+1.Save by the 3 methods in the query ::
+A. delete_all  B. form  C. group
+
+2.Never Trust the User Input and never use it directrly to constuct the sql query.You should always serialized or paramaterized values from the User.Avoid passing string as parameters to Active Records Methods.Use  Arrays Hashes instead.
+User.where("email"='#{params[:email]}'")  X - No
+User.where(["email=?,"#"#{params[:email]}"]) = Yes
+
+3.Applying attribute based finder methods whenever possible.After this active record automatically escape the unwanted characters which normally allows Sql injection to happen.
+
+4.Never using your User Input directly as an argument to Active Record Methods.With this small change your data will not leak & loss due to malicious SQL sent by a hacker.
+
+5.Never Use pure string conditions to pass variable to pure string conditions.
+Post.where("category = 'books'"")   # Right 
+Post.where("category = '#{params[:category]}) $ Wrong - User can attack with our database by adjusting the value in URL like this:
+http://example.com/products?Category=books'+OR+1=1
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q9 How to Generate Anti CSRF Token?   Anti CSRF Token ====== synchronizer token
+1.The Web Server generates and token and store it.
+2.The token is statistically set as a hidden field of form.
+3.The form is submitted by the User.
+4.The token is included in post request data.
+5.The application compares the token generated and stored by.
+6.The application with the token sent in the request.
+7.If these tokens are matched the request is valid.
+8.If these tokens are not matched then the request is invalid and is rejected.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q10.How to create the CSRF Token in the Anti CSRF Token ?
+We use the challenge token which is associated with particular user and this set the satate value in every state form in web.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q10. CSRF Techniques prevention -techniques?
+
+1. Token Synchronization
+CSRF tokens help prevent CSRF attacks because attackers cannot make requests to the backend without valid tokens. Each CSRF token should be secret, unpredictable, and unique to the user session. 
+
+Ideally, the server-side should create CSRF tokens, generating a single token for every user request or session. It is more secure to use separate tokens per request than per session because it shortens an attacker’s window to exploit stolen tokens. 
+
+However, the per-request token pattern can impact usability. For example, it might hinder the browser’s ability to return to previous pages with expired tokens. Interacting with a previous page could generate false-positive CSRF security events. With the per-session token pattern, the server stores the value of each token in the session, allowing all subsequent requests to use it for the duration of the session. 
+
+If the client issues a request, the server-side must verify the token’s validity, comparing the request token against the user session token. If the server-side component cannot identify a token in the request, or if it finds a token that doesn’t match the user session’s value, it should abort the request. It is recommended to log such events as potential CSRF attacks.
+
+Related content: Read our guide to CSRF tokens
+
+2. Double-Submitting Cookies
+The double-submit cookie method is an alternative to maintaining the CSRF token state on the server-side, which can be problematic. It is a stateless, easily implemented technique that sends random values twice (once as request parameters and again in cookies). The server then checks the two random values from the request parameter and cookie to ensure they match.
+
+Before a user authenticates, the site should create a cryptographically robust random value, setting it as a separate cookie on the user device. This additional cookie, combined with the session identifier, provides an added layer of defense, requiring all transaction requests to include the random (or pseudorandom) value. The server only accepts requests as legitimate if both cookies match on the server-side—otherwise, it rejects the requests.
+
+Including tokens in encrypted cookies (in addition to authentication cookies) can help enhance this technique’s security. Once decrypted, the server must match each cookie with the hidden token in a form field or AJAX parameter call. This technique ensures that subdomains cannot overwrite encrypted cookies unless they have information like an encryption key. 
+
+Cookies containing hash-based message authentication code (HMAC) values are a simpler option than encrypted cookies, enabling tokens to contain secret keys that only the server knows. They work similarly to encrypted cookies, which also rely on server-exclusive information, but they require less computational power than encryption and decryption. Both encryption and HMAC-based cookies effectively mitigate CSRF because attackers lack the knowledge required to recreate cookie values from stolen tokens. 
+
+3. Same-Site Cookies
+Same-site cookies help defend against CSRF attacks by restricting the cookies sent alongside each request. The ability of HTML elements to send cookies with requests provides an opening for CSRF. The developer can ensure that only certain cookies can accompany a request with same-site cookies. 
+
+The browser stores several elements when a web app sets cookies on a website. In addition to key and value data, cookies contain a domain field that helps distinguish between first- and third-party cookies. A first-party cookie has a domain field matching the URL in the browser’s address bar, while the domain of a third-party cookie does not match the URL. Web apps often use first-party cookies to store session information, while analytics tools often use third-party cookies.
+
+Same-site cookies contain an additional field specifying whether the browser can send a first-party cookie with requests from HTML elements from different URLs. This mechanism lets the application restrict requests to sites with the same URL. 
+
+4. Enabling User Interaction
+While most CSRF techniques do not involve user interaction, users can help secure transactions in some cases. Requiring user interaction helps prevent operations by unauthorized users, including CSRF attacks. When properly implemented, re-authentication mechanisms, CAPTCHA challenges, and one-time tokens can provide a strong defense against CSRF. 
+
+These techniques are useful but not always practical, as they create additional hurdles that impact user experience. Therefore, this approach is best suited for critical operations like financial transactions, account detail modifications, or password changes.
+
+5. Custom Headers for Requests
+Adding custom request headers is an especially effective defense for API and AJAX endpoints. This technique uses same-origin policies (SOPs) to restrict the ability to add custom headers. Users can only add custom headers using JavaScript and must add the headers within their origin. 
+
+Most browsers do not permit JavaScript to use custom headers for cross-origin requests by default. To prevent a CSRF attack, developers can verify the presence of custom headers and values across the AJAX endpoints on the server-side. This approach does not usually require introducing server-side state data or making UI changes. It is especially suitable for REST services because developers can easily add a custom header (and value). 
+
+While this method is suited to AJAX calls, it is insufficient for protecting <form> tags, which requires additional security measures like tokens. The Cross-Origin Resource Sharing (CORS) configuration must be strong to ensure the solution’s efficacy. A custom header for a request from another domain will trigger a preflight CORS check.
+
+6. Conduct Regular Web Application Security Tests to Identify CSRF
+Even if vulnerabilities in web applications with CSRF attacks are successfully addressed, application updates and code changes may expose your application to CSRF in the future. Dynamic application security testing (DAST) helps you continuously scan and test for potential security weaknesses in web applications, including CSRF vulnerabilities.
+
+Bright Security is a next-generation DAST solution that helps automate the detection and remediation of many vulnerabilities including CSRF, early in the development process, across web applications and APIs. 
+
+By shifting DAST scans left, and integrating them into the SDLC, developers and application security professionals can detect vulnerabilities early, and remediate them before they appear in production. NexDAST completes scans in minutes and achieves zero false positives, by automatically validating every vulnerability. This allows developers to adopt the solution and use it throughout the development lifecycle. 
+
+Scan any web app, or REST, SOAP and GraphQL APIs to prevent CSRF vulnerabilities – try Bright Security free
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+

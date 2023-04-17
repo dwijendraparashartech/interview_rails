@@ -1,8 +1,5 @@
 design_pattern_definitions ::  
 
-
-
-
 One Line Precise ::
 1. Builder 
 2. Decorator
@@ -14,12 +11,9 @@ One Line Precise ::
 8. Service
 9.Value 
 
-
 Q. What is the diff between Creational , Structural and behaviour Pattern of the design PAttern ? 
 
-
 Precise ::
-
 ........................................
 
 1. Builder :: Builder is a creational design pattern that lets you construct complex objects step by step without much effort.It also called as Adapter,whose main purpose is to untangle the complexity of the object instantiation process.The pattern’s main purpose is to provide a simple way of returning a given class or instance depending on the case.Whenever you are dealing with a highly customized product and its complexity the Builder pattern helps to clear the clutter to create the basic concept. 

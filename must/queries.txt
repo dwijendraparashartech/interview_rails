@@ -2,7 +2,9 @@ queires.txt ::
 
 Very good link and problem ::  https://stackoverflow.com/questions/50401702/joining-nested-associations-multiple-level
 
+Q- Many other questions can be asked practice that ::::::::::::::::
 
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 All Query Examples Basically ::
 
@@ -13,9 +15,14 @@ Category.joins(products: [:reviews, :likes])
 Author.joins(books: [{ reviews: { customer: :orders } }, :supplier] )
 time_range = (Time.now.midnight - 1.day)..Time.now.midnight
 Customer.joins(:orders).where('orders.created_at' => time_range).distinct
+Person.where.missing(:contacts)
+Person.left_outer_joins(:contacts).where(contacts: { id: nil })
+Author.joins("INNER JOIN books ON books.author_id = authors.id AND books.out_of_print = FALSE")
+Person.where.missing(:contacts)
+Person.left_outer_joins(:contacts).where(contacts: { id: nil })
+Friend.includes(:contacts).where(contacts: { id: nil })
 
-
-
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 ...............................................
 
@@ -25,9 +32,6 @@ SQL Query for the Joins ::
 There are multiple ways to use the joins method.
 Query ::     Author.joins("INNER JOIN books ON books.author_id = authors.id AND books.out_of_print = FALSE")
 Result ::   SELECT authors.* FROM authors INNER JOIN books ON books.author_id = authors.id AND books.out_of_print = FALSE
-
-
-
 
 ...............................................
 More Important others different queries ::
@@ -39,6 +43,60 @@ Customer.joins(:orders).group("customers.id").having("count(orders.id) = 1")
 Customer.joins(:orders).where("count(orders.id) = 1")
 
 ............................................
+
+
+Query  00 :: Want to find Records with no associated records in Rails ::
+
+
+Answers :::::::::::::::
+
+1. Update 4 - Rails 6.1
+Person.where.missing(:contacts)
+
+2.Update 3 - Rails 5
+Person.left_outer_joins(:contacts).where(contacts: { id: nil })
+
+3.Person.includes(:contacts).where(contacts: { id: nil })
+Friend.includes(:contacts).where(contacts: { id: nil })
+Person.includes(:contact).where(contacts: { person_id: nil })
+Person.includes(:friends).where(friends: { person_id: nil })
+Person.left_outer_joins(:contacts).where( contacts: { id: nil } )
+Person.where('id NOT IN (SELECT DISTINCT(person_id) FROM friends)')
+
+
+
+
+class Person
+   has_many :friends
+end
+
+class Friend
+   belongs_to :person
+end
+
+
+class Person
+   has_many :contacts
+   has_many :friends, :through => :contacts, :uniq => true
+end
+
+class Friend
+   has_many :contacts
+   has_many :people, :through => :contacts, :uniq => true
+end
+
+class Contact
+   belongs_to :friend
+   belongs_to :person
+end
+
+............................................
+
+Answers :::::::::::::::
+
+
+
+
 
 
 Query 01 ::  All the Categories that have products with duplicate categories also
@@ -101,17 +159,17 @@ Book.joins(:reviews)
 Book.joins(:reviews).distinct
 .......
 
-Query 14 :: Return all books with their author that have at least one review :: Using Multiple Join :: 
+Query 14 :: Return all books with their author that have at least one review :: Using Multiple Join ::  repeat hai 
 Book.joins(:author, :reviews)
 Note :: Books with multiple reviews will show up multiple times.
 .......
 
-Query 15 :: Return all books that have a review by a customer :: Joining Nested Associations (Single Level)
+Query 15 :: Return all books that have a review by a customer :: Joining Nested Associations (Single Level)  ::  repeat hai 
 Book.joins(reviews: :customer)
 .......
 
 Query 16 :: Return all authors that have books with reviews and have been ordered by a customer, and the suppliers for those books. :: Joined Nested Associations Multiple Level
-Author.joins(books: [{ reviews: { customer: :orders } }, :supplier] )
+Author.joins(books: [{ reviews: { customer: :orders } }, :supplier] )  
 .......
 
 Query 17 :: Example of Left Outer Joins :: 
@@ -354,5 +412,64 @@ Query34: By default sql query  :: (may be check below please)
 Student.joins(' FULL OUTER JOIN "clubs" ON "students"."id" = "clubs"."id" ')
 
 
+....................................................................
+
+Other Important Queries::
+
+Query34.1: Find out the Record of Books of id 1,2,3 : With Active Record.
+
+Book.where(id: [1,2,3])
 
 
+Query34.2: Find out the Record of Books of id 1,2,3 : With SQL Query.
+
+SELECT "books".* FROM "books" WHERE "books"."id" IN (1, 2, 3)
+
+....................................................................
+
+Query35.1: Find out the joined association with a specific id::
+Book.joins(:comments).where(comments: { id: 2 })
+
+Book.joins(:comments).where(comments: { id: 2 })
+
+....................................................................
+
+
+Query36. Active Record Query for Where Not Condition::
+Book.where.not(title: nil)
+
+
+....................................................................
+
+
+Query37: Write One Query by different ways:
+User.where(email: "foo@bar.com")
+User.where("email" => "foo@bar.com")
+User.where("email = 'foo@bar.com'")
+User.where("email = ?", "foo@bar.com")
+User.where("users.email" => "foo@bar.com")
+....................................................................
+
+
+Query37:  Find out N last Records :: 
+Record.last(N)
+User.last(5)
+
+....................................................................
+
+Query38: Find Records in Queries ::
+customer = Customer.find(10)
+customers = Customer.find([1, 10])
+customer = Customer.take
+customers = Customer.take(2)
+customer = Customer.first
+customers = Customer.first(3)
+customer = Customer.order(:first_name).first
+customer = Customer.last  OR 
+SELECT * FROM customers ORDER BY customers.id DESC LIMIT 1
+customers = Customer.last(3)
+SELECT * FROM customers ORDER BY customers.id DESC LIMIT 3
+customer = Customer.order(:first_name).last OR
+SELECT * FROM customers ORDER BY customers.first_name DESC LIMIT 1
+
+Customer.find_by first_name: 'Lifo'

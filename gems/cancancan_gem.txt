@@ -1,0 +1,150 @@
+cancancan_gem.txt :::::::::
+
+Link ::  https://medium.com/@rajiv.shah01234/rails-authorization-with-cancancan-9ac70a534485
+Link ::  https://www.mintbit.com/blog/authorization-with-cancancan-in-rails
+
+
+CanCanCan gem is all about the ability files.The Ability Class Holds all the permissions.
+The can method is used to define the permissions and require two arguments.
+First Arg: The first one is the action you're setting the permission for
+Second Arg: The second one is the class of the object you're setting it on.
+eg: can :manage, Blog
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Step01:: gem 'cancancan' + bundle
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Step02:: Add User Type and devise gem for CanCanCan gem::Must 
+
+Cancancan gem needs a current_user method to exist in the controller, which can be set up by using another gem like Devise. The current_user is passed to the constructor of Ability class while authorizing and the attributes of current_user can be used to give or restrict access to the user.
+
+gem 'devise' in Gemfile
+rails g devise:install
+rails g devise User user_type:string # add a devise user with user_type column.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Step03:: Add two users in seeds.rb
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+# db/seeds.rb
+User.create(email: 'customer@mintbit.com', password: '123123', password_confirmation: '123123', user_type: 'customer')
+User.create(email: 'admin@mintbit.com', password: '123123', password_confirmation: '123123', user_type: 'admin')
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Step04:: Before setting ability, define a method that returns either true or false if current user is an admin or not.
+
+# app/models/user.rb
+def admin?
+ user_type == 'admin'
+end
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Step05:: Create the Ability File :: ability.rb file :
+$ rails generate cancan:ability  # this command will generate this below file
+app/models/ability.rb
+Class Ability
+  include CanCan::Ability
+def initialize(user)
+    can :manage, Blog
+  end
+end
+
+OR
+
+class Ability
+ include CanCan::Ability
+
+ def initialize(user)
+   user ||= User.new # guest user (not logged in)
+   case user.is?
+   when 'author'
+     can :manage, Post
+   else
+     can :read, Post
+   end
+ end
+end
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Note:: How to Manage Permissions in CanCanCan:
+can :manage, Blog  # user can perform any action on the article
+can :read, :all       # user can read any object
+can :manage, :all  #user has access to everything
+can :highlight_pages, Blog   # custom action
+can [:add_user, :delete], [Blog, Comment] # multiple actions
+Note ::  Using :all we can represent all the classes.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Note:: CanCanCan automatically adds some convenient aliases for mapping the controller actions.
+alias_action :index, :show, :to => :read
+alias_action :new, :to => :create
+alias_action :edit, :to => :update
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Note:: We can also pass a hash of conditions to further restrict which records this permission applies to
+can :read, Blog, active: true, user_id: user.id
+It is important to only use database columns for these conditions so it can be reused for Fetching Records. Here active and user_id are columns of Blog table
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Step06:: Then check authorization using load_and_authorize_resource to load authorized models into the controller: 
+
+class ArticlesController < ApplicationController
+  load_and_authorize_resource
+  def show
+    # @article is already loaded and authorized
+  end
+end
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Step07:: authorize! to check authorization or raise an exception
+authorize! to check authorization or raise an exception
+
+def show
+  @article = Article.find(params[:id])
+  authorize! :read, @article
+end
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Step08:: can? to check if an object is authorized against a particular action anywhere in the controllers, views, or helpers
+<% if can? :update, @article %>
+  <%= link_to "Edit", edit_article_path(@article) %>
+<% end %>
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Step09:: handle the error:: 
+
+In app/controllers/application_controller.rb, handle the error.
+# app/controllers/application_controller.rb
+
+class ApplicationController < ActionController::Base
+ rescue_from CanCan::AccessDenied do |exception|
+   redirect_to root_url, :alert => exception.message
+ end
+end
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Step10:: Restrict User Types with Authorizations
+
+Now in app/controllers/posts_controller.rb, put these two lines at the top:
+before_action :authenticate_user!
+load_and_authorize_resource
+Now the admin will be able to create a post but the customer will not. Happy authorizing!

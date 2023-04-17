@@ -1,0 +1,89 @@
+devise_gem.txt
+
+....................................................................................................
+
+1 gem 'devise' and $ bundle
+2 $ rails g devise:install
+3 $ rails g devise User + $ rails db:migrate
+4 $ rails g controller home index
+5 get ‘home/index’ ,  root 'home#index’  :: Routes
+6 – config/enviornment/development.rb::
+config.action_mailer.default_url_options = {host: 'localhost', port: 3000}
+7. before_action :authenticate_user! :: application_controller.rb 
+8. Add the simple code to show the proper links of signin,signup and signout:: many times written
+inside the application.html.erb
+    <% if user_signed_in? %>
+       <a href="/users/sign_out"><span>SignOut</span></a>
+    <% else %>
+       <a href="/users/sign_up"><span>SignUp</span></a>
+    <%end%>
+note - extra sigin is coming after this --
+now do this  -- 
+    <% if user_signed_in? %>
+       <a href="/users/sign_out"><span>SignOut</span></a>
+    <% else %>
+    <%end%>
+9.changes in devise.rb :: In Initilizers :: devise.rb :: 269
+config.sign_out_via = [:delete, :get] :::::::::::::::::::::: Now:: Add the get Action in it
+config.sign_out_via =:delete ::::::::::::: Before
+10.  undefined method `devise_for' in rails --
+config.navigational_formats = ['*/*', :html, :turbo_stream]
+add above line in devise.rb anywhere 
+config.navigational_formats = ['*/*', :html, :turbo_stream]
+
+....................................................................................................
+
+Question that can be arise in devise gem in rails 
+
+1.What features devise gem gives?
+
+This is what the basic modules do:
+
+Using Devise with your model
+Devise uses 10 modules to configure user authentication. You can find these modules inside of your user model. Six of these modules are enabled by default (marked with an *). Modify existing configuration in the config/initializers/devise.rb file.
+
+1.Database Authenticable — Hashes and stores the password in database. Authentication is done by a POST request. Necessary to save user/hashed password in the DB.
+2.Omniauthable — Adds support for Omniauth provider, allowing log in through third-party providers like Facebook, Twitter, etc
+3.Confirmable — Disables access to the user account unless a user has confirmed their account through email.
+4.Recoverable — Adds a ‘Forgot my Password’ link that allows the user to reset their password using email
+*Registerable — Creates a registration process, users can now edit and delete their account. Disable for beta testing/invitation-only sites
+5.Rememberable — Creates a token and stores a user session with a saved cookie (adds REMEMBER ME checkbox)
+6.Trackable — Tracks user IP addresses, sign in count, last sign in, and timestamps
+Timeoutable — Logs a user out after a certain amount of time.
+7.Validatable — Uses built-in Devise validations for email address and password (length, characters, etc). Change validations in config/initializers/devise.rb
+8.Lockable — Locks an account after a specific amount of time or specific amount of log in attempts.
+
+....................................................................................................
+
+2.Devise Helper Methods:
+
+1.before_action :authenticate_user!
+2.skip_before_action :authenticate_user! 
+3.user_signed_in?
+4.current_user_
+................................
+
+Devise also comes with some very useful helper functions:
+
+1.before_action :authenticate_user! — Add to any controller to limit access to an action unless a user is logged in
+2.before_action :authenticate_user!, except: [:show, :index] before_action :authenticate_user!, only: [:show, :index]
+3.skip_before_action :authenticate_user! — Alternatively, you can add the before action to the application controller to black-list every page in the application, then use the skip_before_action command to allow access page-by-page
+4.skip_before_action :authenticate_user!, except: [:show, :index] skip_before_action :authenticate_user!, only: [:show, :index]
+user_signed_in? — Verifies if the user is signed in before a certain action can be executed. Add to controller or view. Returns true or false.
+if user_signed_in?
+  DO SOME ACTION
+else 
+  DO ANOTHER ACTION
+end
+current_user — Add to controller or view to return an instance of the user performing the action. E.x. You are creating a restaurant that belongs to a user. Set @restaurant.user to current_user if the current user is the owner of the restaurant
+@restaurant.user = current_user
+@restaurant.save
+
+....................................................................................................
+
+3.When Devise fails and how to solve this ::
+By default, the use of Devise doesn’t enforce strong passwords.To enable strong passwords, make sure to add the Devise Security Extension gem (there are requests to include it in the Devise core, but who knows when that will happen)
+
+
+
+

@@ -1,0 +1,9 @@
+rails_deep.txt ::
+
+1.How Devise Password Encryption Work
+2.Where the rails know that migration file is saving in the database
+3.what is the exact diff between module and rails
+4.what is the diff between postgres and sql database in rails
+5.how ruby is object oriented programming language.
+6.how ruby is no that 
+

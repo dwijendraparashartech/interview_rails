@@ -1,0 +1,23 @@
+rails_session_mechanism.txt
+
+1.What is the diff between cookies and sessions?
+Cookies are client-side files that are stored on a local computer and contain user information. Sessions are server-side files that store user information
+
+2.where the cookies data is store in rails application
+config/initializers/session_store.rb
+If you generate a Rails application in 3.2 then ,by default, you will see a file at config/initializers/session_store. rb. The contents of this file is something like this. As we can see _demo_session is used as the key to store cookie dat
+
+3.Where the cookies data is store in browser?
+They are stored in random access memory and are never written to the hard drive. When the session ends, session cookies are automatically deleted. They also help the "back" button or third-party anonymizer plugins work. These plugins are designed for specific browsers to work and help maintain user privacy.
+
+4.What are cookies?
+What Are Cookies?
+Cookies are text files with small pieces of data — like a username and password — that are used to identify your computer as you use a computer network. Specific cookies known as HTTP cookies are used to identify specific users and improve your web browsing experience.
+Data stored in a cookie is created by the server upon your connection. This data is labeled with an ID unique to you and your computer.
+When the cookie is exchanged between your computer and the network server, the server reads the ID and knows what information to specifically serve to you.
+
+5.Types of Cookies?
+Magic Cookies
+HTTP Cookies
+
+6.

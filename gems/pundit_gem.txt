@@ -1,0 +1,398 @@
+pundit_gem.txt ::
+
+Link ::  https://www.bootrails.com/blog/rails-pundit-tutorial/
+
+In Pundit Gem we work with Policy Object Pattern ::
+The return has to be a boolean value
+The logic has to be simple
+Inside the method, we should only call methods on the passed objects
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+How to work with Pundit ::
+
+Create a Policy class that handles authorizing access to a specific type of record — whether it be a Post or User, or something else.
+
+Call the built-in authorization function, passing in what you need to authorize access to.
+
+Pundit will find the appropriate Policy class and call the Policy method that matches the name of the method you are authorizing. If it returns true, you have permission to perform the action. If not, it’ll throw an exception.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Step01 :: gem 'pundit' + bundle
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Step02 :: Include Pundit Gem in your Application Controller ::
+class ApplicationController < ActionController::Base
+  include Pundit::Authorization
+end
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Step03 :: Run the generator to set up an application policy with some useful defaults:
+rails g pundit:install
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Note03 :: Restart the Rails server. Now Rails can pick up any classes in the new app/policies/ directory.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Step04 :: Adding Policies ::
+mkdir app/policies
+touch app/policies/article_policy.rb
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Step05 :: Add Policy code in the Policy: eg, article_policy
+article_policy.rb
+
+class ArticlePolicy < ApplicationPolicy
+  attr_reader :user, :article
+
+  def initialize(user, article)
+    @user = user
+    @article = article
+  end
+
+  def show?
+    # a condition which returns a boolean value
+  end
+end
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Step06 :: Adding Policies Checks :: We will upgrade the pollicy class by adding some authorization methods ::
+
+class ArticlePolicy < ApplicationPolicy
+  attr_reader :user, :article
+
+  def initialize(user, article)
+    @user = user
+    @article = article
+  end
+
+  def index?
+    true
+    # if set to false - no one will have access
+  end
+
+  def show?
+    true
+  end
+
+  # Same as for create 
+  def new?
+    create?
+  end
+
+  # Same as that of the update.
+  def edit?
+    update?
+  end
+
+  # Only admin is allowed to update the article and only if article is not published
+  def update?
+    user.admin? || !article.published
+  end
+
+  # Only admin is allowed to create the article.
+  def create?
+    user.admin?
+  end
+
+  def destroy?
+    user.admin?
+  end
+end
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Step 07 :: Generate the Controller ::
+bin/rails g controller Articles index
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Step 09 :: Generate Routes ::
+Rails.application.routes.draw do
+  root 'articles#index'
+  resources :articles
+  devise_for :users
+end
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Step10 :: Manage the Article Controller :: 
+class ArticlesController < ApplicationController
+  before_action :set_article, only: %i[show edit update destroy]
+  before_action :authenticate_user!, except: %i[index show]
+
+  # GET /articles or /articles.json
+  def index
+    @articles = Article.all
+  end
+
+  # GET /articles/1 or /articles/1.json
+  def show
+  end
+
+  # GET /articles/new
+  def new
+    @article = Article.new
+  end
+
+  # GET /articles/1/edit
+  def edit
+  end
+
+  # POST /articles or /articles.json
+  def create
+    @article = Article.new(article_params)
+    authorize @article
+
+    respond_to do |format|
+      if @article.save
+        format.html { redirect_to article_url(@article), notice: "Article was successfully created." }
+        format.json { render :show, status: :created, location: @article }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @article.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /articles/1 or /articles/1.json
+  def update
+    authorize @article
+
+    respond_to do |format|
+      if @article.update(article_params)
+        format.html { redirect_to article_url(@article), notice: "Article was successfully updated." }
+        format.json { render :show, status: :ok, location: @article }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @article.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /articles/1 or /articles/1.json
+  def destroy
+    @article.destroy
+
+    respond_to do |format|
+      format.html { redirect_to articles_url, notice: "Article was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_article
+      @article = Article.find(params[:id])
+    end
+
+    # Only allow a list of trusted parameters through.
+    def article_params
+      params.require(:article).permit(:title, :body, :published)
+    end
+end
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Step11:: Manage the Index View File of articles :: articles/index.html.erb ::
+# inside views\articles\index.html.erb
+
+<p style="color: green"><%= notice %></p>
+
+<h1>Articles</h1>
+
+<div id="articles">
+  <p>
+    <strong>Title:</strong>
+    <%= @article.title %>
+  </p>
+
+  <p>
+    <strong>Body:</strong>
+    <%= @rticle.body %>
+  </p>
+
+  <p>
+    <strong>Published:</strong>
+    <%= @article.published %>
+  </p>
+  <p>
+    <%= link_to "Show this article", article %>
+  </p>
+</div>
+
+<%= link_to "New article", new_article_path %>
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Step12:: Manage the Show View File of articles :: articles/show.html.erb ::
+
+# inside views\articles\show.html.erb
+
+<p style="color: green"><%= notice %></p>
+
+  <p>
+    <strong>Title:</strong>
+    <%= @article.title %>
+  </p>
+
+  <p>
+    <strong>Body:</strong>
+    <%= @article.body %>
+  </p>
+
+  <p>
+    <strong>Published:</strong>
+    <%= @article.published %>
+  </p>
+
+<div>
+  <%= link_to "Edit this article", edit_article_path(@article) %> |
+  <%= link_to "Back to articles", articles_path %>
+
+  <%= button_to "Destroy this article", @article, method: :delete %>
+</div>
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Step13:: Manage the New View File of articles :: articles/new.html.erb ::
+
+# inside views\articles\new.html.erb
+
+<h1>New article</h1>
+
+<%= form_with(model: @article) do |form| %>
+  <% if @article.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(@article.errors.count, "error") %> prohibited this article from being saved:</h2>
+
+      <ul>
+        <% @article.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, style: "display: block" %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :body, style: "display: block" %>
+    <%= form.text_area :body %>
+  </div>
+
+  <div>
+    <%= form.label :published, style: "display: block" %>
+    <%= form.check_box :published %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<br>
+
+<div>
+  <%= link_to "Back to articles", articles_path %>
+</div>
+
+Step13:: Update the application_controller.rb to handle an error with flash messages:
+
+class ApplicationController < ActionController::Base
+  include Pundit::Authorization
+
+  rescue_from Pundit::NotAuthorizedError, with: :pundishing_user
+
+  private
+
+  def pundishing_user
+    flash[:notice] = "You are not authorized to perform this action."
+    redirect_to article_path
+  end
+end
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Step14:: Create the Pundit Policy with Scopes::
+This allows you to let users with different authorizations see different scopes of items.
+For example, admins can see all articles, other users can see own articles.
+
+Modify the article_policy.rb:
+class ArticlePolicy < ApplicationPolicy
+  # ...
+  class Scope < Scope
+    def resolve
+      if @user.has_role? :admin
+        scope.all
+      else
+        scope.where(articles: {article_id: current_user.id})
+      end
+    end
+  end
+end
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Step15:: Add this Policy Scope to your Controller::
+
+class ArticlesController < ApplicationController
+  # existing code
+
+  def index
+    @articles = policy_scope(Article).order(created_at: :desc)
+    authorize @articles
+  end
+end
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Step16:: Extending policy with multiple roles
+In practice, it is quite common to require that the authorization of a particular CRUD action be different for multiple roles. Let's add to our example, say, the role 'supporter'. And now there are articles that can only be viewed by supporter users and admins. We need to create a new 'supporter' role and update our ArticlePolicy as shown below:
+
+class ArticlePolicy < ApplicationPolicy
+  # ...
+  class Scope < Scope
+    def resolve
+      if user.admin?
+        scope.all
+      elsif user.supporter?
+        scope.where(published: true)
+      else
+        scope.where(published: true, supporter: false)
+      end
+    end
+  end
+
+  # ...
+
+  def show?
+    return user.supporter? || user.admin? if article.published?
+    true
+  end
+end
+
+Note :: Now a normal user can’t view articles for supporters in the index view listings as we are scoping it out. Also we are authorizing the show page as to not allow non-supporter users to see supporter content.
+
+
+

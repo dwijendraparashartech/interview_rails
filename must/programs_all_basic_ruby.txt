@@ -1,0 +1,1169 @@
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Hash Programs ::
+
+p hash = {"key1"=>"1","key2"=>"2"} # create first hash
+p hash1 = {"key11"=>"value11","key22"=>"value22"} # create  another second hash
+p hash.keys()  # create keys from the hash collection
+p hash.values() # create values from the hash collection
+p hash["key1"]  # get value from the hash collection based on specified key
+p hash["key3"]="value3"  # to add items into the hash collection
+p hash.has_key?("key1")  # to check if a hash key exists in Ruby?
+p hash.has_value?("value1")   # to check if a hash value exists in Ruby?
+p hash.store("key4","value4")  # to add elements to a Hash or to store items in a hash 
+p hash.delete("key1")  # delete the item from the hash collection based on a specific key
+p hash.empty?   # to check a hash collection is empty or not
+p hash.has_value?("2")==true  # to check a value is exist in the hash collection or not
+p hash.key("2")   #to get key based on value
+p hash.value?("key2")  
+p hash.invert()   # to print the inverted hash collection
+p hash.length()  # to print the length of hash collection
+p hash.size()   # to print the size of  hash collection
+p hash.key?("102") == true  # given key is exist in the hash collection or not
+p hash.to_a()     #convert the hash collection into the array
+p hash.to_s()                # to convert the hash collection into the string
+p hash.value?("2")==true    # to search an item in the hash collection
+p hash.values()   # to get hash collection values as an array
+p hash.each{} # to iterate elements of a hash collection using each() method
+p hash.each{|key,value| puts value}   # to iterate hash collection and print only values
+p hash.inspect() #  to demonstrate the Hash.inspect() function
+p hash.delete_if{|key, value| value ="2" } #  to demonstrate the delete_if() method
+p hash.sort()   #to get the hash elements as a sorted array from the hash collection
+p hash.replace(hash1)  # to replace the items of hash collection from another hash collection
+p hash.clear()   #  to remove all items from the hash collection
+p hash.merge(hash1)   # to merge two hash collections
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Array Programs ::
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Array Programs ::
+
+|||||||||    color.include? 'Green'
+
+1. Write a Ruby program to check whether a value exists in an array.
+
+color = ["Red", "Green", "Blue", "White"]
+print "Original array:\n"
+print color
+print "\nCheck if 'Green' in color array!\n"
+print color.include? 'Green'
+print "\nCheck if 'Pink' in color array!\n"
+print color.include? 'Pink'
+
+
+|||||||||    return (nums[0] == 7 || nums[nums.length-1] == 7)
+
+2. Check whether 7 appears as either the first or last element in a given array.
+
+def check_array(nums)
+   return (nums[0] == 7 || nums[nums.length-1] == 7)
+end
+print check_array([1, 2, 7]),"\n"
+print check_array([7, 1, 2, 3]),"\n"
+print check_array([14, 7, 1, 2, 3])
+
+
+|||||||||    print nums.sample(2)
+
+3. Pick number of random elements from a given array
+
+nums = [12, 34, 23, 56]
+print "Original array:\n"
+print nums
+print "\n 2 random elements from the array.\n"
+print nums.sample(2)
+print "\n 3 random elements from the array.\n"
+print nums.sample(3)
+
+|||||||||    return (nums.length >= 1 && nums[0] ==  nums[nums.length-1])
+
+4. Write a Ruby program to check whether first and the last element are the same of a given array of integers. The array length must be 1 or more.
+
+def check_array(nums)
+   return (nums.length >= 1 && nums[0] ==  nums[nums.length-1])
+end
+print check_array([1, 2, 7]),"\n"
+print check_array([3, 1, 2, 3]),"\n"
+print check_array([14, 7, 1, 2, 3])
+
+|||||||||    return (nums[0] == 7 || nums[nums.length-1] == 7)
+
+5. Compute the sum of elements in a given array
+
+nums = [12, 34, 23, 56]
+print "Original array:\n"
+print nums
+print "\nSum of the values of the above array:\n"
+print nums.inject(0){|sum,x| sum + x }
+
+
+|||||||||    nums.uniq
+
+
+6. Remove duplicate elements from a given array
+
+nums = [1, 2, 3, 4, 1, 2, 2, 3, 5, 6]
+print "Original array:\n"
+print nums
+print "\n Array with unique elements:\n"
+new_nums = nums.uniq
+print new_nums
+
+|||||||||    return (a[0] == b[0] || a[a.length-1] == b[b.length-1])
+
+
+7. Check two given arrays of integers and test whether they have the same first element or they have the same last element
+
+def check_array(a, b)
+   return (a[0] == b[0] || a[a.length-1] == b[b.length-1])
+end
+print check_array([1, 2, 5], [7, 5]),"\n" 
+print check_array([1, 2, 3], [7, 3, 2]),"\n" 
+print check_array([1, 2, 4], [1, 4]) 
+
+|||||||||    color.reject { |c| c.empty? }
+
+8. Remove blank elements from a given array
+
+color = ["Red", "Green", "", "Blue", "White"]
+print "Original array:\n"
+print color
+print "\nRemove blank element from the above array:\n"
+new_color = color.reject { |c| c.empty? }
+print new_color 
+
+|||||||||    return (nums[0] + nums[1] + nums[2])
+
+9. Compute the sum of all the elements
+
+def check_array(nums)
+   return (nums[0] + nums[1] + nums[2])
+end
+
+print check_array([1, 2, 5]),"\n" 
+print check_array([1, 2, 3]),"\n" 
+print check_array([1, 2, 4]) 
+
+|||||||||  color.split(",")  OR  nums.split(",").map { |s| s.to_i }
+
+
+10. Split a delimited string into an array
+
+color = "Red, Green, Blue, White"
+nums = "1, 3, 4, 5, 7"
+print "Original delimited string:\n"
+print color,", "
+print nums
+print "\nString to array:\n"
+color_array = color.split(",")
+nums_array = nums.split(",").map { |s| s.to_i }
+print color_array
+print "\n",nums_array
+
+
+|||||||||  return rotated = nums[1], nums[2], nums[0];
+
+11. Create an array with the elements "rotated left" of a given array of ints length 3
+
+def check_array(nums)
+    rotated = nums[1], nums[2], nums[0];
+	return rotated;
+end
+print check_array([1, 2, 5]),"\n" 
+print check_array([1, 2, 3]),"\n" 
+print check_array([1, 2, 4]) 
+
+
+
+|||||||||  return rotated = nums[1], nums[2], nums[0];
+
+12. Create a new array with the elements in reverse order
+
+def check_array(nums)
+    reversed = nums[2], nums[1], nums[0]
+	return reversed;
+end
+
+print check_array([1, 2, 5]),"\n" 
+print check_array([1, 2, 3]),"\n" 
+print check_array([1, 2, 4])
+
+
+|||||||||  
+
+13. Find the larger between the first and last elements of a given array of integers
+
+def check_array(nums)
+    maxVal = []
+   	maxVal[0] = nums[0]
+	if(nums[2] >= maxVal[0])
+		maxVal[0] = nums[2]
+	maxVal[1] = maxVal[0]
+	maxVal[2] = maxVal[0]
+	end
+	return maxVal
+end
+print check_array([1, 2, 5]),"\n" 
+print check_array([1, 2, 3]),"\n" 
+print check_array([1, 2, 4])  
+
+|||||||||  
+
+14.  Compute the sum of the first 2 elements of a given array of integers
+
+def check_array(nums)
+    if(nums.length >= 2)
+		return (nums[0] + nums[1])
+	end
+	if(nums.length == 1)
+		return nums[0];
+	end
+	return 0;
+
+end
+print check_array([1, 2, 5]),"\n" 
+print check_array([4, 2, 3]),"\n" 
+print check_array([1])
+
+|||||||||  
+
+15.  Create an array of length 2 containing their middle elements from two given arrays of integers of length 3
+
+def check_array(nums)
+    if(nums.length >= 2)
+		return (nums[0] + nums[1])
+	end
+	if(nums.length == 1)
+		return nums[0];
+	end
+	return 0;
+
+end
+print check_array([1, 2, 5]),"\n" 
+print check_array([4, 2, 3]),"\n" 
+print check_array([1])
+
+|||||||||  
+
+16.  Create an array of length 2 containing their middle elements from two given arrays of integers of length 3
+
+def check_array(nums)
+    if(nums.length >= 2)
+		return (nums[0] + nums[1])
+	end
+	if(nums.length == 1)
+		return nums[0];
+	end
+	return 0;
+
+end
+print check_array([1, 2, 5]),"\n" 
+print check_array([4, 2, 3]),"\n" 
+print check_array([1])
+
+|||||||||  
+
+17. Concatenate array of arrays into one
+
+fnums = [ 10, 20, [30, [40, 50] ] ]
+print "Original array:\n"
+print fnums
+nums = fnums.flatten
+print "\nFlatten array:\n"
+print nums
+
+|||||||||  
+
+18. Check whether a given array of integers of length 2 contains a 4 or a 7
+
+def check_array(nums)
+    if(nums[0] == 4 || nums[0] == 7)
+		return true
+	end	
+	return (nums[1] == 4 || nums[1] == 7)
+end
+
+print check_array([1, 4]),"\n" 
+print check_array([7, 5]),"\n"   
+print check_array([5, 2])  
+
+|||||||||  
+
+19. Check whether an given array of integers of length 2 does not contain a 6 or a 9
+
+def check_array(nums)
+   if(nums[0] == 6 || nums[0] == 9)
+		return false
+	end
+	return !(nums[1] == 6 || nums[1] == 9)
+end
+
+print check_array([1, 4]),"\n" 
+print check_array([6, 5]),"\n"   
+print check_array([5, 9])  
+
+
+|||||||||  
+
+20. Check whether an given array of integers of length 2 does not contain a 6 or a 9
+
+def check_array(nums)
+   if(nums[0] == 6 || nums[0] == 9)
+		return false
+	end
+	return !(nums[1] == 6 || nums[1] == 9)
+end
+
+print check_array([1, 4]),"\n" 
+print check_array([6, 5]),"\n"   
+print check_array([5, 9])  
+
+
+|||||||||  
+
+21. Check whether a given array of integers contains 3 twice, or 5 twice
+
+def check_array(nums)
+    if(nums.length == 2)
+        if(nums[0] == 3 && nums[1] == 3)
+            return true
+        else
+		return (nums[0] == 5 && nums[1] == 5)
+		end
+	return false
+	end
+	end
+print check_array([3, 3]),"\n" 
+print check_array([3, 6]),"\n" 
+print check_array([5, 9]),"\n" 
+print check_array([5, 5]),"\n"   
+print check_array([8, 9])
+
+
+
+
+
+|||||||||  
+
+22.  Write a Ruby program to set 5 to 1 if there is a 3 immediately followed by a 5 in a given array of integers (length 3).
+
+
+def check_array(nums)
+     num1 = nums[0], nums[1], nums[2]
+	if(nums[0] == 3 && nums[1] == 5)
+			num1[1] = 1;
+	end		
+	if(nums[1] == 3 && nums[2] == 5)
+			num1[2] = 1;
+	end		
+	return num1;
+end
+print check_array([1, 3, 5]),"\n" 
+print check_array([3, 5, 6]),"\n" 
+print check_array([3, 9, 5]) 
+
+|||||||||  
+
+23. Check whether a given array of integers contains 3 twice, or 5 twice
+
+def check_array(nums)
+    if(nums.length == 2)
+        if(nums[0] == 3 && nums[1] == 3)
+            return true
+        else
+		return (nums[0] == 5 && nums[1] == 5)
+		end
+	return false
+	end
+	end
+print check_array([3, 3]),"\n" 
+print check_array([3, 6]),"\n" 
+print check_array([5, 9]),"\n" 
+print check_array([5, 5]),"\n"   
+print check_array([8, 9])
+
+|||||||||  
+
+24. Compute the sum of two arrays and return the array which has the largest sum
+
+def check_array(a, b)
+    sum = (a[0]+a[1]+a[2])-(b[0]+b[1]+b[2])
+	if(sum >= 0)
+		return a
+	end
+	return b
+end
+print check_array([1, 3, 5], [2, 4, 4]),"\n"
+print check_array([11, 3, 5], [21, 0, -4]),"\n"  
+
+
+|||||||||  
+
+25. Create a new array of length 2 containing the middle two elements from a given array of integers of even length 2 or more
+
+def check_array(nums)
+    midArr = []
+   	half = nums.length/2;
+	midArr[0] = nums[half-1];
+	midArr[1] = nums[half];
+	return midArr;
+end
+print check_array([1, 3, 5, 4]),"\n"
+print check_array([11, 3, 5, 21, 0, -4]) 
+
+
+|||||||||  
+
+26. Create a new array from two array of integers
+
+def check_array(a, b)
+   arr1 = a[0], a[1], b[0], b[1]
+   return arr1;
+end
+print check_array([1, 3], [5, 4]),"\n"
+print check_array([11, 3], [5, 21]) 
+
+
+|||||||||  
+
+27. Swap the first and last elements of a given array of integers
+
+def check_array(nums)
+    temp = nums[0];
+	nums[0] = nums[nums.length-1];
+	nums[nums.length-1] = temp;
+	return nums;
+end
+print check_array([1]),"\n"
+print check_array([1, 3]),"\n"
+print check_array([1, 3, 5]),"\n"
+print check_array([11, 3, 5, 21])  
+
+|||||||||  
+
+28. Create a new array from the middle of a given array of integers of odd length
+
+def check_array(nums)
+    halfArr = [];
+	half = nums.length/2;
+	halfArr[0] = nums[half-1];
+	halfArr[1] = nums[half];
+	halfArr[2] = nums[half+1];
+	return halfArr;
+end
+
+print check_array([1, 3, 4]),"\n"
+print check_array([1, 2, 3, 7, 9])  
+
+|||||||||  
+
+29.  Find the largest value from a given array of integers of odd length
+
+def check_array(nums)
+    max = nums[0];
+	if(max <= nums[nums.length-1])
+		max = nums[nums.length-1]
+	end
+	if(max <= nums[nums.length/2])
+		max = nums[nums.length/2]
+	end
+	return max;
+end
+
+print check_array([1, 3, 4]),"\n"
+print check_array([1, 2, 7]),"\n"
+print check_array([1, 2])  
+
+|||||||||  
+
+30. Create a new array using first three elements of a given array of integers
+
+def check_array(nums)
+    front = []
+	if nums.length >= 3
+		front[0] = nums[0]
+		front[1] = nums[1]
+		front[2] = nums[2]
+	elsif nums.length == 2
+		front[0] = nums[0]
+		front[1] = nums[1]
+	else nums.length == 1
+	    front[0] = nums[0]
+	end
+	return front
+end
+
+print check_array([1, 3, 4, 5]),"\n"
+print check_array([1, 2, 3]),"\n"
+print check_array([1,2]),"\n"
+print check_array([1]),"\n"  
+
+|||||||||  
+
+31.Create a new array with the first element of two arrays
+
+def check_array(a, b)
+    front = []
+    if(a.length > 0 && b.length > 0)
+        front[0] = a[0]
+		front[1] = b[0]
+    elsif (a.length > 0)
+        front[0] = a[0]
+    elsif (b.length > 0)
+        front[0] = b[0]
+    end
+    return front
+end
+
+print check_array([3, 4, 5, 6], [7, 3, 4]),"\n"
+print check_array([3, 4, 5], [6, 7, 3, 4, 7]),"\n"
+print check_array([3, 4], [])  
+
+|||||||||  
+
+32. Get the number of even integers in a given array
+
+def check_array(nums)
+  count = 0    
+  nums.each do |item|
+    if((item % 2) == 0)
+	count=count + 1
+    end 
+  end   
+  return count
+end
+print check_array([3, 4, 5, 6]),"\n"
+print check_array([3, 4, 5]),"\n"
+print check_array([3, 4]) 
+
+
+
+|||||||||  
+
+33. Find the difference between the largest and smallest values of a given array of integers of length 1 or more
+
+def check_array(nums)
+  max = nums[0];
+  min = nums[0];
+  nums.each do |item|
+    if(item > max)
+			max = item;
+		elsif(item < min)
+			min = item
+    end 
+   end    
+  return (max-min)
+end
+
+print check_array([3, 4, 5, 6]),"\n"
+print check_array([3, 4, 5]),"\n"
+print check_array([3, 4])
+
+|||||||||  
+
+34. Compute the average values of a given array of except the largest and smallest values
+
+def check_array(nums)
+  min = nums[0]
+  max = nums[0]
+  sum = 0
+  nums.each do |item|
+    sum = sum + item
+		if(item > max)
+			max = item
+		elsif(item < min)
+			min = item
+        end 
+   end    
+   return (sum-max-min).to_f/(nums.length - 2)
+end
+
+print check_array([3, 4, 5, 6]),"\n"
+print check_array([12, 3, 7, 6]),"\n"
+print check_array([2, 15, 7, 2]),"\n"
+print check_array([2, 15, 7])
+
+
+
+
+|||||||||  
+
+35. Compute the sum of the numbers of a given array except the number 17 and numbers that come immediately after a 17
+
+def check_array(nums)
+   sum = 0
+   i = 0
+   while i < nums.length
+       	if(nums[i] == 17)
+			i= i + 1
+		else
+		   	sum = sum + nums[i]
+	    end
+	    i += 1
+    end
+   	return sum
+end
+print check_array([3, 5, 17, 6]),"\n"
+print check_array([3, 5, 1, 17]),"\n"
+print check_array([3, 17, 1, 7]),"\n"
+
+|||||||||  
+
+36. Check whether the sum of all the 3's of an given array of integers is exactly 9
+
+def check_array(nums)
+   sum = 0
+   i = 0
+   while i < nums.length
+       if(nums[i] == 3)
+			sum += 3
+       end
+    i += 1
+   	end
+   return (sum == 9);
+end
+print check_array([3, 5, 3, 3]),"\n"
+print check_array([3, 3, 2, 1]),"\n"
+print check_array([3, 3, 3, 3]),"\n"
+
+
+|||||||||  
+
+37. Check whether the number of 2's is greater than the number of 5's of a given array of integers
+
+def check_array(nums)
+   ctr = 0
+   i = 0
+   while i < nums.length
+        if (nums[i] == 2)
+			ctr = ctr + 1
+		elsif (nums[i] == 5)
+			ctr= ctr - 1
+		end
+       i += 1
+   end
+   return (ctr > 0)
+end
+print check_array([3, 5, 3, 3]),"\n"
+print check_array([2, 3, 2, 5]),"\n"
+print check_array([2, 2, 5, 5]),"\n"
+
+
+|||||||||  
+
+38. Write a Ruby program to check whether every element is a 3 or a 5 in a given array of integers.
+
+def check_array(nums)
+   i = 0
+   while i < nums.length
+        if(nums[i] != 3 && nums[i] != 5)
+			return false
+		end	
+	i = i + 1
+   end
+   return true
+end
+print check_array([3, 5, 3, 3]),"\n"
+print check_array([2, 3, 2, 5]),"\n"
+print check_array([3, 5, 5, 5]),"\n"
+
+
+|||||||||  
+
+39. Check whether it contains no 3 or it contains no 5
+
+def check_array(nums)
+   noThree = true, noFive = true;
+   i = 0;
+   while i < nums.length && (noThree || noFive)
+        if(nums[i] == 3)
+			noThree = false
+		elsif(nums[i] == 5)
+			noFive = false
+		end	
+	i = i + 1
+   end
+   return (noThree || noFive)
+end
+print check_array([3, 7, 3, 3]),"\n"
+print check_array([2, 8, 2, 9]),"\n"
+print check_array([3, 8, 5, 9]),"\n"
+
+
+|||||||||  
+
+40. Check whether a given value appears everywhere in a given array
+
+def check_array(nums)
+   i = 0;
+   val = 3
+   while i < nums.length
+       if(nums[i] != val && nums[i+1] != val)
+			return false
+		end	
+	i = i + 1
+   end
+   return true
+end
+print check_array([3, 7, 3, 3]),"\n"
+print check_array([2, 8, 2, 9]),"\n"
+print check_array([3, 8, 5, 4, 3, 7]),"\n"
+
+
+|||||||||  
+
+41..Check whether a given array contains a 3 next to a 3 or a 5 next to a 5, but not both
+
+def check_array(nums)
+   no3pair = 1
+   no5pair = 1
+   i = 0;
+   while i < nums.length && (no3pair + no5pair != 0)
+        if(nums[i] == 3 && nums[i+1] == 3)
+			no3pair = 0
+		elsif(nums[i] == 5 && nums[i+1] == 5)
+			no5pair = 0
+		end	
+	i = i + 1
+   end
+   return ((no3pair ^ no5pair) == 1)
+end
+print check_array([3, 3, 7, 5]),"\n"
+print check_array([3, 8, 5, 9]),"\n"
+print check_array([3, 7, 5, 5]),"\n"
+
+
+|||||||||  
+
+42. Check whether a given array of integers contains two 6's next to each other, or there are two 6's separated by one element
+
+def check_array(nums)
+   i = 0;
+   while i < nums.length
+        if(nums[i] == 6)
+    		if(nums[i+1] == 6)
+				return true
+			elsif(i < nums.length - 2 && nums[i+2] == 6)
+				return true
+			end	
+	    end
+	i = i + 1
+   end
+   return false
+end
+print check_array([6, 3, 6, 5]),"\n"
+print check_array([6, 6, 5, 9]),"\n"
+print check_array([6, 4, 5, 6]),"\n"
+
+
+|||||||||  
+
+43. Check whether there is a 2 in the array with a 3 some where later in a given array of integers
+
+def check_array(nums)
+   found1 = false    
+   i = 0
+   while i < nums.length
+       if(nums[i] == 2)
+            found1 = true
+        end            
+        if(found1 && nums[i] == 3)
+            return true
+        end  
+        i = i + 1
+   end
+   return false
+end
+print check_array([6, 2, 3, 5]),"\n"
+print check_array([2, 6, 5, 3]),"\n"
+print check_array([6, 2, 5, 3]),"\n"
+print check_array([3, 6, 5, 2]),"\n"
+print check_array([3, 3, 2, 1]),"\n"
+
+
+
+|||||||||  
+
+44. Check whether the value 2 appears in a given array of integers exactly 2 times, and no 2's are next to each other
+
+def check_array(nums)
+    count = 0
+    i = 0
+    if(nums.length >= 1 && nums[0] == 2)
+        count = count + 1
+    end    
+   while i < nums.length
+        if(nums[i - 1] == 2 && nums[i] == 2)
+            return false
+        end                    
+        if(nums[i] == 2)
+            count = count + 1
+        end
+        i= i + 1
+   end
+   return count == 3
+end
+print check_array([2, 1, 2, 5, 6]),"\n"
+print check_array([2, 6, 5, 2, 3]),"\n"
+print check_array([2, 5, 2, 3, 2]),"\n"
+
+
+|||||||||  
+
+45. Convert an array into an index hash
+
+nums = [10, 20, 30, 40]
+print "Original array:\n"
+print nums
+print "\nIndex Hash:\n"
+print Hash[nums.zip]
+
+
+
+
+|||||||||  
+
+46. Find most occurred item in a given array
+nums = [10, 20, 30, 40, 10, 10, 20]
+print "Original array:\n"
+print nums
+nums_freq = nums.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+print "\nFrequency of numbers:\n"
+print nums_freq
+
+
+
+
+
+|||||||||  
+
+47. Check whether all items are identical in a given array
+
+num1 = [10, 20, 30, 40, 10, 10, 20]
+print "Original array:\n"
+print num1
+print "\nIs all items are identical?\n"
+print num1.all? {|x| x == num1[0]}
+num2 = [10, 10, 10]
+print "\nOriginal array:\n"
+print num2
+print "\nIs all items are identical?\n"
+print num2.all? {|x| x == num2[0]}
+
+
+
+
+|||||||||  
+
+48. Search items start with specified string of a given array
+
+arra1 = ['abcde', 'abdf', 'adeab', 'abdgse', 'bdefa', 'bacdef']
+print "Original array:\n"
+print arra1
+print "\nSearch items start with 'ab':\n"
+print arra1.grep(/^ab/)
+print "\nSearch items start with 'b':\n"
+print arra1.grep(/^b/)
+
+
+|||||||||
+
+49. Iterate an array starting from the last element
+
+nums = [10, 20, 30, 40, 10, 10, 20]
+print "Original array:\n"
+print nums
+print "\nReverse array:\n"
+nums.reverse.each { |x| puts x }
+
+|||||||||
+
+50. Iterate over the first n elements of a given array
+
+arra1 = ['abcde', 'abdf', 'adeab', 'abdgse', 'bdefa', 'bacdef']
+print "Original array:\n"
+print arra1
+arra2 = arra1.first(3)
+print "\nFirst 3 elements:\n"
+print arra2
+
+|||||||||
+
+51. Sort a given array of strings by length
+
+arra1 = ['abcde', 'abdf', 'adeab', 'abdgeee', 'bdefa', 'abc', 'ab', 'a', 'bacdef']
+print "Original array:\n"
+print arra1
+print "\nSorted array of strings by length\n"
+arra1 = arra1.sort_by(&:length)
+print arra1
+
+
+
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+String Programs :: Methods ::::::
+
+1. check whether a string contains a substring #   my_string.include? my_substr
+2. remove all white space within a string #  return my_string.delete(' ')
+3. remove the last specified character # my_string.chop!
+4. convert string to array   # my_string.split(d)
+6. remove a substring from a specified string   #  return my_string.slice! substr
+7. check whether a string starts with an other string # return my_string.start_with?(substr)
+8. Count occurrences of specified character in string # return my_string.count(chr)
+9. Sort a string's characters alphabetically  # return str.chars.sort.join
+10.Remove/Trim a specified character into a given string # (str,chr);return str.tr(chr, '')
+11.Get a substring from a specified position to the last char of a given string
+12. Get a substring from a specified position to the last char of a given string
+(str, n) ; return str[n...-1]
+13.Get the no of lines in a given string   #str.lines.count
+14. Truncate a given string to the first n words  # print str.split[0...n].join(' ')
+15. Remove a character from a given string if it starts with that specified character
+print my_string.sub!(/^J/, '')  OR   print "\n",my_string.sub!(/^P/, '')
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+String Programs ::
+
+
+|||||||||   (tag, word) ; "<#{tag}> #{word} </#{tag}>"
+
+1. Write a Ruby program to draw a string as bold or italic text.
+
+def make_tags(tag, word)
+    "<#{tag}> #{word} </#{tag}>"
+end
+print make_tags("i", "Ruby")
+print "\n",make_tags("b", "Ruby")
+
+
+|||||||||  (sstr, str); "#{sstr[0...sstr.length/2]}#{str}#{sstr[sstr.length/2..-1]}"
+
+2. Write a Ruby program to insert a string of length 2 to an another string where the first string will be in the middle of the second string.
+
+def make_word(sstr, str)
+    "#{sstr[0...sstr.length/2]}#{str}#{sstr[sstr.length/2..-1]}"
+end
+print make_word("Pyon", "th")
+print "\n",make_word("Pyonz", "th")
+print "\n",make_word("Pyonxz", "th")
+
+|||||||||  
+
+
+3. Write a Ruby program to lower case, upper case and capitalizes all the words of a given string.
+
+
+print("ruby exercises!".upcase)
+print("\n","Ruby Exercises!".downcase)
+print("\n","ruby exercises!".capitalize)
+
+|||||||||  (my_string, my_substr);  my_string.include? my_substr
+
+4. Write a Ruby program to check whether a string contains a substring.
+
+def check_string(my_string, my_substr)
+    if my_string.include? my_substr
+      return "Substring present in the string."
+   else
+      return "Substring not present in the string."
+   end
+end
+print check_string("JavaScript","Script")
+print "\n",check_string("JavaScript","Scriptt")
+
+
+|||||||||  my_string.delete(' ')
+
+5. Write a Ruby program to remove all white space within a string.
+
+def check_string(my_string)
+   return my_string.delete(' ')
+end
+print check_string("Ja v aS cr     ip      t")
+
+|||||||||  (n, my_string); n.times do my_string.chop! end
+
+6. Remove last specified characters from a given string
+
+def check_string(n, my_string)
+  n.times do my_string.chop! end
+  return my_string
+end
+print check_string(1, "JavaScript")
+print "\n",check_string(2, "JavaScript")
+
+|||||||||  (my_string,d) ; return my_string.split(d)
+
+
+7. Split a delimited string and convert it to an array
+
+def check_string(my_string,d)
+   return my_string.split(d)
+  return my_string
+end
+print check_string("A,B,C,D,E,F", ",")
+print "\n",check_string("A.B.C.D.E.F", ".")
+
+|||||||||   (my_string, substr) ; return my_string.slice! substr
+
+8. Write a Ruby program to remove a substring from a specified string.
+
+def check_string(my_string, substr)
+  my_string.slice! substr
+  return my_string
+end
+print check_string("JavaScript", "Script")
+print "\n",check_string("HTMLCSS", "HTML")
+
+|||||||||  (my_string, substr)  ; return my_string.start_with?(substr)
+
+9.Ruby program to check whether a string starts with an other string. 
+
+def check_string(my_string, substr)
+   return my_string.start_with?(substr)
+end
+print check_string("JavaScript", "Java")
+print "\n",check_string("Python", "PHP")
+
+|||||||||  (my_string, chr); return my_string.count(chr)
+
+
+10. Count the occurrences of a specified character in a given string
+
+def check_string(my_string, chr)
+   return my_string.count(chr) 
+end
+print check_string("JavaScript", "J")
+print "\n",check_string("JavaScript", "a")
+print "\n",check_string("JavaScript", "S")
+
+|||||||||   return str.chars.sort.join
+
+11. Sort a string's characters alphabetically
+
+def check_string(str)
+   return str.chars.sort.join
+end
+print check_string("javascript")
+print "\n",check_string("python")
+print "\n",check_string("PHP")
+
+|||||||||  (str,chr) ; return str.tr(chr, '')
+
+12. Remove a specified character into a given string
+
+def check_string(str,chr)
+   return str.tr(chr, '')
+end
+print check_string("JavaScript", 'a')
+print "\n",check_string("Python", 'y')
+print "\n",check_string("PHP", 'H')
+
+|||||||||  (str,chr) ; return str.tr(chr, '')
+
+13. Write a Ruby program to trim specific characters from a string.
+
+def check_string(str,chr)
+   return str.tr(chr, '')
+end
+print check_string("JavaScript", 'a')
+print "\n",check_string("Python", 'y')
+print "\n",check_string("JavaScript", 'JS')
+
+
+|||||||||  return str[2...-2]
+
+
+14. Remove the first and last two characters from a specified string
+
+def check_string(str)
+   str = str[2...-2]
+   return str
+end
+print check_string("JavaScript")
+print "\n",check_string("Python")
+print "\n",check_string("Ruby")
+print "\n",check_string("PHP")
+
+|||||||||  (str, n) , return str[n...-1] 
+
+15. Get a substring from a specified position to the last char of a given string
+
+def check_string(str, n)
+   str = str[n...-1]
+   return str
+end
+print check_string("JavaScript", 5)
+print "\n",check_string("Python",3)
+print "\n",check_string("Ruby", 2)
+print "\n",check_string("PHP", 0)
+
+|||||||||  str.lines.count
+
+16. Write a Ruby program to get the number of lines in a given string.
+
+str = "Python is a widely used high-level, general-purpose,
+interpreted, dynamic programming language.
+Its design philosophy emphasizes code readability, 
+and its syntax allows programmers to express concepts in
+fewer lines of code than possible in languages such 
+as C++ or Java."
+print "Number of lines of the above string: ",str.lines.count
+
+|||||||||  str.split[0...n].join(' ')
+
+
+17. Truncate a given string to the first n words
+
+str = "Python is a  widely used   high-level, general-purpose,
+interpreted, dynamic programming language.
+Its design philosophy emphasizes code readability, 
+and its syntax allows programmers to express concepts in
+fewer lines of code than possible in languages such 
+as C++ or Java."
+n = 3
+print str.split[0...n].join(' ')
+n = 8
+print "\n",str.split[0...n].join(' ')
+n = 11
+print "\n",str.split[0...n].join(' ')
+
+|||||||||  my_string.sub!(/^J/, '') ;  my_string.sub!(/^P/, '')
+
+
+18. Remove a character from a given string if it starts with that specified character
+
+my_string = "JJavaScript"
+print my_string.sub!(/^J/, '')
+my_string = "PPHP"
+print "\n",my_string.sub!(/^P/, '')
+
+|||||||||
+
+
+
+
+

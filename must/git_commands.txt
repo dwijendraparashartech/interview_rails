@@ -1,0 +1,136 @@
+git_commands.txt 
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+1.What is Rebasing?,What is git rebase? 
+Rebasing is the process of moving or combining a sequence of commits to a new base commit. Rebasing is most useful and easily visualized in the context of a feature branching workflow.
+
+
+2.What is git stash?
+git stash temporarily shelves (or stashes) changes you've made to your working copy so you can work on something else, and then come back and re-apply them later on.
+
+..............................
+
+2.Commands:
+
+A.Setup: 
+$git config --global user.name "Dwijendra Parashar" # Setup your name globally
+$git config --global user.email "dwijendraparashartech@gmail.com" # Setup your email globally
+
+.......
+
+
+B.Start a Project :
+$git init <directory>   # create a local repo to inititalize the current directory as a git repo
+$git clone <url> # Download a remote repo
+
+.......
+
+C.Make a Change:
+$git add <file>  # Add a file to Staging
+$git add.  # Stage all files
+$git commit -m "Commit Message" # Commit all Staged files to git 
+$git commit -am "Commit Message" # Add all changes made to tracked files and commit.
+
+.......
+
+
+D.Basic Concepts:
+main: default development branch
+origin: default upstream repo
+HEAD: current branch
+HEAD^: Parent of HEAD
+HEAD-4: great-great grandparent of HEAD
+
+.......
+
+E.Branch:
+
+$git branch   # list branches 
+$git branch -r  # list all remote branches 
+$git branch -a  # list all branches 
+$git branch <new-branch> # create a new branch 
+$git checkout <branch> # switch to a branch and update the working directory
+$git checkout -b <new-branch> # create a new branch and switch to it 
+$git branch -d <branch>  $ delete a merge branch
+$git branch -D <branch>  # delete a branch whether merged or not
+$git tag <tag-name>  Add a tag to current commit(often used for new version releases)
+
+.......
+
+F.Merging
+
+
+
+
+.......
+
+G.Rebasing
+
+
+.......
+
+
+
+H.Undoing Things:
+
+$git mv <existing_path><new_path> #Move(&/or rename) a file & stage move
+$git rm <file> #Remove a file from working directory & staging area then stage the removal
+$git rm --cached file  # Remove from staging area only
+$git checkout <commit_ID> #View a  previous commit(READ only)
+$git revert<commit_ID> #Create a new Commit revert all changes from the specified commit
+$git reset<commit_ID> # Go back to a previous commit & delete all commits ahead of it
+
+
+.......
+
+
+
+H.Review your Logo:
+
+1. $git status                #list new or modified fils not yet commited.
+2. $git log --oneline         #list commit history with 
+3. $git diff                  #Show changes to unstaged files.
+4. $git diff --cache          #Show changes to Staged files.
+5. git diff commit1_ID commit2_ID   #Show changes between two commits.
+.......
+
+I.Stashing:
+
+
+.......
+
+
+
+H.Synchronizing:
+
+1. $git remote add <alias> <url>       #Add a remote repo
+2. $git remote  #View all remote connections 
+3. $git remote -v  # Add -v  flag to view urls
+4. $git remote remove <alias>  #Remove a connection
+5. $git remote rename <old> <new> #Rename a Connection
+6. $git fetch alias    #Fetch all branches from remote repo(no merge)
+7. #git fetch <alias><branch>  #Fetch a specific branch  
+8. $git pull   #Fetch the remote repo's copy of the current branch then merge 
+9. $git pull rebase <alias>  #Move(rebase)your local changes onto the top of new changes made to the remote repo(for clean,linear history)
+10. # Upload local content to remote repo
+11. # Upload to a branch(can then pull request)
+
+
+
+
+
+
+
+.......
+
+
+
+H.Undoing Things:
+
+
+
+
+
+
+

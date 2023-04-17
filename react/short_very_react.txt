@@ -1,0 +1,55 @@
+react_very_short_questions.txt ::::
+
+1. HOC :: This is the advance technique of React,It reuse the component logic 
+
+2. State:: Whole Data of the Component is Store in State
+
+3. PROPS:: Can Pass the data from parent Component to Child Component with the Help of Props.
+
+4. REDUX:: IF App is increased then Complexity is increased then manage and update the data with redux
+
+5. Hooks:: With the help of Hooks can use the State and other React Features of Class inside the Funcitional Component without writing the Class.
+
+6.Hook:: With the help of Hook we can extract and  reuse the stateful logic 
+
+7.Strict Mode :: Components write in the Strict Mode follow the recommended practise and save by the error or show the error.
+
+8.Context :: With Context data can be passed without using props.
+
+9.Fragments :: With the help of Fragments , many  elements can be returns at the same place.
+
+10.Profilier:: This measures that how many times React App is rendered + rendering Cost.
+
+11.State Type Checkers:: These are flow and Type Script.They identify the certain problems before run the Code.
+
+12.Flow::This is a Static Type Checker this told that If Variables,functions and React Component with the special Syntax then mistake will be easily determined.
+
+13.TypeScript::This is the Superset of JS,It has its own Compiler.This can catch the error and bug in the build time.
+
+14.Controlled Component:: They handle the form data with the React component.
+
+15.UnControlled Component::They handle the form data with the Dom itself.
+
+16. Super Method:: When it calls inside the constructor,then it access the all properties and methods of the Consturctor method 
+
+17.Arrow Function:: Arrow Function we get through the ES-6.This allow us to use the shorter function syntax and they return in the same time.
+
+18.JSX:: This is Javascript XML,With JSX we can write the HTML in React.It tell that how HTML is work with Javascript.
+
+19.State:: State can store the components all values properties.
+
+20.REDUX FLOW::  ACTION ---->  REDUCER  ---->  STORE  ----> VIEW 
+
+21.Virtual DOM:: This is the copy of Real DOM 
+
+
+
+22.REACT:: This is front-end Javascript Library.This follow the Component based approach to build UI Components.
+
+23.Refs:: This provide a way ,It access the DOM Nodes or React elements which are created inside the Render Method.
+
+
+
+24.What is the basic functionality of useContext and how can we use it ?
+
+25.

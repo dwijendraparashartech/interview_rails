@@ -1,7 +1,4 @@
-upgrade_rails.txt ::
-
-..............................
-
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 Upgrade :: From Rails 6 to Rails 7 :: 
 
@@ -15,17 +12,13 @@ Step 6: Migrate from Webpacker to importmaps
  B. Step 2: Migrating Dependencies
  C. Step 3: Migrating from turbolinks to Turbo
  D. Step 3: Migrating Stimulus
-
 Step 8:  Update rails in gemfile
 Step 9:  Run the update rails tasks
 Step 10: Verify framework defaults
 Step 11: Add Sprockets
 Step 12: Verify depreciated methods
 
-..............................
-
-Upgrade :: From Rails 5 to Rails 6 :: 
-..............................
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 Upgrade :: From Rails 5 to Rails 6 ::
 Step :: 1. Update to Ruby version 2.5 or higher :: Rails 6 requires Ruby 2.5 or newer. 
@@ -41,7 +34,7 @@ Step :: 9. Start testing your app :: After you fix your tests and everything is 
 Step :: 11. Final issues: manifest.js, deprecation warning
 Step :: 10. Update Migrations.
 
-..............................
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 Upgrade :: From Rails 4 to Rails 5 :: 
 1. Update Ruby and bundle install 
@@ -66,6 +59,8 @@ Upgrade :: From Rails 4 to Rails 5 ::
 8. Parameters does not inherit from Hash anymore 
 9. Test http request method 
 ..............................
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 
 Upgrade :: From Rails 4 to Rails 5 :: 
@@ -191,14 +186,6 @@ Upgrade :: From Rails 4 to Rails 5 ::
 https://deepakmahakale.in/blog/2020/07/04/guide-to-upgrade-rails-application.html
 
 ..............................
-
-
-
-
-
-
-
-
 
 How to upgrade rails 5 to rails 6 ::
 

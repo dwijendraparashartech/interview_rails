@@ -1,9 +1,9 @@
 rails 4 5 6 7 diff.txt :: 
-.............................
 
-.............................
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-Rails 7 Features::
+
+Rails 7 Features:: Diff bet rails 6 and 7 ::
 
 1. Background Jobs 
 2. Byebug Change :: byebug - debugger 
@@ -33,11 +33,9 @@ Rails 7 Features::
 26. ActiveRecord::ConnectionPool is now Fiber-safe
 27. Merged
 
-.......................  .......................  .......................
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-Rails 6 Features ::
-
-B.Diff bet rails 5 and 6 ::
+Rails 6 Features ::Diff bet rails 5 and 6 ::
 
 1.Multiple Databases :: Use multiple databases and switching between multiple databases
 2.Bulk :: bulk_insert ,bulk_upsert and update_all
@@ -49,13 +47,9 @@ B.Diff bet rails 5 and 6 ::
 8.Action Text 
 9.Action Cable Easy Access 
 
-.......................  .......................  .......................
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-
-Rails 5 Features :: 
-.......................  .......................  .......................
-
-C. Diff bet rails 4 and 5 ::
+Rails 5 Features :: Diff bet rails 4 and 5 ::
 
 1. Active Job is here
 2. Action Cable is here
@@ -73,13 +67,10 @@ C. Diff bet rails 4 and 5 ::
 14. Keyword Arguments
 15. Module #prepend
 16. Symbol Garbage Collector
-...........................
 
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-Rails 4 Features :: 
-.......................  .......................  .......................
-
-C. Diff bet rails 4 and 3 ::
+Rails 4 Features :: Diff bet rails 4 and 3 ::
 
 1.Ruby Version 1.9.3 or higher is required 
 2.Gemfile - Uses Gemfile 
@@ -98,15 +89,10 @@ C. Diff bet rails 4 and 3 ::
 https://www.zapbuild.com/bitsntricks/latest-ruby-rails-4/
 https://www.andolasoft.com/blog/what-new-features-you-will-get-in-the-latest-release-of-rails4.html
 
-...........................
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-.......................  .......................  .......................
-
-Rails 3 Features :: 
-
-Q.Difference Between Rails 2 And Rails 3 ?
+Rails 3 Features :: Difference Between Rails 2 And Rails 3 ?
 Ans: I found 7 major Difference between rails 2 and rails 3 has: New Router Api, New mailer, New Active Record Query interface, Assets pipeline, Security Improvements, Unobtrusive JavaScript (UJS) , Dependency management with bundler.
-
 
 1. Introduction to Bundler (New Way to manage em dependencies
 2. Gemfile and Gemfile.lock - where all your gem dependencies lies ,instead of enviornment.rb 
@@ -120,7 +106,7 @@ Ans: I found 7 major Difference between rails 2 and rails 3 has: New Router Api,
 valdiates:name,presence => true 
 9. Ability to install 
 
-.......................  .......................  .......................
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 
 Rails 7 Features ::
@@ -132,10 +118,7 @@ Link :: https://inside.caratlane.com/fascinating-features-of-rails-7-9714a500f89
         https://manny.codes/this-week-in-rails-wrapped-an-overview-of-rails-7-1-features-part-i/#02-adding-autoload-paths-to-load_path-disabled
         https://www.bluebash.co/blog/upcoming-rails-7-features/
 
-
-1.
-
-.......................  .......................  .......................
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 Rails 7 Features ::
 

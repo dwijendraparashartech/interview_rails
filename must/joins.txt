@@ -1,0 +1,88 @@
+joins.txt 
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+join_examples.txt::
+
+Link ::  https://www.learneroo.com/modules/137/nodes/768
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Types of Joins :: 
+
+1. Simple Joins :: A simple joins statement lets you return records that have an associated record.
+2. Nested Associations :: Sometimes you'll want to get records based on a nested association:
+3. Where :: Before looking at more advanced joins queries, let's look at querying a single model. , .where lets you retrieve all items that match a specific condition.
+4. Conditional Joins :: The goal of joins is often to get one model based on specific conditions in another model. 
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+1. Simple Joins :: 
+
+A. All the Categories that have products with duplicate categories also
+
+Category.joins(:products)
+
+B. All the Categories that have products without  duplicate categories
+
+Category.joins(:products).uniq
+
+C. All the Products that have categories with duplicate categories also
+
+Product joins(:categories)
+
+D. All the Products that have categories without  duplicate categories
+
+Product joins(:categories).uniq
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Multiple Joins :: 
+We Have :: 
+category table | product table with category_id |  
+Like table with product_id and user_id | user table 
+.........................
+
+2. Multiple Joins ::
+
+A. all products(duplicate also) that have a category and at least one like
+
+Product.joins(:category, :likes)
+
+B.  all uniq products that have a category and at least one like
+
+Product.joins(:category, :likes).uniq 
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Nested Joins :: 
+A. All categories that have products that were liked
+Category.joins(products: :likes).uniq
+
+B. Product has_many reviews and likes.
+Category.joins(products: [:reviews, :likes]).uniq
+
+C. All products with a quantity of 0 ::
+Product.where(quantity: 0)
+Product.where(quantity: 2..5)  (for range of quantity from 2 to 5)
+Product.where('quantity > 3')  (Conditional)
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Conditional Joins :: 
+
+A. All Categories that have products with a quantity equal to 0 :: 
+
+Category.joins(:products).where(products: {quantity: 0})
+
+B. You can pass in any SQL conditions as a string:
+
+Category.joins(:products).where('products.quantity > 3')
+
+This returns all categories that have products with a quantity greater than 3.
+
+C. you'll generally want to add .uniq to these queries avoid returning duplicate categories:
+
+Category.joins(:products).where('products.quantity > 3').uniq
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||

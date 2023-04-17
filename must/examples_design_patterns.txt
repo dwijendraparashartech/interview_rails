@@ -1,0 +1,864 @@
+design_pattern_Example.txt
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Types of Design Patterns ??
+
+1. Design Pattern 
+...............................
+2. Creational Pattern ::
+A. Abstract Factory Design PAttern in Ruby 
+B. Factory Method Design Pattern
+C. Prototype Design Pattern
+D. Singleton Design Pattern
+...............................
+3. Structural Pattern :: 
+Bridge Structure
+Composite Structure
+Decorator
+Facade
+Flyweight
+Proxy 
+...............................
+4. Behavioral Pattern :: 
+Responsibility Structure
+Interpreter 
+Iterator
+Mediator
+Memento
+Observer
+State
+Strategy
+Template
+Visitor
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+1. Service ::
+
+class WebsiteTitleScraper
+  def self.call(url)
+    response = RestClient.get(url)
+    Nokogiri::HTML(response.body).at('title').text
+  end
+end
+The above class is responsible only for scraping the website title.
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+2. Value Object ::
+
+The main idea behind the value object pattern is to create a simple and plain Ruby class that will be responsible for providing methods that return only values:
+
+class Email
+  def initialize(value)
+    @value = value
+  end
+
+  def domain
+    @value.split('@').last
+  end
+end
+The above class is responsible for parsing the email’s value and returning the data related to it.
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+3. Presenter 
+
+This design pattern is responsible for isolating more advanced logic that is used inside the Rails’ views:
+
+class UserPresenter
+  def initialize(user)
+    @user = user
+  end
+
+  def status
+    @user.sign_in_count.positive? ? 'active' : 'inactive'
+  end
+end
+We should keep the views as simple as possible and avoid putting the business logic inside of them. Presenters are a good solution for code isolation that makes the code more testable and readable.
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+4.Decorator ::
+
+ The decorator pattern is similar to the presenter pattern, but instead of adding additional logic, it alters the original class without affecting the original class’s behavior.
+
+We have the Post model that provides a content attribute that contains the post’s content. On the single post page, we would like to render the full content, but on the list, we would like to render just a few words of it:
+
+class PostListDecorator < SimpleDelegator
+  def content
+    model.content.truncate(50)
+  end
+
+  def self.decorate(posts)
+    posts.map { |post| new(post) }
+  end
+
+  private
+
+  def model
+    __getobj__
+  end
+end
+
+@posts = Post.all
+@posts = PostListDecorator.decorate(@posts)
+
+
+In the above example, I used the SimpleDelegator class provided by Ruby by default, but you can also use a gem like Draper that offers additional features.
+
+..............
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+5. Builder
+
+The builder pattern is often also called an adapter. The pattern’s main purpose is to provide a simple way of returning a given class or instance depending on the case. If you are parsing files to get their contents you can create the following builder:
+
+
+
+class FileParser
+  def self.build(file_path)
+    case File.extname(file_path)
+      when '.csv' then CsvFileParser.new(file_path)
+      when '.xls' then XlsFileParser.new(file_path)
+      else
+        raise(UnknownFileFormat)
+      end
+  end
+end
+
+class BaseParser
+  def initialize(file_path)
+    @file_path = file_path
+  end
+end
+
+class CsvFileParser < BaseParser
+  def rows
+    # parse rows
+  end
+end
+
+class XlsFileParser < BaseParser
+  def rows
+    # parse rows
+  end
+end
+
+
+
+Now, if you have the file_path, you can access the rows without worrying about selecting a good class that will be able to parse the given format:
+
+parser = FileParser.build(file_path)
+rows = parser.rows
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Form object
+The form object pattern was created to make the ActiveRecord’s models thinner. We can often create a given record in multiple places, and each place has its rules regarding the validation rules, etc.
+
+Let’s assume that we have the User model that consists of the following fields: first_name, last_name, email, and password. When we are creating the user, we would like to validate the presence of all attributes, but when the user wants to sign in, we would like only to validate the presence of email and password:
+
+module Users
+  class SignInForm
+    include ActiveModel::Model
+
+    attr_accessor :email, :password
+    validates_presence_of :email, :password
+  end
+end
+
+module Users
+  class SignUpForm
+    include ActiveModel::Model
+
+    attr_accessor :email, :password, :first_name, :last_name
+    validates_presence_of :email, :password, :first_name, :last_name
+
+    def save
+      return false unless valid?
+
+      # save user
+    end
+  end
+end
+
+# Sign in
+user = Users::SignInForm.new(user_params)
+sign_in(user) if user.valid?
+
+# Sign up
+user = Users::SignUpForm.new(user_params)
+user.save
+
+..............
+
+Thanks to this pattern, we can keep the User model as simple as possible and put only the logic shared across all places in the application.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Policy object
+The policy object pattern is useful when you have to check multiple conditions before performing a given action. Let’s assume that we have a bank application, and we would like to check if the user can transfer a given amount of money:
+
+class BankTransferPolicy
+  def self.allowed?(user, recipient, amount)
+    user.account_balance >= amount &&
+      user.transfers_enabled &&
+      user != recipient &&
+      amount.positive?
+  end
+end
+
+The validation logic is isolated, so the developer who wants to check if the user can perform the bank transfer doesn’t have to know all conditions that have to be met.
+
+
+
+.......................
+
+
+As the name suggests, the class following the query object pattern isolates the logic for querying the database. We can keep the simple queries inside the model, but we can put more complex queries or group of similar queries inside one separated class:
+
+class UsersListQuery
+  def self.inactive
+    User.where(sign_in_count: 0, verified: false)
+  end
+
+  def self.active
+    User.where(verified: true).where('users.sign_in_count > 0')
+  end
+
+  def self.most_active
+    # some more complex query
+  end
+end
+Of course, the query object doesn’t have to implement only class methods; it can also provide instance methods that can be chained when needed.
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+8. Observer
+
+The observer pattern was supported by Rails out of the box before version 4, and now it’s available as a gem. It allows performing a given action each time an event is called on a model. If you would like to log information each time the new user is created, you can write the following code:
+
+class UserObserver < ActiveRecord::Observer
+  def after_create(user)
+    UserLogger.log("created user with email #{user.email}")
+  end
+end
+It is crucial to disable observers when running tests unless you test the observers’ behavior as you can slow down all tests.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+9. Interactor
+The interactor pattern is all about interactions. Interaction is a set of actions performed one by one. When one of the actions is stopped, then other actions should not be performed. Interactions are similar to transactions, as the rollback of previous actions is also possible.
+
+To implement the interactor pattern in the Rails application, you can use a great interactor gem. If you are implementing the process of making a bank transfer, you can create the following structure:
+
+class VerifyAccountBalance
+  include Interactor
+
+  def call
+    return if context.user.enabled? && context.account.balance >= context.amount
+
+    context.fail!(message: 'not enough money')
+  end
+end
+
+class VerifyRecipient
+  include Interactor
+
+  def call
+    return if context.recipient.enabled? && some_other_procedure
+
+    context.fail!(message: 'recipient is invalid')
+  end
+end
+
+class SendMoney
+  include Interactor
+
+  def call
+    # perform the bank transfer
+  end
+end
+Each class represents one interaction and can now be grouped:
+
+class MakeTheBankTransfer
+  include Interactor::Organizer
+
+  organize VerifyAccountBalance, VerifyRecipient, SendMoney
+end
+We can now perform the whole interaction by calling the organizer along with the context data. When one of the interactors fail, the next interactors won’t be executed, and you will receive a meaningful output:
+
+outcome = MakeTheBankTransfer.call(
+  user: user, amount: 100.0, recipient: other_user, account: account
+)
+outcome.success? # => false
+outcome.message # => "recipient is invalid"
+The interactor pattern is a perfect solution for complex procedures where you would like to have full control over the steps and receive meaningful feedback when one of the procedures fail to execute.
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+10. Null object
+
+The null object pattern is as simple as the value object as they are based on plain Ruby objects. The idea behind this pattern is to provide a value for non-existing records.
+
+If in your application the user can set its location, and you want to display information when it’s not set, you can achieve it by using the if condition or creating the NullLocation object:
+
+class NullLocation
+  def full
+    "not set yet"
+  end
+end
+Inside the User model, you can make usage of it:
+
+class User < ApplicationRecord
+  has_one :location
+
+  def address
+    location || NullLocation.new
+  end
+end
+You can now fetch the full version of the address without worrying about the object persistence:
+
+user = User.find(1)
+user.address.full
+Word at the end
+I haven’t mentioned all the design patterns that are used as there are plenty of them. Some of them are more useful; some are less. Any design pattern should be used with caution. When using them not correctly, we can harm our architecture and overcomplicate the code, which leads to longer development time and higher technical debt.
+
+....................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+What are the Design Patterns ?
+.................................
+
+
+
+
+
+What are the Ani Design Patterns ?
+.................................
+
+
+..............................................................
+..................................
+
+1. Builder :: 
+2. Decorator :: 
+3. Form Object ::
+4. Interactor ::
+5. Null Object ::
+6. Observer ::
+7. Policy Object ::
+8. Query Object  ::
+9. Service Object  ::
+10. Value Object (Presenter) ::
+11. View Object  ::
+
+..................................
+..............................................................
+
+
+
+BDFINOPSQVV
+
+1. Builder :: provide a simple way of returning a given class or instance depending on the case. Construct complex objects without much effort.It also called as Adapter. 
+2. Decorator ::
+3. Form Object ::
+4. Interactor ::
+5. Null Object ::
+6. Observer ::
+7. Policy Object ::
+8. Query Object  ::
+9. Service Object  ::
+10. Value Object (Presenter) ::
+11. View Object  ::
+
+..................................
+
+
+Which is the most useful Design Pattern in Rails ?
+
+Service is by far my most used design pattern in Rails applications. The idea of this design pattern is very easy - if certain part of business logic doesn't really fit into model or controller, it may be good idea to put it into service.
+
+..................................
+..................................
+
+1.Builder :: 
+
+It construct complex objects without much effort.It also called as Adapter. The pattern’s main purpose is to provide a simple way of returning a given class or instance depending on the case. 
+
+Example of Builder Pattern ::
+If you are parsing files to get their contents you can create the following builder:
+
+class FileParser
+  def self.build(file_path)
+    case File.extname(file_path)
+      when '.csv' then CsvFileParser.new(file_path)
+      when '.xls' then XlsFileParser.new(file_path)
+      else
+        raise(UnknownFileFormat)
+      end
+  end
+end
+
+class BaseParser
+  def initialize(file_path)
+    @file_path = file_path
+  end
+end
+
+class CsvFileParser < BaseParser
+  def rows
+    # parse rows
+  end
+end
+
+class XlsFileParser < BaseParser
+  def rows
+    # parse rows
+  end
+end
+
+............
+
+Now, if you have the file_path, you can access the rows without worrying about selecting a good class that will be able to parse the given format:
+
+parser = FileParser.build(file_path)
+rows = parser.rows
+
+..................................
+
+2. Decorator ::
+
+The decorator pattern is similar to the presenter pattern, but instead of adding additional logic, it alters the original class without affecting the original class’s behavior.
+
+We have the Post model that provides a content attribute that contains the post’s content. On the single post page, we would like to render the full content, but on the list, we would like to render just a few words of it:
+
+Example1 ::
+
+class PostListDecorator < SimpleDelegator
+  def content
+    model.content.truncate(50)
+  end
+
+  def self.decorate(posts)
+    posts.map { |post| new(post) }
+  end
+
+  private
+
+  def model
+    __getobj__
+  end
+end
+
+@posts = Post.all
+@posts = PostListDecorator.decorate(@posts)
+
+Example2 ::
+
+class SongDecorator < Draper::Decorator
+  delegate_all
+ 
+  def includes_profanities?
+    object.text.scan_for_profanities.any?
+  end
+ 
+  def user_downloaded?(user)
+    object.user.library.has_song?(self)
+  end
+end
+
+Then, you would call decorate in your controller, for example:
+
+def show
+  @song = Song.find(params[:id]).decorate
+end
+And use it in your views like so:
+
+<%= @song.includes_profanities? %>
+<%= @song.user_downloaded?(user) %>
+
+
+..................................  .................................. ..................................  ..................................
+
+3. Form Object
+
+The form object pattern was created to make the ActiveRecord’s models thinner. 
+
+We can often create a given record in multiple places, and each place has its rules regarding the validation rules, etc.
+
+Let’s assume that we have the User model that consists of the following fields: first_name, last_name, email, and password. When we are creating the user, we would like to validate the presence of all attributes, but when the user wants to sign in, we would like only to validate the presence of email and password:
+
+module Users
+  class SignInForm
+    include ActiveModel::Model
+
+    attr_accessor :email, :password
+    validates_presence_of :email, :password
+  end
+end
+
+module Users
+  class SignUpForm
+    include ActiveModel::Model
+
+    attr_accessor :email, :password, :first_name, :last_name
+    validates_presence_of :email, :password, :first_name, :last_name
+
+    def save
+      return false unless valid?
+
+      # save user
+    end
+  end
+end
+
+# Sign in
+user = Users::SignInForm.new(user_params)
+sign_in(user) if user.valid?
+
+# Sign up
+user = Users::SignUpForm.new(user_params)
+user.save
+Thanks to this pattern, we can keep the User model as simple as possible and put only the logic shared across all places in the application.
+
+..................................  .................................. ..................................  ..................................
+
+
+4. Interactor :: 
+
+The interactor pattern is all about interactions. Interaction is a set of actions performed one by one. When one of the actions is stopped, then other actions should not be performed. Interactions are similar to transactions, as the rollback of previous actions is also possible.
+
+To implement the interactor pattern in the Rails application, you can use a great interactor gem. If you are implementing the process of making a bank transfer, you can create the following structure:
+
+class VerifyAccountBalance
+  include Interactor
+
+  def call
+    return if context.user.enabled? && context.account.balance >= context.amount
+
+    context.fail!(message: 'not enough money')
+  end
+end
+
+class VerifyRecipient
+  include Interactor
+
+  def call
+    return if context.recipient.enabled? && some_other_procedure
+
+    context.fail!(message: 'recipient is invalid')
+  end
+end
+
+class SendMoney
+  include Interactor
+
+  def call
+    # perform the bank transfer
+  end
+end
+Each class represents one interaction and can now be grouped:
+
+class MakeTheBankTransfer
+  include Interactor::Organizer
+
+  organize VerifyAccountBalance, VerifyRecipient, SendMoney
+end
+We can now perform the whole interaction by calling the organizer along with the context data. When one of the interactors fail, the next interactors won’t be executed, and you will receive a meaningful output:
+
+outcome = MakeTheBankTransfer.call(
+  user: user, amount: 100.0, recipient: other_user, account: account
+)
+outcome.success? # => false
+outcome.message # => "recipient is invalid"
+The interactor pattern is a perfect solution for complex procedures where you would like to have full control over the steps and receive meaningful feedback when one of the procedures fail to execute.
+
+
+
+..................................  .................................. ..................................  ..................................
+
+
+5. Null Object 
+
+The idea behind this pattern is to provide a value for non-existing records.
+The null object pattern is as simple as the value object as they are based on plain Ruby objects. 
+If in your application the user can set its location, and you want to display information when it’s not set, you can achieve it by using the if condition or creating the NullLocation object:
+
+class NullLocation
+  def full
+    "not set yet"
+  end
+end
+Inside the User model, you can make usage of it:
+
+class User < ApplicationRecord
+  has_one :location
+
+  def address
+    location || NullLocation.new
+  end
+end
+You can now fetch the full version of the address without worrying about the object persistence:
+
+user = User.find(1)
+user.address.full
+
+
+
+
+..................................  .................................. ..................................  ..................................
+
+
+6. Observer 
+
+The observer pattern was supported by Rails out of the box before version 4, and now it’s available as a gem. It allows performing a given action each time an event is called on a model. If you would like to log information each time the new user is created, you can write the following code:
+
+class UserObserver < ActiveRecord::Observer
+  def after_create(user)
+    UserLogger.log("created user with email #{user.email}")
+  end
+end
+It is crucial to disable observers when running tests unless you test the observers’ behavior as you can slow down all tests.
+
+
+
+
+..................................  .................................. ..................................  ..................................
+
+7. Policy Object
+
+The policy object pattern is useful when you have to check multiple conditions before performing a given action. Let’s assume that we have a bank application, and we would like to check if the user can transfer a given amount of money:
+
+class BankTransferPolicy
+  def self.allowed?(user, recipient, amount)
+    user.account_balance >= amount &&
+      user.transfers_enabled &&
+      user != recipient &&
+      amount.positive?
+  end
+end
+..................................  .................................. ..................................  ..................................
+true parllism 
+csrf n xss attack
+preload  imclude eagerload
+
+8. Query Object 
+
+As the name suggests, the class following the query object pattern isolates the logic for querying the database. We can keep the simple queries inside the model, but we can put more complex queries or group of similar queries inside one separated class:
+
+class UsersListQuery
+  def self.inactive
+    User.where(sign_in_count: 0, verified: false)
+  end
+
+  def self.active
+    User.where(verified: true).where('users.sign_in_count > 0')
+  end
+
+  def self.most_active
+    # some more complex query
+  end
+end
+Of course, the query object doesn’t have to implement only class methods; it can also provide instance methods that can be chained when needed.
+
+..................................  .................................. ..................................  ..................................
+
+
+9. Service Object ::
+
+1. Service ::
+
+class WebsiteTitleScraper
+  def self.call(url)
+    response = RestClient.get(url)
+    Nokogiri::HTML(response.body).at('title').text
+  end
+end
+The above class is responsible only for scraping the website title.
+
+
+
+..................................  .................................. ..................................  ..................................
+
+
+10. Value Object
+
+2. Value Object ::
+
+The main idea behind the value object pattern is to create a simple and plain Ruby class that will be responsible for providing methods that return only values:
+
+class Email
+  def initialize(value)
+    @value = value
+  end
+
+  def domain
+    @value.split('@').last
+  end
+end
+The above class is responsible for parsing the email’s value and returning the data related to it.
+
+
+..................................  .................................. ..................................  ..................................
+
+11. View Object  (Presenter)
+3. Presenter 
+
+This design pattern is responsible for isolating more advanced logic that is used inside the Rails’ views:
+
+class UserPresenter
+  def initialize(user)
+    @user = user
+  end
+
+  def status
+    @user.sign_in_count.positive? ? 'active' : 'inactive'
+  end
+end
+We should keep the views as simple as possible and avoid putting the business logic inside of them. Presenters are a good solution for code isolation that makes the code more testable and readable.
+
+
+
+
+..................................  .................................. ..................................  ..................................
+
+
+
+
+
+
+
+
+
+
+Link ::  https://refactoring.guru/design-patterns/ruby
+
+Types of Design Pattern in Rails ??
+1.Creational Pattern :: AbstractFactory,Builder,FactoryMethod,Prototype,SingleTon
+2.Structural Pattern :: Adapter,Bridge,Composite,Decorator,Facade,Flyweight,Proxy
+3.Behavioral Pattern ::ChainofResponsibility,Command,Iterator,Mediator,Observer,State,Strategy,TemplateMethod,Visitor.
+...........................
+
+
+Types of Types of Design Pattern in Rails ??
+
+1.AbstractFactory
+2.Builder
+3.FactoryMethod
+4.Prototype
+5.SingleTon
+6.Adapter
+7.Bridge
+8.Composite
+9.Decorator
+10.Facade
+11.Flyweight
+12.Proxy
+13.ChainofResponsibility
+14.Command
+15.Iterator
+16.Mediator
+17.Observer
+18.State
+19.Strategy
+20.TemplateMethod
+21.Visitor
+
+...........................
+
+Types of Types of Design Pattern in Rails ??
+
+1.AbstractFactory ::  Lets you produce families of related objects without specifying their concrete classes
+
+2.Builder :: Lets you construct complex objects step by step. The pattern allows you to produce different types and representations of an object using the same construction code.
+
+3.FactoryMethod :: Provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created.
+
+4.Prototype :: Lets you copy existing objects without making your code dependent on their classes.
+
+5.SingleTon :: Lets you ensure that a class has only one instance, while providing a global access point to this instance.
+
+6.Adapter :: Allows objects with incompatible interfaces to collaborate.
+
+7.Bridge :: Lets you split a large class or a set of closely related classes into two separate hierarchies—abstraction and implementation—which can be developed independently of each other.
+
+8.Composite :: Lets you compose objects into tree structures and then work with these structures as if they were individual objects.
+
+9.Decorator :: Lets you attach new behaviors to objects by placing these objects inside special wrapper objects that contain the behaviors.
+
+10.Facade :: Provides a simplified interface to a library, a framework, or any other complex set of classes.
+
+11.Flyweight :: Lets you fit more objects into the available amount of RAM by sharing common parts of state between multiple objects instead of keeping all of the data in each object.
+
+12.Proxy :: Lets you provide a substitute or placeholder for another object. A proxy controls access to the original object, allowing you to perform something either before or after the request gets through to the original object.
+
+13.ChainofResponsibility :: Lets you pass requests along a chain of handlers. Upon receiving a request, each handler decides either to process the request or to pass it to the next handler in the chain.
+
+14.Command :: Turns a request into a stand-alone object that contains all information about the request. This transformation lets you pass requests as a method arguments, delay or queue a request's execution, and support undoable operations.
+
+15.Iterator :: Lets you traverse elements of a collection without exposing its underlying representation (list, stack, tree, etc.). 
+
+16.Mediator :: Lets you reduce chaotic dependencies between objects. The pattern restricts direct communications between the objects and forces them to collaborate only via a mediator object.
+
+16.Memento ::  Lets you save and restore the previous state of an object without revealing the details of its implementation.
+
+17.Observer :: Lets you define a subscription mechanism to notify multiple objects about any events that happen to the object they're observing.
+
+18.State ::  Lets an object alter its behavior when its internal state changes. It appears as if the object changed its class.
+
+19.Strategy :: Lets you define a family of algorithms, put each of them into a separate class, and make their objects interchangeable.
+
+20.TemplateMethod :: Defines the skeleton of an algorithm in the superclass but lets subclasses override specific steps of the algorithm without changing its structure.
+
+21.Visitor :: Lets you separate algorithms from the objects on which they operate.
+
+...........................
+
+
+
+
+
+
+

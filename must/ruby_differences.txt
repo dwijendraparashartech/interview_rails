@@ -1,7 +1,6 @@
 ruby_versions_differences.txt :: 
 
-
-....
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 Features of Ruby 3.0 :: Ruby 2 and Ruby 3 Differences ::
 
@@ -16,9 +15,7 @@ A. No Longer Experimental
 B. Two flowers for the one line pattern matching.
 C. Find Patterns 
 
-
-................
-
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 Features of Ruby 2.5.0 ::
 1. Top level Constant lokup is removed
@@ -26,9 +23,7 @@ Features of Ruby 2.5.0 ::
 3. rescue/else/ensure are allowed inside do/end blocks
 4. Print back - trace and error message in reverse order if STDERR is unchanged and 
 
-
-................
-
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 Features of Ruby 2.7.0 ::
 1. Pattrn Matching
@@ -36,27 +31,22 @@ Features of Ruby 2.7.0 ::
 3. Compaction GC
 4. Speration of positional and keyword arguments.
 
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-................
 
 Features of Ruby 3.0.1 ::
 1. Performance - MJIT :: CPU Optimization Memory Optimization
 2. Concurrency - Ractor,Fiber Scheduler
 3. Typing Estatic Analysing - RBS Type of 
 
-................
-
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 Links ::
 https://www.rubyguides.com/ruby-version-changes/
 
-....
-
-.........................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 Features Ruby 2.0 ::
-
-.........................
 
 New Features
 Lazy enumerators
@@ -78,16 +68,9 @@ String#bytes
 ​String#lines
 String#codepoints
 
-.........................
-.........................
-
-
-.........................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 Features Ruby 2.1 ::
-
-.........................
-
 
 Ruby 2.1
 New Features
@@ -102,15 +85,9 @@ Binding#local_variable_get(symbol)
 Binding#local_variable_set(symbol, obj)
 Binding#local_variable_defined?(symbol)
 
-.........................
-.........................
-
-
-.........................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 Features Ruby 2.2 ::
-
-.........................
 
 New Features
 Symbol GC
@@ -124,17 +101,9 @@ Enumerable#slice_after
 Enumerable#slice_when
 Float#next_float, Float#prev_float (#9834)
 
-
-.........................
-.........................
-
-
-.........................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 Features Ruby 2.3 ::
-
-.........................
-
 
 Ruby 2.3
 New Features
@@ -149,15 +118,9 @@ File.mkfifo
 Hash#fetch_values
 Enumerable#chunk_while
 
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-.........................
-.........................
-
-
-.........................
 Features Ruby 2.4 ::
-
-.........................
 
 New Features
 Fixnum + Bignum merge into Integer
@@ -173,15 +136,10 @@ Hash#compact / Hash#compact!
 Hash#transform_values / Hash#transform_values!
 Kernel#clone now takes an optional keyword argument (freeze).
 
-.........................
-.........................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-
-.........................
 
 Features Ruby 2.5 ::
-
-.........................
 
 New Features
 Reversed stack trace
@@ -195,15 +153,9 @@ String#delete_prefix / String#delete_suffix
 Enumerable#any?, all?, none?, and one? accept a pattern argument
 Struct
 
-.........................
-.........................
-
-
-.........................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 Features Ruby 2.6 ::
-
-.........................
 
 New Features
 Endless ranges
@@ -218,16 +170,9 @@ Array#merge accepts multiple arguments
 Kernel#then is a new alias for Kernel#yield_self
 Enumerable#filter is a new alias for Enumerable#select
 
-
-.........................
-.........................
-
-
-.........................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 Features Ruby 2.7 ::
-
-.........................
 
 New Features
 Pattern Matching (experimental)
@@ -238,18 +183,11 @@ Enumerable#tally
 Enumerator#produce
 Arrary#intersection
 
-.........................
-.........................
-
-
-
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 Ruby 3 New Features ::
 
 Link ::  https://scoutapm.com/blog/ruby-3-features
-
-
-..........................................................
 
 Very Good Blog :: eAch and Everything is sexplained very theorpotically and very paractically ..Very vEry Very nce blog read it must 
 
@@ -263,12 +201,9 @@ Rightward assignment statements: As mentioned by Matz himself, the addition of r
 Better Garbage Collection: With the addition of Garbage Compactor, most objects will automatically be transferred to the heap and compacted to improve memory usage and performance.
 The list is long, and instead of continuing this way, let’s now dive deeper into individual updates and find out what importance they hold in the future of Ruby development!
 
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-
-.........................
-.........................
 Imp Link ::  https://medium.com/tech-batoora/ruby-version-changes-a54543708a70
-
 
 New Features and Functions added to Ruby 2.5
 Features
@@ -402,10 +337,7 @@ Usage:
 Struct.new(:fname, :lname, keyword_init: true)
 my_struct = MyStruct.new(fname: ‘first’, lname: ‘last’)
 
-
-
-.........................
-.........................
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 New Features and Functions added to Ruby 2.6
 Features
@@ -492,6 +424,9 @@ Usage
 Random.bytes(8) # => “\xAA\xC4\x97u\xA6\x16\xB7\xC0\xCC”
 #8 Binding#source_location
 This method returns the source location of the binding, a 2-element array of __FILE__ and __LINE__. It is recommended to use Binding#source_location instead of Kernel#eval
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
 
 References
 https://www.ruby-lang.org/en/news/2018/12/25/ruby-2-6-0-released/
