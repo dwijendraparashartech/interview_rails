@@ -190,3 +190,65 @@ Step 10 ::
 
 
 
+
+
+
+{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+
+
+Short in jwt ::::::::::::::::::
+
+
+1. In gemfile.log it gives  gem 'jwt'
+2.Create the json_web_token.rb 
+3.In  json_web_token.rb  there are 3 parameters : headr,payload,signature
+4.create one secret key in json_web_token.rb-
+  SECRET_KEY = Rails.application.secrets.secret_key_base. to_s
+5.create self.encode method
+6.create self.decode method
+7.the parameter in self.encode is - payload and exp
+8.the parameter in self.decode is - token
+9.the self.encode method :
+def self.encode(payload,exp=24.hours.from_now)
+  payload[:exp] = exp.to_i
+  JWT.encode(payload,SECRET_KEY)
+end 
+10.the self.decode method :
+def self.decode 
+  decoded = JWT.decode(token,SECRET_KEY)[0]
+  HashWithIndifferentAccess.new decoded
+end 
+
+11.What us SECRET_KEY:
+this is the key for encoding and decoding tokens, this is to be shared and 
+
+12.What is payload:
+payload is a key value object for holding data that wants to be encoded,
+
+13.What is exp:
+exp stands for expiration for holding expiration time token 
+
+14.where authorize_request_function is used :
+in application_controller.rb
+
+15.why the authorize_request_function is used?
+this function has responsibility for auhtorizing user requests
+
+
+16.Explain this method authorize_request function :
+
+  def authorize_request
+    header = request.headers['Authorization']
+    header = header.split(' ').last if header
+    begin
+      @decoded = JsonWebToken.decode(header)
+      @current_user = User.find(@decoded[:user_id])
+    rescue ActiveRecord::RecordNotFound => e
+      render json: { errors: e.message }, status: :unauthorized
+    rescue JWT::DecodeError => e
+      render json: { errors: e.message }, status: :unauthorized
+    end
+  end
+end
+
+17.

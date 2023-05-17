@@ -1,0 +1,12 @@
+ruff.txt
+
+caching means to store content generated generated during the request response cycle and to reuse it when responding to similiar request.caching is often the most effective way to boost an applications perforance through caching websites running on a single server with a single database can sustain a load of 1000 concurrent users.
+there are 3 types of caching in rails 
+page caching , fragment caching, action caching 
+
+
+
+
+chaching means to store conect during the request response lifecycle 
+
+caching means to store content he 

@@ -1,0 +1,44 @@
+cookies.txt ::::::::::::::
+
+Cookies, Sessions and Flashes
+Cookies, Sessions and Flashes are three special objects that Rails gives you in which each behave a lot like hashes. They are used to persist data between requests, whether until just the next request, until the browser is closed, or until a specified expiration has been reached. In addition to different temporal concerns, they each solve slightly different use cases, covered below.
+
+Cookies
+Cookies are key-value data pairs that are stored in the user’s browser until they reach their specified expiration date. They can be used for pretty much anything, most commonly to “bookmark” the user’s place in a web page if she gets disconnected or to store simple site display preferences. You could also store shopping cart information or even passwords but that would be a bad idea – you shouldn’t store anything in regular browser cookies that needs to either be secure or persisted across browser sessions. It’s too easy for users to clear their cache and/or steal/manipulate unsecured cookies.
+
+To work with cookies, Rails gives you access to a special hash called cookies, where each key-value pair is stored as a separate cookie on the user’s browser. If you were to save cookies[:hair-color] = "blonde", you’d be able to pull up your browser’s developer tools and see a cookie on the user’s browser that has a key of hair-color and a value of blonde. Delete it using cookies.delete(:hair-color).
+
+With each new request to your server, the browser will send along all the cookies and you can access them in your controllers and views like a normal hash. You can also set their expiration dates, for example using syntax like cookies[:name] = { value: "cookies YUM", expires: Time.now + 3600}.
+
+
+
+Sessions
+Think about how websites keep track of how a user is logged in when the page reloads. HTTP requests are stateless so how can you tell that a given request actually came from that particular user who is logged in? This is why cookies are important – they allow you to keep track of your user from one request to another until the cookie expires.
+
+A special case is when you want to keep track of data in the user’s “session”, which represents all the stuff your user does while you’ve chosen to “remember” her, typically until the browser window is closed. In that case, every page she visits until the browser is closed will be part of the same session.
+
+To identify a user’s session information, Rails stores a special secure and tamper-proof cookie on the user’s browser that contains their entire session hash (look for it in your developer tools, usually under the “Application” section) and it expires when the browser is closed. Whenever the user makes a request to your application, that request will also automatically include that session cookie (along with the other cookies) and you can use it to keep track of her logged-in state. This may all seem abstract now, but you’ll get a chance to see it in action shortly.
+
+Rails gives you access to the session hash in an almost identical way to the above-mentioned cookies hash. Use the session variable in your views or controllers like so:
+
+
+
+Sessions: A session is just a place to store data during one request that you can read during later requests. Session is the perfect place to put data – specifically, the parts of the data you want to keep around for more than one request. Most apps need to be able to store some data about a user. 
+
+
+Usage of Sessions: example:
+session[:current_user_id] = @user.id
+
+
+Cookies: Cookies are key-value data pairs that are stored in the user’s browser until they reach their specified expiration date. Cookies are stored on the user’s computer. The information is later sent back from the browser to the server. The user can manually delete cookie by restarting the browser or restarting the whole system. Here’s how we can call the methods: Example:
+    def set_cookies
+       cookies[:customer_number] = "1234567890"
+   end
+   def show_cookies
+         @customer_number = cookies[:customer_number]
+    end
+    def delete_cookies
+          cookies.delete :customer_number
+   end
+
+

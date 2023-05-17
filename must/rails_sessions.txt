@@ -1,0 +1,71 @@
+rails_sessions.txt ::::::::;
+
+
+Rails provides a session object for each user that accesses the application.If the User already has an active session,Rails uses the existing session.Rails sessions is only available in controller or view and can use different storage mechanisms.It is a place to store datafrom first request that can be read from later requests.
+
+Following are some storage mechanism in RailsSession::
+
+1.ActionDispatch::Session::CookieStore - Store anything on the Client.
+2.ActionDispatch::Session::CacheStore -  Store data in the Rails Cache
+3.ActionDispatch::Session::ActiveRecordStore -Store data in the database using Active Record
+4.ActionDispatch::Session::MemcacheStore - Stores data in a memcached cluster.
+
+
+..........................................
+
+All the storage mecahnism use coolie to store a unique ID fr each session.Generally this ID look up the session data on the server like database table.There is one exception,that is the default and recommended session store is the CookieStore which stores all session data in the cookie itself.It is very lightedweighted and it requires zero setup in a new application in order to use session.The cookie data is encrypted and cryptolographically signed to make it tamper-proof.Complex objects may not be reassemble them between requests which will ultimately results in error.
+
+..........................................
+
+Accessing the Session::
+The session can be accessed thrugh the session instance method.If session will not be accessed in action;s code,they will not be loaded.
+
+Session values are stored using key/value pair like a hash.They are usually 32 bit character long string.In Rails data can be save and retrieve using session method.
+session[:user_id]=@current_user.id
+User.find(session[:user_id])
+
+..........................................
+
+To Store data in the session assign it to the key:
+
+class LoginsController < ApplicationController  
+  # "Create" a login, aka "log the user in"  
+  def create  
+    if user = User.authenticate(params[:username], params[:password])  
+      # Save the user ID in the session so it can be used in  
+      # subsequent requests  
+      session[:current_user_id] = user.id  
+      redirect_to root_url  
+   end  
+  end  
+end  
+
+..........................................
+
+To remove data from the session assign that key to be nil ::
+
+class LoginsController < ApplicationController  
+  # "Delete" a login, aka "log the user out"  
+  def destroy  
+    # Remove the user id from the session  
+    @_current_user = session[:current_user_id] = nil  
+    redirect_to root_url  
+  end  
+end  
+
+..........................................
+
+
+To reset the entire session, use reset_session.
+
+
+
+..........................................
+
+
+
+
+
+
+
+

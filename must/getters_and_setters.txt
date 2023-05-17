@@ -1,0 +1,167 @@
+getters_and_setters.txt
+
+What is a getter method?
+A getter method is a method that gets a value of an instance variable.
+Without a getter method, you can not retrieve a value of an instance variable outside the class the instance variable is instantiated from.
+
+................................................................
+
+example without getter method ::
+
+class Movie
+  def initialize(name)
+    @name = name
+  end
+end
+
+obj1 = Movie.new('Forrest Gump')
+p obj1.name #=> undefined method `name' for #<Movie:0x007fecd08cb288 @name="Forrest Gump"> (NoMethodError)
+
+................................................................
+
+example with getter method ::
+
+ class Movie
+  def initialize(name)
+    @name = name
+  end
+
+  def name
+    @name
+  end
+end
+
+obj1 = Movie.new('Forrest Gump')
+p obj1.name #=> "Forrest Gump"
+
+Explanation: As you can see, the value of obj1 (name) can not be retrieved outside Movie class. if you try to retrive a value of an instance variable outside its class without a getter method, Ruby raises No Mothod Error.Now, Let's see how to retrieve the value of obj1 outside Movie class with a getter method.All you have to do here is to define a getter method named name. Though the name of a getter method can be anything, it is common practice to name a getter method the instance variable’s name.
+................................................................
+
+................................................................
+
+What is setter method ?
+
+A setter is a method that sets a value of an instance variable.
+Without a setter method, you can not assign a value to an instance variable outside its class.
+if you try to set a value of an instance variable outside its class, Ruby raises No Method Error just like it does when you try to retrieve a value of an instance variable outside its class without a getter method.
+
+class Movie
+  def initialize(name)
+    @name = name
+  end
+
+  def name #getter method
+    @name
+  end
+end
+
+obj1 = Movie.new('Forrest Gump')
+p obj1.name #=> "Forrest Gump"
+obj1.name = 'Fight Club' #=> undefined method `name=' for #<Movie:0x007f9937053368 @name="Forrest Gump"> (NoMethodError)
+
+................................................................
+
+What is a setter method?
+A setter is a method that sets a value of an instance variable.
+Without a setter method, you can not assign a value to an instance variable outside its class.
+if you try to set a value of an instance variable outside its class, Ruby raises No Method Error just like it does when you try to retrieve a value of an instance variable outside its class without a getter method.
+
+.....................................................................
+
+example without setter method :: 
+
+class Movie
+  def initialize(name)
+    @name = name
+  end
+
+  def name #getter method
+    @name
+  end
+end
+
+obj1 = Movie.new('Forrest Gump')
+p obj1.name #=> "Forrest Gump"
+obj1.name = 'Fight Club' #=> undefined method `name=' for #<Movie:0x007f9937053368 @name="Forrest Gump"> (NoMethodError)
+
+
+.....................................................................
+
+example with setter method :: 
+
+class Movie
+  def initialize(name)
+    @name = name
+  end
+
+  def name #getter method
+    @name
+  end
+
+  def name=(name) #setter method
+    @name = name
+  end
+end
+
+obj1 = Movie.new('Forrest Gump')
+p obj1.name #=> "Forrest Gump"
+obj1.name = 'Fight Club'
+p obj1.name #=> "Fight Club"
+
+
+.....................................................................
+
+what are accessors methods ?
+
+Accessors are a way to create getter and setter methods without explicitly defining them in a class.
+There are three types fo accessors in Ruby.
+
+attr_reader automatically generates a getter method for each given attribute.
+attr_writer automatically generates a setter method for each given attribute.
+attr_accessor automatically generates a getter and setter method for each given attribute.
+First, let's take a look at attr_reader!
+As you can see in the code below, name and year are retrieved outside Movie class even though there is no getter method for either of them. This is because attr_reader generates a getter method for each given attribute.
+
+
+class Movie
+  attr_reader :name, :year
+
+  def initialize(name, year)
+    @name = name
+    @year = year
+  end
+end
+obj1 = Movie.new('Forrest Gump', 1994)
+p obj1.name #=> Forrest Gump
+p obj1.year #=> 1994
+
+Second, let's see how attr_writer works!
+As I mentioned above, attr_witer generates a setter method for each given attribute. Therefore you can assign new values to ob1 without explicitly writing setter methods for name and year!
+class Movie
+  attr_reader :name, :year 
+  attr_writer :name, :year
+
+  def initialize(name, year)
+    @name = name
+    @year = year
+  end
+end
+obj1 = Movie.new('Forrest Gump', 1994)
+obj1.name = 'Fight Club'
+obj1.year = 1999
+p obj1.name #=> "Fight Club"
+p obj1.year #=> 1999
+Last but certainly not least, attr_accessor does what attr_reader and attr_writer do with just one line of code! It will automatically generate a getter and setter mehod for each given attribute.
+class Movie
+  attr_accessor :name, :year
+
+  def initialize(name, year)
+    @name = name
+    @year = year
+  end
+end
+obj1 = Movie.new('Forrest Gump', 1994)
+obj1.name = 'Fight Club'
+obj1.year = 1999
+p obj1.name #=> "Fight Club"
+p obj1.year #=> 1999

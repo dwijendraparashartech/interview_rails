@@ -1,10 +1,180 @@
 ror_short_questions.txt
 
-What is the difference between helper,serializer,decorator and presenter design pattern?
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+what happen when first time server running?
+1. Booting puma- which server is working with application-
+2. in which enviornment application is starting 
+3. puma version 
+4. browser url 
+5.there will be one log file that made inside the application -
+log/scout_apm.log
+-- examine this 
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What are rails logs ?
+Since Rails serves applications in the development environment by default, logs are automatically written to a development. log file. Rails uses six different log levels: debug, info, warn, error, fatal, and unknown.
+
+Rails applications come with three environment configurations, found in the config/environments/ directory: development.rb, test.rb, and production.rb. All environments create a corresponding log file in the logs directory once the application begins generating logs. Since Rails serves applications in the development environment by default, logs are automatically written to a development.log file.
+
+Rails uses six different log levels: debug, info, warn, error, fatal, and unknown. Each level defines how much information your application will log:
+
+Debug: diagnostic information for developers and system administrators, including database calls or inspecting object attributes. This is the most verbose log level.
+Info: useful information about normal application operations such as services starting or stopping.
+Warn: operations that an application can easily recover from but should be addressed soon. This could include using an out-of-date gem or retrying an operation.
+Error: errors that cause an operation to fail (e.g., missing data or files) but not the application. The issue should be resolved soon, but the application can log the exception and continue running.
+Fatal: errors that cause the application to crash and should be addressed immediately to prevent further data loss.
+Unknown: messages that are not classified by any other level but should be logged.
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+what is server side scripting?
+
+Server-side scripting means everything that happens on the server. Web browsers communicate with web servers through something called HyperText Transfer Protocol (HTTP). When you make any action with your browser, like entering some URL and clicking enter, an HTTP request is sent from your browser to the targeted server. After that, the server is waiting for a client-side request; this request is sent by something called a method like POST, GET, or DELETE.
+
+Then, the server processes this request when it arrives and gives something called HTTP Response to the browser; this response holds a status line indicating whether the request succeeded or not (e.g. “HTTP/1.1 200 OK” for success).
+
+The body of the response to a request would contain the requested content, maybe an image, Html page, or anything else. So, we can say that server-side scripting is executed and processed on the server
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is the difference between Web server and application server ?
+
+A Web Server is a server which accepts a request for data and sends the relevant document in return, whereas an Application Server contains an EJB container component as well to run the enterprise applications.
+
+Although Web Servers are designed to serve static content, most Web Servers have plugins to support scripting languages like PHP, Perl, etc. through which they can generate dynamic HTTP content.
+
+An application server is one that is designed to generate dynamic content. It is a software framework that transforms the data to provide specialized functionalities offered by a business, service, or application. Application servers enhance the interactive parts of a website depending on the context of the request.
+
+Application servers contain web containers and EJB containers. Application servers are entirely responsible for creating an environment for enterprise applications. These servers are capable of supporting HTTP as well as RPC/PMI protocols. Application servers consume more resources like CPU, memory as compared to web servers.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Diff between WEb Server and Application Server ?
+
+From the above discussion, we may conclude that a web server is a computer program that accepts HTTP request from clients and sends the requested documents, while an application server is one that helps us to host applications and provides an environment to develop and run an application program.
+
+1.Purpose:
+WS: A Web Server contains a Web Container Only.
+AS: An Application Server contains a Web Container plus an EJB Container.
+
+2.USeful:
+WS:A web server is good in case of static contents like static html pages.
+AS:An Application server is relevant in case of dynamic contents like bank websites.
+
+3.Resource Consumption
+WS:A Web server consumes less CPU, Memory resources as compared to an application server.
+AS:An Application server utilizes more resources.
+
+4.Target Environment
+WS:A Web Server provides the runtime environment for web applications.
+AS:Application servers provide the runtime environment for enterprise applications
+
+5.Multithreading support
+WS:Multithreading is not supported.
+AS:Multithreading is supported.
+
+6.Protocol(s) supported
+WS:Web Servers support HTTP Protocol.
+AS:Application Servers support HTTP as well as RPC/RMI protocols.
+
+7.Examples
+WS:Nginx
+AS:Puma
+
+
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+https://stackoverflow.com/questions/4113299/ruby-on-rails-server-options
+
+Q-
+
+However Mongrel is quite dated, nowadays it is no longer maintained. Newer alternative application servers are:
+
+Phusion Passenger
+Unicorn
+Thin
+Puma
+Trinidad (JRuby only)
+TorqueBox (JRuby only)
+
+App servers that can be directly exposed to the Internet: Phusion Passenger, Rainbows
+App servers that may not be directly exposed to the Internet: Mongrel, Unicorn, Thin, Puma. These app servers must be put behind a reverse proxy web server like Apache and Nginx.
+I don't know enough about Trinidad and TorqueBox, so I've omitted them.
+
+Application servers compared
+In this section I'll compare most application servers I've mentioned, but not Phusion Passenger. Phusion Passenger is such a different beast from the rest that I've given it a dedicated section. I've also omitted Trinidad and TorqueBox because I do not know them well enough, but they're only relevant anyway if you use JRuby.
+
+Mongrel was pretty bare bones. As mentioned earlier, Mongrel is purely single-threaded multi-process, so it is only useful in a cluster. There is no process monitoring: if a process in the cluster crashes (e.g. because of a bug in the app) then it needs to be manually restarted. People tend to use external process monitoring tools such as Monit and God.
+Unicorn is a fork of Mongrel. It supports limited process monitoring: if a process crashes it is automatically restarted by the master process. It can make all processes listen on a single shared socket, instead of a separate socket for each process. This simplifies reverse proxy configuration. Like Mongrel, it is purely single-threaded multi-process.
+Thin uses the evented I/O model by utilizing the EventMachine library. Other than using the Mongrel HTTP parser, it is not based on Mongrel in any way. Its cluster mode has no process monitoring so you need to monitor crashes etc. There is no Unicorn-like shared socket, so each process listens on its own socket. In theory, Thin's I/O model allows high concurrency, but in most practical situations that Thin is used for, one Thin process can only handle 1 concurrent request, so you still need a cluster. More about this peculiar property in section "I/O concurrency models".
+Puma was also forked from Mongrel, but unlike Unicorn, Puma is designed to be purely multi-threaded. There is therefore currently no builtin cluster support. You need to take special care to ensure that you can utilize multiple cores (More about this in section "I/O concurrency models").
+Rainbows supports multiple concurrency models through the use of different libraries.
+
+
+Phusion Passenger
+Phusion Passenger works very differently from all the other ones. Phusion Passenger integrates directly into Apache or Nginx, and so can be compared to mod_php for Apache. Just like mod_php allows Apache to serve PHP apps, almost magically, Phusion Passenger allows Apache (and also Nginx!) to serve Ruby apps, almost magically. Phusion Passenger's goal is to make everything Just Work(tm) with as little hassle as possible.
+
+Instead of starting a process or cluster for your app, and configuring Apache/Nginx to serve static files and/or reverse proxying requests to the process/cluster with Phusion Passenger you only need to:
+
+You edit the web server config file and specify the location of your Ruby app's 'public' directory.
+There is no step 2.
+All configuration is done within the web server config file. Phusion Passenger automates pretty much everything. There is no need to start a cluster and manage processes. Starting/stopping processes, restarting them when they crash, etc. - all automated. Compared to other app servers, Phusion Passenger has far fewer moving parts. This ease of use is one of the primary reasons why people use Phusion Passenger.
+
+Also unlike other app servers, Phusion Passenger is primarily written in C++, making it very fast.
+
+There's also an Enterprise variant of Phusion Passenger with even more features, such as automated rolling restarts, multithreading support, deployment error resistance, etc.
+
+For the above reasons, Phusion Passenger is currently the most popular Ruby app server, powering over 150,000 websites, including large ones such as New York Times, Pixar, Airbnb, etc.
+
+.............
+
+
+Capistrano
+Capistrano is something completely different. In all the previous sections, "deployment" refers to the act of starting your Ruby app in an application server, so that it becomes accessible to visitors, but before that can happen one typically needs to do some preparation work, such as:
+
+Uploading the Ruby app's code and files to the server machine.
+Installing libraries that your app depends on.
+Setting up or migrating the database.
+Starting and stopping any daemons that your app might rely on, such as Sidekiq/Resque workers or whatever.
+Any other things that need to be done when you're setting up your application.
+In the context of Capistrano, "deployment" refers to doing all this preparation work. Capistrano is not an application server. Instead, it is a tool for automating all that preparation work. You tell Capistrano where your server is and which commands need to be run every time you deploy a new version of your app, and Capistrano will take care of uploading the Rails app to the server for you and running the commands you specified.
+
+Capistrano is always used in combination with an application server. It does not replace application servers. Vice-versa, application servers do not replace Capistrano, they can be used in combination with Capistrano.
+
+Of course you don't have to use Capistrano. If you prefer to upload your Ruby app with FTP and manually running the same steps of commands every time, then you can do that. Other people got tired of it, so they automate those steps in Capistrano.
+
+
+
+
+
+
+
+
+
+
 
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 
+
+
+
+
+What is the difference between helper,serializer,decorator and presenter design pattern?
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What is Api?
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 What is the flow of you for agile methodology?
 The Agile process flow includes concept, initiation, iteration or construction, release, production, and retirement, as described below: Concept: Envision and prioritize projects. Inception: Identify team members, appointment of funds, and discussion of initial environments and requirements.
@@ -244,3 +414,30 @@ Example NonRelational:Cassendra,Hbase,MongoDB,Neo4
 7.Which type of hashing algorithm we use in ?
 8.What are the security you use in your api?
 9.What type of security you use in your authorization system?
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- What happen when the when we run the rails generate model command 
+
+we call the model_generator.rb file in rails specifically to this two methods,
+
+…
+# creates the migration file for the model.
+def create_migration_file
+  return unless options[:migration] && options[:parent].nil?
+  attributes.each { |a| a.attr_options.delete(:index) if a.reference?
+        && !a.has_index? } if options[:indexes] == false
+  migration_template "../../migration/templates/create_table_migration.rb",
+        File.join(db_migrate_path, "create_#{table_name}.rb")
+end
+
+def create_model_file
+  template "model.rb", File.join("app/models", class_path, "#{file_name}.rb")
+end
+…
+The first method creates the migration file that we saw before and the second method creates the Model file.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+

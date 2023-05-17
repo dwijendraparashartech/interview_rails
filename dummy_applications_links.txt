@@ -1,0 +1,8 @@
+dummy_applications_links.txt :::::::::
+
+https://pusher.com/tutorials/polling-ruby-rails-postgresql/#sign-up-for-a-free-pusher-account
+https://www.bacancytechnology.com/blog/ruby-on-rails-for-ecommerce-project
+https://kennethteh90.medium.com/how-to-build-a-basic-e-commerce-store-909f2893be71
+https://dev.to/justalever/lets-build-with-ruby-on-rails---ecommerce-music-shop-1c21
+https://resolve.digital/blog/posts/8-best-ruby-on-rails-gems-for-ecommerce-applications/
+

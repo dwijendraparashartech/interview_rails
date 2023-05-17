@@ -6,7 +6,7 @@ Q-  Given an array [1,2,3,4,5,6,7,8,9], sum it up using a method.
 Q-  Solve the below problem :: x = [{"a" => 10},{"b" => 20},{"c" => 30}]
 Q-  This problem - posts = Post.includes(comments: [:author]).all
 Q-  This problem - all_keys = params.slice(*available_option_keys)
-Q-  Benchmark Code
+Q-  Benchmark Codels
 Q-  Sort the keys - { abc: 'hello', 'another_key' => 123, 4567 => 'third' }
 Q-  Write a function that sorts the keys in a hash by the length of the key as a string.
 Q-  Output: val1 = true and false  ,  val2 = true && false

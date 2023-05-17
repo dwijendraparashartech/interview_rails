@@ -2,6 +2,35 @@ git.txt
 
 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
+
+
+
+
+
+what is cherry pick command git ?
+git cherry-pick is a powerful command that enables arbitrary Git commits to be picked by reference and appended to the current working HEAD. Cherry picking is the act of picking a commit from a branch and applying it to another. git cherry-pick can be useful for undoing changes.
+
+git cherry-pick commitSha
+
+In this example commitSha is a commit reference. You can find a commit reference by using git log. In this example we have constructed lets say we wanted to use commit `f` in main. First we ensure that we are working on the main branch.
+
+Then we execute the cherry-pick with the following command:
+
+git cherry-pick f
+Once executed our Git history will look like:
+
+    a - b - c - d - f   Main
+         \
+           e - f - g Feature
+The f commit has been successfully picked into the main branch
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+
+
+
 0.What is the diff between git rebase and git merge in Rails ?
 
 1. Diff between git pull and git fetch 

@@ -1,0 +1,11 @@
+architecture_rails.txt 
+
+1.Create the application.
+2.Create or connect the web server - nginx,apache - nginx 
+3.Create or connect the app server - puma,unicorn,thin
+4.install and connect the postgres database in the application 
+5.install and connect the mysql database in application.
+6.establish a connection in rails app for switching between databases.
+7.
+
+

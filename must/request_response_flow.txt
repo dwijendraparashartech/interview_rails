@@ -1,0 +1,97 @@
+request_response_flow.txt:
+
+https://www.codecademy.com/article/request-response-cycle-dynamic
+https://medium.com/@swapnilggourshete/rails-request-lifecycle-134a34f3a884
+
+|||||||||||||||||||||||||||||||||||||             ||||||||||||||||||||||||||||||||   ||||||||||||
+|||||||||||||||||||||||||||||||||||||             ||||||||||||||||||||||||||||||||   ||||||||||||
+|||||||||||||||||||||||||||||||||||||             ||||||||||||||||||||||||||||||||   ||||||||||||
+|||||||||||||||||||||||||||||||||||||             ||||||||||||||||||||||||||||||||   ||||||||||||
+|||||||||||||||||||||||||||||||||||||             ||||||||||||||||||||||||||||||||   ||||||||||||
+|||||||||||||||||||||||||||||||||||||             ||||||||||||||||||||||||||||||||   ||||||||||||
+
+
+Rails Request Cycle :: 
+
+Rails Request Lifecycle
+Have you ever wondered how a request is processed in its lifecycle? What happens with request at each stage? Who handles request at what level? Let’s dig it out!
+
+Breakdown of request flow -
+1.Browser generates HTTP/HTTPS request after a click or a event
+2.Web server receives request, analyses it and passes to application server
+3.Application server calls up proper controller-action after talking with router
+4.The resulted output is sent back to browser and displayed on screen
+
+..............................................
+
+Web Browser
+Browser should direct request to a specific destination. For users it is a URL seen on web page, but computers need IP addresses, they do not understand these URLs.
+
+For this purpose, there is a system in place called Domain Name System(DNS) which maps URLs to computer understandable IP addresses. It is browser who starts finding out IP address.
+
+Search begins from local cache, of both browser and computer. If local cache does not have IP address of requested site, browser generally asks Internet Service Providers(ISP). If not found then it goes up the hierarchy LIKE Root DNS –> Extension wise Name Servers(like .com, .net, .org) –> And then to Authoritative DNS Server. The chase ends here.
+
+Yay! We get the required ip address.
+Authoritative DNS Server must have IP address for requested site, if not there are high chances that your domain name provider has not set up your domain information properly.
+
+It is actually interesting to try on terminal with dig,
+
+..............................................
+
+Web Server
+By now browser is successfully connected to server. The server here is web server. Some examples are Apache, Nginx, Passenger, Puma, Unicorn, Webrick. These servers are meant to talk only in http. Their job is to understand the request and make decision on how to service that request.
+
+For simpler request, we can configure web server easily. Suppose we need to tell web server that if browser asks for any assets then serve it from ‘/public/assets’ folder. There are a list of different web servers you can use for this purpose. With nginx it is like
+
+..............................................
+
+Okay then. We are set to serve requests for assets. If browser asks for assets it will receive an expected response in output, for anything else than assets, it will get 404 not found response.
+
+But what if browser asks for latest 10 blog posts from xyz author with some amazing styling and javascript??
+
+Our current configuration does not support this kind of request. Even if we decide to handle it at this level, it will be complex to put it in web server configuration file. So what next?
+
+There comes Rails! Web server passes request to Rails application. But there can be many ways for web server to do it. Just to understand, it can call a method with argument or declare variables or use global variables. Even if we managed this, another question arises, in what format should Rails sends data back to web server? To reduce this confusion, there is a system in place called RACK
+
+git action 
+s
+|||||||||||||||||||||||||||||||||||||             ||||||||||||||||||||||||||||||||   ||||||||||||
+
+
+......................................
+
+A user opens their browser, types in a URL, and presses Enter. When a user presses Enter, the browser makes a request for that URL.
+The request hits the Rails router (config/routes.rb).
+The router maps the URL to the correct controller and action to handle the request.
+The action receives the request, and asks the model to fetch data from the database.
+The model returns a list of data to the controller action.
+The controller action passes the data on to the view.
+The view renders the page as HTML.
+The controller sends the HTML back to the browser. The page loads and the user sees it.
+
+......................................
+
+
+Rails apps use an MVC architectural pattern. A visit to a blog’s users index page, for example, follows these steps:
+
+1) The browser issues a request for the “/users” URL.
+2) Rails routes “/users” to the index action in the Users controller.
+3) The index action asks the User model to retrieve all users (User.all).
+4) The User model pulls all the users from the database.
+5) The User model returns the list of users to the controller
+6) The controller captures the users in the @users variable, which is passed to the index view
+7) The view uses embedded Ruby to render the “/users” page as HTML.
+8) The controller passes the HTML back to the browser.
+
+
+......................................
+
+
+1.user hit the url -directly by url or indirectly by browser 
+2.the browser needs to know the server ip address to connect 
+3.so browser will look up DNS (domain name system) which translate your domain into the public ip address of the particular server.
+4.Then the Browser will do threeway handshake to connect server like puma in port 80. 
+5.And decide upon public and private key it happen only because if url use HTTPS.
+6.And decide upon public and private key it happen only because if url use HTTPS. HTTPS is a secure wrapper around HTTP and TCP. 
+7.
+

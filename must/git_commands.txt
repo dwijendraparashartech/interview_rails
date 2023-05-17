@@ -2,12 +2,26 @@ git_commands.txt
 
 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
+1.What is Rebasing?
+Rebasing is often used as an alternative to merging.
+Rebasing a branch updates one branch with another by applying the commits of one branch on top of the commits of another branch.
+Git Rebase is used to clean up our local commit history
+Merge Preserve history
+Rebase do not preserve history
+
+do not reuse rebase when 
+
+
 1.What is Rebasing?,What is git rebase? 
 Rebasing is the process of moving or combining a sequence of commits to a new base commit. Rebasing is most useful and easily visualized in the context of a feature branching workflow.
 
 
 2.What is git stash?
 git stash temporarily shelves (or stashes) changes you've made to your working copy so you can work on something else, and then come back and re-apply them later on.
+
+
+2.What is stashing?
+The git stash command takes your uncommitted changes (both staged and unstaged), saves them away for later use, and then reverts them from your working copy.
 
 ..............................
 
@@ -133,4 +147,155 @@ H.Undoing Things:
 
 
 
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+https://www.youtube.com/watch?v=SwDF9mtI8Ek&list=PL_euSNU_eLbegnt7aR8I1gXfLhKZbxnYX&index=21
+
+..........................................................................
+
+
+Q- What is git HEAD?
+When we are working we only checkout one branch at a time.This is also called as HEAD Branch.
+Git makes notes of this branch and stores it in .git/HEAD as the reference for the path of the branch.
+
+Q- What is git diff command?
+Diff command is used to track the difference between the changes made on a file.Diff command takes two inputs and reflects the differences between them.
+
+Q- What is working area,stagin area,repository area in git?
+
+Working Area: The working area is where files that are not handled by git. These files are also referred to as "untracked files."
+
+Staging Area: Staging area is files that are going to be a part of the next commit, which lets git know what changes in the file are going to occur for the next commit.
+
+Repository: The repository contains all of a project's commits.
+
+Q- How git stores the data?
+Git stores the data in the form of keys and values.
+Values is nothing but the content of the file.
+You give the value and it will calculate a key for it,that is nothing but hash.
+
+
+Q- what is git log command?
+
+
+
+...............................
+
+Special git commands ::
+
+1. git commit -a -m "Restyle recipe ingredients"
+
+ if you've only modified or deleted files, not created any new files, you can stage and commit changes to the branch using this single command , The -a option stages all modified and deleted files in the working folder, but does not include any new files. This commit command then creates a new snapshot of our working folder (except for any new files) and commits them.
+
+
+2. git merge login_issue
+merge the login_issue branch to the main branch on which we are.
+
+
+
+3.git branch -d login_issue
+delete a branch
+
+4.git log
+view the commits for the branch
+
+5.git branch <new-branch-name>
+create a new branch
+
+6.git diff <branch-name> <other-branch-name>
+View the differences between checkpoints:
+
+7.git add <files>
+After editing some files, this command will mark any changes you’ve made as “staged”
+
+...............................
+
+Q-What is git fetch command ?
+The git fetch command downloads commits, files, and refs from a remote repository into your local repo. Fetching is what you do when you want to see what everybody else has been working on
+
+...............................
+
+Q-What is the diff bet fetch and pull command ?
+When comparing Git pull vs fetch, Git fetch is a safer alternative because it pulls in all the commits from your remote but doesn't make any changes to your local files. On the other hand, Git pull is faster as you're performing multiple actions in one – a better bang for your buck.
+
+...............................
+
+Q- What is the diff between git fetch,git pull and git merge?
+git pull (or git fetch + git merge ) is how you update that local copy with new commits from the remote repository. git clone is used for just downloading exactly what is currently working on the remote server repository and saving it in your machine's folder where that project is placed.
+
+
+1 git clone
+
+The clone command in git is used when you want to download an existing git repository to your local computer.
+
+2 git pull
+
+When you want to take changes or updates done by other developer/team member on git repository, you have to use git pull.
+
+In detail git pull is the command that fetches the content from a remote repository and integrates it with the local repository/branch. It is, in actuality, a combination of git fetch and git merge called in that order.
+
+3 git fetch
+
+Git "fetch" Downloads commits, objects and refs from another repository. It fetches branches and tags from one or more repositories.
+
+...............................
+
+
+
+Git rebase option ::
+
+This is alternative to merging , you can rebase the feature branch onto main branch using the following command, 
+git checkout feature 
+git rebase main 
+this moves the entire feature branch to begin on the top of the main branch,effectively incorporating all of the new commits in main.but instead of using a rebase commit,rebasing rewrites the project history by creating brand new commits for each commit in the origional branch.
+
+..........
+
+what is git init command ?
+
+This will create a hidden .git folder inside your current folder — this is the "repository" (or repo) where git stores all of its internal tracking data. Any changes you make to any files within the original folder will now be possible to track.
+
+...........
+
+what is clone an existing repo ?
+
+This will create a hidden .git folder inside your current folder — this is the "repository" (or repo) where git stores all of its internal tracking data. Any changes you make to any files within the original folder will now be possible to track.
+
+............
+
+git status
+
+This will print some basic information, such as which files have recently been modified.
+You should check your status anytime you’re confused. Git will print additional information depending on what’s currently going on in order to help you out.
+
+............
+
+git branch <new-branch-name>
+
+create a new branch 
+
+.............
+
+[git reflog](https://git-scm.com/docs/git-reflog)
+
+what is git reflog command do :
+
+This command manages the information recorded in the reflogs. Reference logs, or "reflogs", record when the tips of branches and other references were updated in the local repository. Reflogs are useful in various Git commands, to specify the old value of a reference.
+
+
+.............
+
+git checkout <existing-branch-name>
+
+
+You can think of this like “resuming” from an existing checkpoint. All your files will be reset to whatever state they were in on that particular branch.
+
+
+.............
+
+what is git stash command ::
+
+The git stash command takes your uncommitted changes (both staged and unstaged), saves them away for later use, and then reverts them from your working copy. For example: $ git status On branch main Changes to be committed: new file: style.
 

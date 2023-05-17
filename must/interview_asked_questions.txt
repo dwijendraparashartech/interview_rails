@@ -1,2 +1,21 @@
 interview_asked_questions.txt ::::::::::::::::::::::::::::::::::::::
 
+react_short_questions.txt 
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+What is 
+
+optimise databse queries
+1 table 10 lacs record s 
+1 query 30 second
+
+
+middleware in rails
+trasactions
+
+how to invalidate the sessions
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

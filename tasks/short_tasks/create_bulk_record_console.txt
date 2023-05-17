@@ -1,0 +1,17 @@
+create_bulk_record_console.txt 
+
+
+10.times do |i|
+  User.create!(name: "user #{i}")
+end
+
+10.times do |i|
+  Book.create!(name: "book#{i}",author_id:"author#i")
+end
+
+
+1000.times do |i|
+  Book.create!(name: "book#{i}",author_id:2)
+end
+
+10.times do 

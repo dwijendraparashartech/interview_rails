@@ -1,0 +1,57 @@
+http_request.txt ::::::::::::
+
+https://thoughtbot.com/blog/back-to-basics-http-requests
+
+http - hypertext transfer protocol
+
+The first line of an HTTP request is called the Request-Line. It contains:
+
+1.URI
+2.Headers
+3.Body
+4.Method
+
+
+1.URI - 
+A URI or Uniform Resource Identifier is how objects are identified. Clients use URIs to tell the server what object to act on for a given request. In more general terms a URI is nothing more than a web address.
+
+2.Headers - 
+Request Header Fields
+A client can communicate additional information to the server via a request’s headers. In addition to just communicating information about the client, ie. what type of browser the request originated from, these values can modify how the server responds to the request. For example, the Content-Type header value is used by the Rails framework to decode a request’s message body.
+
+3.Body - 
+Message Body
+The message body is used to send information from the client to the server about the entity the client wants to modify or create. The message can be communicated using several different encoding mechanisms, some of which I’ll discuss below. It is important to note that not all of the requests I discuss below are allowed to have message bodies.
+
+
+4.Method - 
+Method
+The method, sometimes called “verb” or “action”, tells the server what the client wants it to do. There are many different methods available, but we’re going to limit this blog to the four that are most relevant to Rails developers.
+
+GET - how a client machine tells a server that it wants information about the item identified by the URI. Because GET requests are all about asking for information, they are not permitted to have request bodies. You still have the URI query string available to you if you need to send data from the client to the server on a GET request.
+POST - how a client tells a server to add an entity as a child of the object identified by the URI. The entity that the client expects the server to add is transmitted in the request body.
+PATCH - how a client tells a server it wants to modify an object identified by the URI the request is sent to.
+DELETE - as you might guess, how a client tells a server to remove an object identified by the URI the request is sent to.
+
+
+....................................................................................................
+....................................................................................................
+
+
+The Status Code
+The first item in the response array is the "status code." Simply put, the status code is a three digit number indicating if the request was successful, or not, and why.
+
+Status codes are separated into 5 classes:
+
+1xx Informational (These are pretty rare, so we won't go into more detail.)
+2xx Success!!
+3xx Redirection
+4xx Client Error (for errors originating from the client that made the request)
+5xx Server Error (for errors originating on the server)
+
+
+
+
+....................................................................................................
+....................................................................................................
+

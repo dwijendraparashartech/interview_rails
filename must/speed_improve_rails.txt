@@ -48,3 +48,677 @@ What are the gems and libraries through which we can improve the quality of the 
 
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
+Link: https://www.bacancytechnology.com/blog/ruby-on-rails-performance-tuning
+Optimization ::
+
+1.Optimization of Server
+2.Expand RAM Capacity
+3.Use Balancing Method
+4.Choosing Right Web Hosting
+5.Choosing Right Web Hosting
+6.Optimize your Ruby Code
+7.Indexing
+8.Make use of Gems and Plugins
+9.Cache Data
+10.Use Ruby on Rails GC Optimization or Tuning
+11.Use More Compressed Files
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+https://www.youtube.com/watch?v=UM_4VjPkvlI
+
+AWS+RAILS::
+Create Application Load Balancer with SSL Part
+
+Steps:
+-Create target group
+-register targets
+-setup health checks
+-update nginx config 
+-update app config 
+
+...........................................................................
+
+How to create amazon account : go to - https://aws.amazon.com/ 
+and create your amazon console account ------------------------------------
+
+How to go to Amazon cloud -
+1.first register your personal or business acoount in amazon web console 
+2.it will ask debit or credit card information and charge 2 rupees only.
+3.Sign in to amazon console as root user 
+
+...........................................................................
+
+Q- How to Optimization of Server in Ruby on Rails Application ::
+
+1.N+1 Queries 
+2.Load only what you will use 
+3. Move All Database Calls to the Controller
+4. Paginate Wherever You Can!
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- How to Optimization of Server in Ruby on Rails Application :: With Example ::
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+0. Manage Database Queries::
+
+The first step to building a performant application is to maximize resource utilization. Most Rails apps render something from the database onto the views, so let's try to optimize database calls first!
+For the purpose of this demonstration, I'm going to use a MySQL database.
+Let's look at how that initial load of 1066ms breaks down.
+414.7 to execute 'controllers/application_controller#home'
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+1.N+1 Queries ::::::::::
+
+<ul>
+  <li>
+    Name: <%= person.name %>
+  </li>
+  <li>
+    Addresses:
+      <ul>
+        <% person.profiles.each do |profile| %>
+          <li><%= profile.address %></li>
+        <% end %>
+      </ul>
+  </li>
+</ul>
+<%= button_to "Vote #{person.votes_count}", vote_person_path(person) %>
+
+....................................
+
+Basically, it queries the database for that person's profiles and renders each one out. So it does N queries (where N is the number of people) and the 1 query we did in the controller—thus, N+1.
+
+To optimize this, make use of the MySQL database joins and the Rails ActiveRecord includes functions.
+
+Let's change the controller to match the following:
+
+def home
+  @people = Person.all.includes(:profiles)
+end
+
+
+All the people are loaded by 1 MySQL query, and all their respective queries are loaded in another. Bringing N+1 to just 2 queries.
+
+Let's look at how this increases performance!
+
+It took us only 936ms to load the page. You can see below that the "application_controller#home" action does 2 MySQL queries.
+
+Rendered people/_person.html.erb (0.3ms)
+Rendered people/_person.html.erb (0.2ms)
+Rendered people/_person.html.erb (0.3ms)
+Rendered people/_person.html.erb (0.3ms)
+Rendered people/_person.html.erb (0.3ms)
+Rendered people/_person.html.erb (0.3ms)
+Rendered people/_person.html.erb (0.3ms)
+Rendered people/_person.html.erb (0.2ms)
+
+Rendered application/home.html.erb within layouts/application (936.0ms)
+Completed 200 OK in 936ms (Views: 927.1ms | ActiveRecord: 9.3ms)
+
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+2.Load Only What you Use?
+
+You can see we only need the address, nothing else. But in the "_person.html.erb" partial we load the profile object. Let's see how we can make that change.
+
+<li>
+  Addresses:
+  <ul>
+    <% person.profiles.pluck(:address).each do |address| %>
+      <li><%= address %></li>
+    <% end %>
+  </ul>
+</li>
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+3. Move All Database Calls to the Controller
+
+Let's say, in the future of this make-believe application, you'd like to display the total number of users on the home page.
+
+Simple! Let's make a call in the view that looks like this:
+
+ruby
+
+# of People: <%= @people.count %>
+Okay, that's simple enough.
+
+There's another requirement—you need to create a UI element that displays the page progress. Let's now divide the number of people on the page by the total count.
+
+ruby
+
+Progress: <%= index / @people.count %>
+Unfortunately, your colleague doesn't know that you've already made this query and they proceed to make it again and again in the views.
+
+Had your controller looked like this:
+
+ruby
+
+def home
+  @people = Person.all.includes(:profiles)
+  @people_count = @people.count
+end
+It would have been easier to reuse already calculated variables.
+
+Though this does not contribute to a direct improvement in page load speeds, it prevents multiple calls to the database from various view pages and helps you prepare for optimizations that you can perform later, such as caching.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+4. Paginate Wherever You Can!
+
+Just like loading only what you need, it also helps to only show what you need! With pagination, views render a portion of the information and keep the rest to load on demand. This shaves off a lot of milliseconds! The will_paginate and kaminari gems do this for you in minutes.
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+5. Avoiding HTML Reloads ::
+
+In a traditional Rails app, HTML view rendering takes a lot of time. Fortunately, there are measures you can take to reduce this.
+
+5.1 TurboLinks ::
+
+This comes wrapped up in your standard Rails app. Turbolinks is a JavaScript library that works everywhere (even without Rails, like on static pages) and degrades gracefully on unsupported browsers.
+
+It converts every link into an AJAX request and replaces the entire body of the page via JS. This greatly improves performance as it doesn't have to reload the CSS, JS and images.
+
+However, when writing custom JS you'll have to take extra precaution to write "Turbolinks safe JS". Read more about this here.
+
+
+
+5.2 Use Ajax Requests :: 
+
+In the same vein as Turbolinks, you can convert some of your links and buttons into AJAX requests as well. The difference here is that you get to control what HTML gets replaced rather than replacing the whole body as Turbolinks does.
+
+Let's see AJAX in action!
+
+In the sample app, there's a "Vote" button for each user. Let's measure how long it takes to do that action.
+
+5.3 Use WebSockets ::
+
+One of the great things about an HTML reload is that it gets you fresh content from the server every time. With an AJAX request, you only see the latest content for the little snippet.
+
+WebSockets are a great piece of technology that let your server push updates to the client, instead of the client requesting for new information.
+
+This can be useful when you need to build dynamic webpages. Imagine you need to display the score of a game on your website. To fetch new content you can,
+
+Tell your users to reload the entire page
+Provide a reload button that refreshes just the score
+Use JavaScript to keep polling the backend every second
+This will keep pinging the server even when there is no change in data
+Each client will make calls every second - easily overwheling the server
+Use WebSockets!
+With WebSockets, the server has control of when to push data to all clients (or even a subset). Since the server knows when data changes, it can push data only when there is a change!
+
+Rails 5 released ActionCable, which lets you manage all things WebSockets. It provides a JS framework for the client to subscribe to the server and a backend framework for the server to publish changes. With action cable, you have the ability to choose any WebSocket service of your choice. It could be Faye, a self-managed web socket service, or Pusher a subscription service.
+
+Personally, I'd choose a subscription for this, as it reduces the number of things you need to manage.
+
+Okay, back to WebSockets. Once you're done setting up ActionCable, your view will not be able to listen to JSON input from the server. Once it receives it, the hook actions you've written will replace the respective HTML content.
+
+Rails docs and Pusher have great tutorials on how to build with WebSockets. They're must-reads!
+
+
+5.4 Caching ::
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
+
+Optimizing Performance of Rails Applications
+
+
+1. Unoptimized SQL queries
+
+1.1. First Method ::  Gem :  rails-pg-extras library :
+pg-extras offers a set of helper queries that allow you to analyze the database. 
+
+1.2  Second Method : 	
+But, a good starting point is to use outliers and long_running_queries methods to list slow queries that take up a considerable amount of database resources.
+
+1.3  Third Method :  pganalyze.
+It provides in-depth insights into the performance of your database layer together with suggestions on how to improve it.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
+
+17 Tips To Improve Rails Application Performance ::
+
+1.Updated version of Ruby and Ruby On Rails regularly
+2.Don’t waste time on micro-optimization
+3.Check performance in production mode
+4.Use background Jobs
+5.Use servers with good single core performance
+6.Puma is Important
+7.Use HTTP2
+8.Enough RAM
+9.Keep an Eye on Server Metrics
+10.Get ride of N+1 Queries
+11.Database Indexing :  lol_dba gem   - For missing indexing 
+12.Use database queries whenever possible
+13.Beware of pagination
+14.Update your gems regularly
+15.Eager or preloaded queries
+16.Use a proper cache
+17.Use a fast JSON Template
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
+
+
+10 Tips 
+
+
+1.Determine your Application’s Current Level of Performance
+2. Try Using Different Hosting
+3. Reduce Sizes of Images and Tables
+4. Reduce Garbage Collector Call Amounts
+5. Minimize the Number of Database Requests
+6. Correctly Index the Database
+7. Minimize the Use of Certain Methods
+8. Turn Caching On
+9. Use the Bullet Gem
+10. Select the Right Session Storage
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+1.Determine your Application’s Current Level of Performance :: 
+........................
+
+0.Use a Profiler to Identify Bottlenecks :: 
+The first step to optimizing your Rails application's performance is to identify the parts of your code that are causing slowdowns. One of the best tools for this is a profiler. A profiler is a tool that measures the performance of your application and helps you identify areas that are taking up too much time or using too many resources.
+There are several profilers available for Ruby on Rails, including Rack::MiniProfiler, New Relic, and StackProf. These profilers can give you detailed information about the performance of your application, including how long each request takes to process, how much memory is being used, and which parts of the code are being executed most frequently.
+
+1.First know the exact efficiency of your Application ::  [ New Relic ] 
+an absolutely amazing software monitoring service, currently unrivaled. Its main advantage (in addition to detailed and multi-criteria analysis of the tested application) is a free version, which can even work locally. 
+
+2.Heroku Parameters :: 
+Popular cloud-based software development and deployment platform Heroku
+
+2.1.log2viz function:: which collects and monitors app’/website’s statistical data from the Heroku log stream. It is basically, an open-source demonstration of the logs-as-data concept for Heroku apps. 
+
+2.2.Librato solution:: real-time cloud monitoring service which provides more detailed information about the operation of the program under testing. 
+
+2.3.load_avg_1m, load_avg_5m and load_avg_15m::  which display the average loads for the last 1, 5 or 15 minutes respectively.
+
+2.4.Locust :: which allows for implementation of load testing procedures by "bombing" your application with requests, imitating a whole group of users.
+........................
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+3. Reduce Sizes of Images and Tables:: compress() images or minify method ::
+
+Consider the pages where images can be shrunk without loss of meaning or quality. Perhaps, in many cases, you will get by with these smaller resolutions. You can also try to reduce the size of cascade style sheets and Javascript modules using the ‘minify()’ method.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+4. Reduce Garbage Collector Call Amounts
+Are you aware that each time the garbage collector launches, the implementation of your main code is suspended for 100-400 ms? This issue is serious enough not to ignore. Before you start writing code, carefully understand how the Ruby classes and libraries work. In particular, very carefully handle the ‘reject’ and ‘reject!’ methods, which duplicate the array specified as the input parameter.
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+5. Minimize the Number of Database Requests
+Do not overuse the database connection. As an example, suppose you want to check if the user performed some activity in your app (sent a message). Instead of downloading all the messages from the database, in general, and looking for those that were left by a particular user, you can perform a single query with the keyword SELECT COUNT, which will indicate whether there were any active interactions with the server (for instance, using such a command as Forum.messages.count (:conditions => ["user_id =?", current_user.id]) > 0).
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+6. Correctly Index the Database :: 
+
+
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+7. Minimize the Use of Certain Methods :: 
+Some methods in Ruby consume a lot of resources. For example, if you use methods such as ‘find_by()’ and ‘find_all_by()’, your application may begin to seriously slow down. In this situation, we generally recommend opting out of using these two methods, in favor of the above mentioned indexation.
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+8.Turn Caching On ::
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+9. Use the Bullet Gem
+
+An “N+1” request is when, during a certain cycle for N elements, N+1 iterations are executed. When the total number of simultaneously running iterations is tens or even hundreds of thousands, application begins to lose performance. There is a way out, and Bullet helps in eliminating this problem. 
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+10. Select the Right Session Storage
+
+Depending on your needs, you can store data on ::
+
+in the client side
+in the CookieStore
+in the DRb Store
+in the MemCache Store (this is the most recommended external cache storage)
+in the Redis storage
+in the ActiveRecord Store
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+
+Questions based on above ::
+
+1.How to turn Caching on ::
+
+By default, caching is only enabled in your production environment. You can play around with caching locally by running rails dev:cache , or by setting config. action_controller. perform_caching to true in config/environments/development.
+
+
+2.How to store memcahce locally ::
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Methods to improve the Rails App Performance ::
+
+1. Use a Profiler to Identify Bottlenecks
+The first step to optimizing your Rails application's performance is to identify the parts of your code that are causing slowdowns. One of the best tools for this is a profiler. A profiler is a tool that measures the performance of your application and helps you identify areas that are taking up too much time or using too many resources.
+There are several profilers available for Ruby on Rails, including Rack::MiniProfiler, New Relic, and StackProf. These profilers can give you detailed information about the performance of your application, including how long each request takes to process, how much memory is being used, and which parts of the code are being executed most frequently.
+
+2.Optimize Database Queries
+One of the most common causes of performance issues in Rails applications is slow database queries. To optimize your queries, you should:
+Use indexes: Indexes can speed up database queries by making it faster to search for specific values in a table. You should create indexes for columns that are frequently searched or sorted.
+
+3.Use eager loading: Eager loading is a technique that allows you to load associated records in a single query, rather than making multiple queries for each record. This can significantly reduce the number of database queries your application makes.
+
+
+4. Use caching: Caching is a technique that allows you to store frequently accessed data in memory, so that it can be accessed quickly without having to make a database query. Rails provides several caching mechanisms, including page caching, action caching, and fragment caching.
+
+5.Optimize Asset Delivery
+The assets of a Rails application, such as CSS, JavaScript, and images, can have a significant impact on performance. To optimize asset delivery, you should:
+Use a content delivery network (CDN): A CDN is a distributed network of servers that can cache and deliver your assets more quickly than a single server. Popular CDNs for Rails applications include Amazon CloudFront, Akamai, and Cloudflare.
+
+6.Use asset pipeline: The asset pipeline is a feature of Rails that compiles, compresses, and caches your assets. This can significantly reduce the time it takes to load your pages.
+Use lazy loading: Lazy loading is a technique that loads assets only when they are needed, rather than loading all assets at once. This can improve page load times, especially for pages with many assets.
+
+7.Use Background Processing
+Some tasks in your Rails application may take a long time to complete, such as sending emails or processing large files. These tasks can slow down your application's response times, so it's a good idea to move them to a background process. Rails provides several background processing frameworks, including DelayedJob, Sidekiq, and Resque.
+
+8.Use Caching
+Caching is a technique that allows you to store frequently accessed data in memory, so that it can be accessed quickly without having to perform expensive calculations or database queries. Rails provides several caching mechanisms, including page caching, action caching, and fragment caching.
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
+Tips to improve Rails Application Performance ::
+
+1.Performance Measurement
+As the years have passed, Internet connection has improved and page load speeds have increased. These days, users expect an app to load in the blink of an eye. This is what you need to be ready for.Tools::::::::::::::::;;
+
+1.1. WebPage Test
+WebPage Test provides general information about app performance based on numerous indicators. The results of the performance measurement session are clear, precise and accessible. The tool is quite easy to use.
+
+1.2. PageSpeed Insights
+Have you ever used a Speed Score performance indicator? This is a Google tool used by PageSpeed Insights. The solution provides information about both web and desktop performance. Thus, you have a complete picture of how the application will work in different environments. The most important thing is that Google takes into account the PageSpeed performance measurement results when ranking the web page. The better performance your web app shows. the higher the rank on the search results page.
+
+1.3. New Relic APM will fit all of your needs. It is a great choice not only for Ruby applications but also for Java, Node.js, Python, and many other solutions. It is a cloud-based system with a clear intuitive interface and it provides you with all the significant details concerning any application’s environment.
+
+1.4. Optimization of the Elements that Actually Need Optimization
+ when working on Ruby app performance, you need to apply essential changes only to those elements that actually need them. So, spend more time identifying the weaknesses and focus your effort on them. There is no need to rewrite the app from scratch or try to optimize the whole solution.
+
+1.5. Ruby performance optimization demands code cleaning and tedious manual refactoring. But numerous third-party tools can help you to get this routine job done quickly.
+Specific Ruby gems and plugins provide great assistance with code optimization. For example:
+Bullet gem helps to seamlessly address the N+1 problem which will be discussed a little later. This gem is highly popular in the Ruby community and works out of the box;
+Yslow gem uses Yahoo! Rules for performance measurement and helps you identify problems.
+
+
+
+How to Improve Ruby on Rails App Performance
+
+
+
+
+
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}]
+
+
+
+10 ways and tools to measure performance of a rails application
+
+
+1. Rails Performance Test – Benchmarking
+Through Rails performance test, source of application’s memory or speed bottleneck and can be found. Benchmarking helps find out how fast each performance test runs. Each test case is run 4 times in benchmarking mode.
+
+2. Rails Performance Test – Profiling
+Profiling helps you to see the details of a performance test and provide an in-depth picture of the slow and memory hungry parts. Each test case is run 1 time in profiling mode.
+
+3. Rails logger
+The simplest way to get information about performance is to analyze rails log. It will provide you information of the time spent processing each request, broken down into rendering and SQL time. You can also find whether a particular part are cached or the occurrence of cache expiry.
+
+4. Rails analyzer
+The Rails Analyzer project contains a collection of tools (The Production Log Analyzer, The Action Profiler, Rails Analyzer Tools, The SQL Dependency Grapher) for Rails that let you discover biggest slow spots in your applications allowing you to best focus optimization efforts.
+
+5.Rails footnote
+It is a rails plugin which displays footnotes in your application for easy debugging, such as sessions, request parameters, cookies, filter chain, routes, queries, etc. Even more, it contains links to open files directly in your editor including your backtrace lines.
+
+6.
+
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+
+
+What are the diff types of tests in  Rails Application?
+
+Different Types of Tests
+There are three primary types of tests that you can write to ensure that your Rails application’s performance is correct and the infrastructure is working well under the heavy workload. Those types are the following:
+
+1. Load testing — this type of test answers the following question: how many simultaneous users can the system handle for a given period. Imagine that you launch a top-rated product on your website and thousands of users want to make the order at the same time. Without proper loading tests, you risk a crash during the most critical time.
+
+2. Stress testing — with this type of test, you don’t focus on verifying the number of users the system can handle simultaneously, but on how the system will behave when the limit of the users is hit.
+
+3. Performance testing — I would say that this type of test is a parent of stress and load testing. The primary purpose of such tests is to get a specific set of metrics on which base we can take some action to improve the application’s code. I will talk about those metrics in a while.
+That being said, we are now prepared to move to the last step of the theory part: learning what metrics are essential when doing performance testing on a Rails application. Without that knowledge, we won’t correctly interpret the test output and decide if we should change the code or not.
+
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+
+
+
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Q- How to monitor your Rails Application?
+https://scoutapm.com/blog/rails-performance-monitoring-tools
+
+1.Scout APM ::
+2.RoRvsWild
+3.Stackify Retrace
+4.New Relic
+5.AppSignal
+6.Skylight
+7.SolarWinds AppOptics
+8.ElasticAPM
+9.Raygun
+10.Atatus
+11.DATADOG
+12.Airbrake
+
+............................
+
+
+1.Scout APM ::
+Scout presents a clean and easy-to-use interface for developers and analytics teams alike. Scout is well known for its robust tracing and alerting capabilities. The tool ensures that you never miss out on anything that goes wrong in your application.
+ identify exceptions such as N+1 & slow queries, can track ActiveRecord metrics, and more. With Scout, you can identify and fix any performance issues as and when they occur before they make a dent in your business.
+ How to use :
+ 1.gem 'scout_apm'
+ 2.bundle update scout_apm
+ 3.Signup for a Scout account - https://scoutapm.com/users/sign_up - 
+ 4.create  config/scout_apm.yml
+ 5.downoad your config file - there will be option so try it - 
+ https://scoutapm.com/apps/new_ruby_application_configuration
+ 6. set   log_level: debug in config/scout_apm.yml
+
+
+ .............
+ this is the file code 
+ paste it in config/scout_apm.yml files 
+
+ # This configuration file is used for Scout APM.
+# Environment variables can also be used to configure Scout. See our help docs at https://scoutapm.com/docs/ruby/configuration#environment-variables for more information.
+common: &defaults
+
+  # key: Your Organization key for Scout APM. Found on the settings screen.
+  # - Default: none
+  key: iUXf7jUc0cP0Lw9GMyh3
+
+  # log_level: Verboseness of logs.
+  # - Default: 'info'
+  # - Valid Options: debug, info, warn, error
+  # log_level: debug
+
+  # use_prepend: Use the newer `prepend` instrumentation method. In some cases, gems
+  #              that use `alias_method` can conflict with gems that use `prepend`.
+  #              To avoid the conflict, change this setting to match the method
+  #              that the other gems use.
+  #              If you have another APM gem installed, such as DataDog or NewRelic,
+  #              you will likely want to set `use_prepend` to true.
+  #
+  #              See https://scoutapm.com/docs/ruby/configuration#library-instrumentation-method
+  #              for more information.
+  # - Default: false
+  # - Valid Options: true, false
+  # use_prepend: true
+
+  # name: Application name in APM Web UI
+  # - Default: the application names comes from the Rails or Sinatra class name
+  # name:
+
+  # monitor: Enable Scout APM or not
+  # - Default: none
+  # - Valid Options: true, false
+  monitor: true
+
+production:
+  <<: *defaults
+
+development:
+  <<: *defaults
+  monitor: false
+
+test:
+  <<: *defaults
+  monitor: false
+
+staging:
+  <<: *defaults
+
+  .........
+
+
+
+
+ Your config file should look like:
+ common: &defaults
+  name: YOUR_APPLICATION_NAME
+  key: YOUR_APPLICATION_KEY
+  monitor: true
+test:
+  monitor: false
+production:
+  <<: *defaults
+
+Scout can detect and identify:
+Endpoint and network slowness
+Slow requests like HTTP and Database Calls
+N+1 queries
+Memory allocation at the dyno and instance level
+Memory leaks
+Background job performance slowness
+Transaction and response time traces
+Usage by Url, IP, and hostnames
+Throughput and response time
+Code deployments
+
+
+There are 3 steps to use scout :
+Install Scout just like any other Ruby gem.
+Specify your API key via a config file or environment variable.
+Deploy!
+
+2.RoRvsWild ::
+
+
+
+3.Stackify Retrace::
+
+4.New Relic::
+
+4.1 create new relic account
+4.2 add gem - gem "newrelic_rpm" + bundle
+4.3 DOWNLOAD NEWRELIC.YML
+4.4 create the file config/newrelic.yml and paste the data of DOWNLOAD NEWRELIC.YML 
+4.4 RESTART YOUR APPLICATION
+4.5 A few minutes later, your application will begin sending data to New Relic.
+    B Once we receive the data, your application will be listed on your dashboard.
+
+
+
+5.AppSignal::
+
+
+6.Skylight::
+
+
+7.SolarWinds AppOptics::
+
+
+8.ElasticAPM::
+
+
+9.Raygun::
+
+
+10.Atatus::
+
+
+11.DATADOG::
+
+
+12.Airbrake::
+
+
+
+.........................................
+
+Q- what are the tools used for code optimization - 
+
+best tool - rubocop 
+
+how to use it ?
+
+
+
+
+
+
+
+

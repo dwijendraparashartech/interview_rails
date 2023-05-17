@@ -1,0 +1,118 @@
+advance_speed_rails.txt :::::::::
+
+:::::::::::::::::::::::::::::::::
+
+Examples of reasons for slow scaling in Ruby:
+
+improper database queries
+no possibility of logging or monitoring
+errors at the stage of selecting a database engine 
+low caching speed
+inefficiency in indexing
+
+1.Vertical Scaling :: Proper Hardware - 
+-increasing RAM's
+-upgrading the Server's Processor
+
+2.Horizontal Scaling ::
+In this case, the server and load balancer (Nginx), app instances, as well as database instances are located on different servers. 
+
+3.Use Nginx ::
+Good Load Balancer and reverse proxy
+
+4.Selecting the Accurate Database :: 
+Speedy database is mongodb we can use 
+in relational use postgresql 
+
+5.Database Scaling ::
+Use proper database 
+
+6.Proper Indexing will be used ::
+
+7.Advance Setting in the application for automatic caching 
+
+8.Aware with the Right Test Tools for Test the Application.
+
+9.Use Elastic Search ::
+Elasticsearch is an open-source full-text search engine-based Database that stores and indexes any type of data in JSON format.
+
+10.Use of multiple databases to improve the speed. 
+
+
+1.Updated version of Ruby and Ruby On Rails regularly
+2.Don’t waste time on micro-optimization
+3.Check performance in production mode
+4.Use background Jobs
+5.Use servers with good single core performance
+6.Puma is Important
+7.Use HTTP2
+8.Enough RAM
+9.Keep an Eye on Server Metrics
+10.Get ride of N+1 Queries
+11.Database Indexing :  lol_dba gem   - For missing indexing 
+12.Use database queries whenever possible
+13.Beware of pagination
+14.Update your gems regularly
+15.Eager or preloaded queries
+16.Use a proper cache
+17.Use a fast JSON Template
+
+
+
+1.Determine your Application’s Current Level of Performance
+2. Try Using Different Hosting
+3. Reduce Sizes of Images and Tables
+4. Reduce Garbage Collector Call Amounts
+5. Minimize the Number of Database Requests
+6. Correctly Index the Database
+7. Minimize the Use of Certain Methods
+8. Turn Caching On
+9. Use the Bullet Gem
+10. Select the Right Session Storage
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Avoid : 1 ,2 ,3 
+1.Avoid :: Avoid Creating Unnecessary Objects.
+2.Avoid :: Method Interations on large Collections
+3.Avoid :: Two Methods find_by and find_by_all
+4.Beware of Pagination 
+5. Call only What you need 
+6. Correctly Indexing database 
+7. Eager or Preloaded queries 
+8. Eliminate N+1 queries
+9. Minimize the no of database request
+Reduce : 10,11
+10.Reduce:: Reduce Garbage Collections Call Amounts
+11.Reduce:: Reduce size of images and tables 
+12.Render Partials Properly
+13.Select the Right Session Storage 
+14.Turn Caching On 
+15.Try Jruby
+Use :: 16,17,18,19,20
+16.Use Background Processing::Sidekiq
+17.Use Bullet Gem
+18.Use cdn for your Assets
+19.Use proper indexes for full text search 
+20.Use String Method :: << 
+21. Write less code use more gem 
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+How to improve the Ruby Code ?
+1.Avoid Hidden Structures
+2.Avoid While!(not)
+3.Avoid Functions that do not work well with Iterators  
+4.Patch the GC::Garbage Collector
+5.USe Double pipe ||= for your Methods
+6.Use loop do over while true 
+7.Use Hash [...] to create a Hash from a list of Values 
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+What are the gems and libraries through which we can improve the quality of the Code ?
+1. Ruby Critic
+2. MetricFu
+3. Attacker 
+4. Rubocop

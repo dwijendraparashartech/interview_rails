@@ -1,5 +1,13 @@
 short_interview_questions.txt ::::
 
+What are railties in rails architecture?
+Rails::Railtie is the core of the Rails framework and provides several hooks to extend Rails and/or modify the initialization process. Every major component of Rails (Action Mailer, Action Controller, Active Record, etc.) implements a railtie. Each of them is responsible for their own initialization.
+Developing a Rails extension does not require implementing a railtie, but if you need to interact with the Rails framework during or after boot, then a railtie is needed.
+
+0.What is rails engine>
+
+ it allows you to wrap up a Rails application or a subset of its functionality in a way that makes it easy to share it with other applications.
+
 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 1.What is Delegate method ?

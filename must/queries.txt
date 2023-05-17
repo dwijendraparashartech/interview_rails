@@ -473,3 +473,178 @@ customer = Customer.order(:first_name).last OR
 SELECT * FROM customers ORDER BY customers.first_name DESC LIMIT 1
 
 Customer.find_by first_name: 'Lifo'
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Self check queries::
+
+ School.joins(:students).pluck('name')
+ School.joins(:students).map(&:name)
+ School.joins(:students).pluck('name','school_id')
+ Student.joins(:school).pluck('name','school_id')
+ Student.joins(:school).pluck('name','school_id').to_h
+
+ Product.find 10
+ Product.find(10)
+ Product.find([1,2,10])
+ Product.find_by(id:[1,2])
+ Product.take(1)
+ Product.take(10)
+ Product.first(30)
+ Product.order(:name).first
+ Product.last
+ Product.last(100)
+ 
+ Student.where(first_name:'Ravi')
+ Student.where('first_name:?','Ravi')
+ Student.where(id: 1..4)
+ 
+ Product.limit(5)
+ Product.first(5)
+ Student.first(6).class
+ Product.limit(5).find(4)
+ Product.limit(5).where(id: 2..5)
+ Product.first(5).where(id: 2..5)   # Error
+ Product.order(:name).first(5)
+ Product.order(:first_name).first(5)
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+Queries by guides.rubyonrails.org::
+
+1. there are 5 types of conditions used to query :
+
+1. Pure String Conditions.
+2. Array Conditions
+3. OR Conditions
+4. NOT Conditions
+5. Hash Conditions
+
+
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+1.Pure String Conditions:
+
+Book.where("title = 'Introduction to Algorithms'")
+
+
+2.Array Conditions
+
+2.1. Specify Single Condition ::
+
+Book.where("title = ?", params[:title])
+
+2.2. Specify Multiple Conditions ::
+
+Book.where("title = ? AND out_of_print = ?", params[:title], false)
+
+2.3. Placeholder conditions ::
+
+Book.where("created_at >= :start_date AND created_at <= :end_date",
+  {start_date: params[:start_date], end_date: params[:end_date]})
+
+2.4. Conditions That Use LIKE ::
+
+Book.where("title LIKE ?", params[:title] + "%")
+Book.where("title LIKE ?",
+  Book.sanitize_sql_like(params[:title]) + "%")
+
+.................................................
+
+Only equality, range, and subset checking are possible with Hash conditions.
+
+Book.where(out_of_print: true)
+Book.where('out_of_print' => true)
+
+Book.where(created_at: (Time.now.midnight - 1.day)..Time.now.midnight)
+
+Book.where(created_at: (Time.now.midnight - 1.day)..)
+
+.................................................
+
+
+Hard Queries ::
+
+https://pganalyze.com/blog/active-record-subqueries-rails
+.........................................................................
+
+1.Hard Query one :: With Havind
+
+Employee.joins(:employee_reviews).select(
+  'employees.*',
+  'avg(score) avg_score',
+  "(#{avg_sql}) company_avg"
+).group('employees.id').having("avg(score) < 0.75 * (#{avg_sql})")
+
+Result ::
+
+The result of this query gives me 103 employees, and the first three of them look like:
+
+[
+  {"id"=>173, "role_id"=>1, "name"=>"Bob Williams", "salary"=>109206.0, "avg_score"=>23.75, "company_avg"=>50.04}, 
+  {"id"=>390, "role_id"=>5, "name"=>"Bob Serna", "salary"=>127559.0, "avg_score"=>26.0, "company_avg"=>50.04}, 
+  {"id"=>802, "role_id"=>4, "name"=>"Alice Halliday", "salary"=>94956.0, "avg_score"=>35.88, "company_avg"=>50.04}
+]
+
+
+.........................................................................
+
+2.Hard Query one :: With Select
+
+
+Employee.where('salary > (:avg)', avg: Employee.select('avg(salary)'))
+
+
+Employee.where(
+  'NOT EXISTS (:vacations)',
+  vacations: Vacation.select('1').where('employees.id = vacations.employee_id')
+)
+
+.........................................................................
+
+
+All Sql query examples ::
+
+https://www.edureka.co/blog/interview-questions/sql-query-interview-questions
+
+
+.........................................................................
+Join queries :: https://www.youtube.com/watch?v=wjEeLjGkBeA
+
+class Product < ActiveRecord::Base
+  belongs_to :user
+end 
+
+class User < ActiveRecord::Base
+  has_many :products
+end 
+
+prods = Product.joins(:user).where(:users=>{name:"richard"}).first
+User.where(:name=>'richard')
+User.where(:name=>'richard').first.products
+
+Q- What is the meaning of Product.joins(:user)
+# Take all the Users with an id and all the products with an user_id and join them together.
+
+Q- What will happen if we find a product with no user:
+p = Product.create(:name => 'foo')
+puts p.user => nil
+
+.........................................................................
+
+Find out the record with mulltiple columns but not all ::
+
+Student.select(:id,:first_name,:last_name)
+Course.select(:name)
+Student.select(:email)
+Student.where(id:1..10).select(:email,:id)
+
+
+..........................................................................
+
+Duck.where(color: 'black').count
+Duck.where(created_at:Time.now.yesterday)
+Duck.where("created_at<=?",Time.now).pluck :name
+Duck.where.not("created_at<=?",Time.now).pluck :name
+Duck.where(pond_id:nil).pluck :name
+Duck.where.not(pond_id:nil).pluck :name

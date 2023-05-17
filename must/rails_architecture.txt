@@ -1,0 +1,45 @@
+rails_architecture.txt :::::::::::::::
+
+
+
+
+
+Ruby on Rails architecture has the following features:
+
+Model-View-Controller architecture.
+Representational State Transfer (REST) for web services.
+Supports the major databases (MySQL, Oracle, MS SQL Server, PostgreSQL, IBM DB2, and more).
+Open-source server side scripting language.
+Convention over configuration
+Scripts generators to automate tasks.
+Use of YAML machine, which is a human-readable data serialization format.
+
+
+..........................................
+
+The above-described features are distributed in the following Rails’ components and the Fig. 2 shows the interaction between some of these components:
+
+Action Mailer
+Action Pack
+Action Controller
+Action Dispatcher
+Action View
+Active Model
+Active Record
+Active Resource
+Active Support
+Railties
+
+...........................................
+
+
+Basic Architecture Components
+Here is the list of the 6 basic RoR architecture components:
+
+Models
+Ruby on Rails Server
+Routes
+Controllers and their Actions
+Views
+Assets
+

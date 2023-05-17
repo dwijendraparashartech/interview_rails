@@ -1,2 +1,5 @@
 github_questions.rb :: 
 
+what are the actions in github ? what are the github actions ?
+what is the ci/cd pipeline what is this work ?
+

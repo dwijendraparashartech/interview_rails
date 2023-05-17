@@ -1,0 +1,28 @@
+interview_questions.txt
+
+
+1.how to get the authors who have write more than 100 books 
+
+
+2.how to handle the situation of branches in the real project
+
+
+
+3.
+
+
+
+
+
+users = []
+10.times do |i|
+  users << User.new(name: "user #{i}")
+end
+User.import users
+
+
+authors = []
+1000.times do |i|
+  authors << Author.new(name: "author #{i}")
+end
+Author.import authors

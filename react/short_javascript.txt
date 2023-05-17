@@ -244,13 +244,13 @@ Event propagation is a way to declare the stack of events that are fired in a We
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-What is Currying>
+32.What is Currying>
 Currying is a technique of evaluating function with multiple arguments into sequence of functions with single argument.
 In other words instead of taking all arguments at one time,takes the first one and return a new function that takes the second one and return a new function which takes the third one,and so forth until all arguments have been fulfilled.
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-What are the Features of ES-6?
+33.What are the Features of ES-6?
 1.Arrows                                                        15.symboles
 2.Classes                                                       16.subclassable builting
 3.Enhanced Object Literals                                      17.promises
@@ -268,7 +268,7 @@ What are the Features of ES-6?
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-What are the Iterators in the functions and in the Javascript?
+34.What are the Iterators in the functions and in the Javascript?
 
 
 

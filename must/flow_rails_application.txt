@@ -1,0 +1,52 @@
+flow_rails_application.txt :::::::::::::::
+
+
+1.User will hit directly or indirectly the url of the web browser this is client and request will go to Web Server.
+
+2.Request can be many types like - HTTP,RSS,ATOM or SOAP - 
+
+3.From the Server Request will forward to the Dispatcher.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.............................
+
+Key components of web architecture ::
+
+
+1.what is dispatcher - Dispatcher is a small class which is responsible for instantiating the controller and passing along our request, along with an empty response object. It's invoked when a suitable route is identified for a request.
+
+
+.................................
+
+
+
+
+Here is a summary of the steps shown in Figure 2.12:
+
+The browser issues a request for the /users URL.
+Rails routes /users to the index action in the Users controller.
+The index action asks the User model to retrieve all users (User.all).
+The User model pulls all the users from the database.
+The User model returns the list of users to the controller.
+The controller captures the users in the @users variable, which is passed to the index view.
+The view uses embedded Ruby to render the page as HTML.
+The controller passes the HTML back to the browser.4
